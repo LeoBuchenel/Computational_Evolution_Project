@@ -78,6 +78,7 @@ Zone Grid::getZone(std::string form, unsigned int param1, unsigned int param2, u
 																																}
 																								}
 																}
+
 								}
 								if(form=="whole") {
 																for(size_t x(0); x < grid.size(); ++x) {
