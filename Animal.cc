@@ -2,8 +2,6 @@
 #include "Grid.h"
 #include <random>
 
-//This is a file modification
-
 Animal::Animal(Cell* cell_){
         position = cell_;
         genetic_data = GeneticData();
