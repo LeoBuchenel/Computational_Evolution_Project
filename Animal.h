@@ -17,7 +17,7 @@ Animal(Cell*, GeneticData, double);   // constructor with position, genetic_data
 void eat();
 std::vector<Animal*> reproduce();
 //void update_energy();
-std::vector<int> move(Grid*);
+std::vector<unsigned int> move(Grid*);
 void changeCell(Cell*);
 
 unsigned int getX() const;

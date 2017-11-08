@@ -103,7 +103,6 @@ void Cell::sortAnimals()
 																								animal_list[maxIndex] = animal_list[i];
 																								animal_list[i] = strongest;
 																}
-																//std::cout << "Hors de sort cell"<< std::endl;
 								}
 }
 

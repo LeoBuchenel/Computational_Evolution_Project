@@ -46,9 +46,7 @@ std::vector<Animal*> Animal::reproduce(){
         if(energy>Animal::get_rep_threshold()) {
                 double offspringEnergy
                         = 0.5*energy/Animal::get_nb_offspring();
-                ///Animal::get_nb_offspring();
                 for(std::size_t i(0); i<Animal::get_nb_offspring(); ++i) {
-                        //Animal* ptr = new Animal(position, genetic_data, offspringEnergy);
                         newborns.push_back(new Animal(position, genetic_data, offspringEnergy));
                 }
                 energy = 0.5*energy;
@@ -60,7 +58,7 @@ void Animal::changeCell(Cell* cell){
         position = cell;
 }
 
-std::vector<int> Animal::move(Grid* grid){
+std::vector<unsigned int> Animal::move(Grid* grid){
 
 
         int X = position->getX();
@@ -89,9 +87,9 @@ std::vector<int> Animal::move(Grid* grid){
                 }
         }
 
-        std::vector<int> new_pos;
-        new_pos.push_back(X);
-        new_pos.push_back(Y);
+        std::vector<unsigned int> new_pos;
+        new_pos.push_back(X2);
+        new_pos.push_back(Y2);
 
         return new_pos;
 }

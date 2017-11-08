@@ -42,27 +42,8 @@ void Ecosystem::move()
 																if(obj->isAlive()) {
 																								Cell* oldCell(obj->get_Position());
 																								oldCell->removeAnimal(obj);
-																								std::vector<int> newPosition(obj->move(grid));
-
-																								int X = newPosition[0];
-																								int Y = newPosition[1];
-
-																								if(X >= Taille) X -= Taille;
-																								if(X < 0) X+=Taille;
-																								if(Y >=Taille) Y -=Taille;
-																								if(Y <0) Y+=Taille;
-
-
-																								unsigned int X1 = abs(X);
-																								unsigned int Y1 = abs(Y);
-
-
-																								Cell* newCell(grid->getCell(X1, Y1));
-
-
-																								//std::cout << "New Position [0] =" << newPosition[0] << " New Position [1] =" << newPosition[1] << std::endl;
-
-																								//std::cout << "Tout va bien 2" << std::endl;
+																								std::vector<unsigned int> newPosition(obj->move(grid));
+																								Cell* newCell(grid->getCell(newPosition[0], newPosition[1]));
 																								newCell->addAnimal(obj);
 																								obj->changeCell(newCell);
 																}
@@ -71,23 +52,16 @@ void Ecosystem::move()
 
 void Ecosystem::animal_reproduce()
 {
-								std::size_t n(animal_list.size());
-								for(std::size_t i(0); i<n; ++i ) {
-																//if(obj == nullptr) std::cout << "NULLPTR" << std::endl;
+								std::size_t n(animal_list.size()); //loop over the existing animals
+								for(std::size_t i(0); i<n; ++i) {
 																if(animal_list[i]->isAlive()) {
-																								//std::cout << "start of loop" << std::endl;
 																								std::vector<Animal*> newborns(animal_list[i]->reproduce());
-																								//std::cout << "Number of newborns = " << newborns.size() << std::endl;
 																								for(auto const& newborn:newborns) {
-																																//std::cout << newborn << std::endl;
 																																animal_list.push_back(newborn);
-																																//								std::cout << "Animal sucessfully added"<< std::endl;
 																								}
-																								//std::cout << "end of loop" << std::endl;
 																}
 
 								}
-								//std::cout << "out of animal_reproduce()"<< std::endl;
 
 }
 
