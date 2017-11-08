@@ -27,7 +27,9 @@ Ecosystem::Ecosystem(Grid* grid, Zone const& animal_zone, Zone const& plant_zone
 								}
 
 								for(size_t i(0); i < plant_zone.size(); ++i) {
-																plant_zone[i]->set_exist_food(true); // gives the cell the right to reproduce food
+																plant_zone[i]->set_exist_food(true);
+																// gives the cell the right to reproduce food
+																// (cell is marked as "food can exist here")
 								}
 
 
@@ -41,8 +43,6 @@ void Ecosystem::move()
 																								Cell* oldCell(obj->get_Position());
 																								oldCell->removeAnimal(obj);
 																								std::vector<int> newPosition(obj->move(grid));
-
-																								//	std:: cout << "newPosition[0] = " << newPosition[0] << " newPosition[1] = " << newPosition[1] << std::endl;
 
 																								int X = newPosition[0];
 																								int Y = newPosition[1];
@@ -159,16 +159,11 @@ void Ecosystem::food_reproduce()
 
 
 void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS){
-								this->write(osX, osY, osP, osS);
-								//std::cout << "Tout va bien 1" << std::endl;
+								this->write(osX, osY, osP, osS); //writes the position of every animal, the plant density per cell and the system parameters
 								this->move();
-								//std::cout << "Tout va bien 2" << std::endl;
 								this->animal_reproduce();
-								//std::cout << "Tout va bien 3" << std::endl;
 								grid->sortAnimals();
-								//std::cout << "Tout va bien 4" << std::endl;
 								this->animal_eat();
-								//std::cout << "Tout va bien 5" << std::endl;
 								this->food_reproduce();
 }
 

@@ -12,21 +12,21 @@
 #include <vector>
 
 
-// LES POINTS VONT DE 0 à L
+//Points go from index 0 to L (so there are (L+1)^2 cells)
 
 using namespace std;
 
 int main(int argc, char *argv[]) {
 
         string inputPath("configuration.in"); // Fichier d'input par defaut
-        if (argc > 1) // Fichier d'input specifie par l'utilisateur ("./Exercice5
+        if (argc > 1) // Fichier d'input specifie par l'utilisateur ("./Projectv2
                       // config_perso.in")
                 inputPath = argv[1];
 
         ConfigFile configFile(inputPath); // Les parametres sont lus et stockes dans
                                           // une "map" de strings.
 
-        for (int i(2); i < argc; ++i) // Input complementaires ("./Exercice5
+        for (int i(2); i < argc; ++i) // Input complementaires ("./Projectv2
                                       // config_perso.in input_scan=[valeur]")
                 configFile.process(argv[i]);
 
@@ -49,9 +49,8 @@ int main(int argc, char *argv[]) {
 
         string extension = configFile.get<string>("output");
 
-        // creer l'ecosysteme
-        srand(time(NULL) +clock());
-
+        srand(time(NULL) +clock()); // seeds the random number generator
+        //(added clock() in the case of multiple simulations at the same second)
 
         Grid grid(L);
 

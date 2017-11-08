@@ -12,7 +12,7 @@ Cell(unsigned int, unsigned int);
 bool exist_food_on_cell() const;
 void initialiseFood(unsigned int, unsigned int);
 void addAnimal(std::vector<Animal*> const&);
-void addAnimal(Animal* const&);
+void addAnimal(Animal* const&); //places the Animal on said cell
 void removeAnimal(Animal* const);
 void food_reproduce(double);
 void addFood(unsigned int food = 1);

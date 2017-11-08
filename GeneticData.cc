@@ -7,13 +7,10 @@ GeneticData::GeneticData(){
         force = x;
         unsigned int a = (std::rand() % 5) + 1;
         nb_moves = a;
-        //force = 100./a;
-
         unsigned int y = (std::rand() % 5) + 1;
         nb_offspring = y;
         double b = (std::rand() % 100) + 1;
         repr_threshold = b;
-        //repr_threshold = 100./y;
 
 }
 
