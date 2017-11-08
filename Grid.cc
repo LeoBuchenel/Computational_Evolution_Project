@@ -69,13 +69,6 @@ Zone Grid::getZone(std::string form, unsigned int param1, unsigned int param2, u
 																								yB = param2;
 																}
 
-/*
-                std::cout << "xA = " << xA << std::endl;
-                std::cout << "yA = " << yA << std::endl;
-                std::cout << "xB = " << xB << std::endl;
-                std::cout << "yB = " << yB << std::endl;
- */
-
 																size_t L = grid.size();
 
 																if(xA < L+1 and xB > xA and xB < L+1 and yA < L+1 and yB<L+1) {
