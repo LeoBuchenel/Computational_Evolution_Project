@@ -127,7 +127,7 @@ std::ostream& Ecosystem::write_Plant(std::ostream& os) const
 
 void Ecosystem::food_reproduce()
 {
-								reproduce(plant_zone, 0.05, grid->getNbFood());
+								reproduce(plant_zone, 0.2, grid->getNbFood());
 }
 
 

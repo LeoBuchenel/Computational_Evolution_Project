@@ -96,7 +96,6 @@ xlabel('Reproduction threshold (beginning)');
 ylabel('Number of animals');
 
 figure
-
 histogram(animal_param_end(:,1));
 xlabel('Force (end)');
 ylabel('Number of animals');

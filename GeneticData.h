@@ -10,6 +10,7 @@ double get_force() const;
 double get_rep_threshold() const;
 unsigned int get_nb_offspring() const;
 unsigned int get_nb_moves() const;
+void mutate();
 
 
 protected:

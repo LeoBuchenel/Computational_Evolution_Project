@@ -19,6 +19,7 @@ std::vector<Animal*> reproduce();
 //void update_energy();
 std::vector<unsigned int> move(Grid*);
 void changeCell(Cell*);
+void evolve();
 
 unsigned int getX() const;
 unsigned int getY() const;
