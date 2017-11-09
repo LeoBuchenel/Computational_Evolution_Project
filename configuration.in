@@ -1,8 +1,8 @@
 % Parametres physiques :
-L =100
+L = 100
 plants = 300
 animals = 200
-tfin = 400
+tfin = 500
 Animal zone = whole
 Animal zone parameter 1 = 0
 Animal zone parameter 2 = 0

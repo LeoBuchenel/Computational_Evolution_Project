@@ -141,10 +141,10 @@ void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& os
 }
 
 void Ecosystem::write(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS){
-								this->write_animalX(osX);
-								osX << std::endl;
-								this->write_animalY(osY);
-								osY << std::endl;
+								//this->write_animalX(osX);
+								//osX << std::endl;
+								//this->write_animalY(osY);
+								//osY << std::endl;
 								this->write_Plant(osP);
 								osP << std::endl;
 								this->write_systParam(osS);
