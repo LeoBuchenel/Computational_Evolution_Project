@@ -37,7 +37,6 @@ Ecosystem::Ecosystem(Grid* grid, Zone const& animal_zone, Zone const& plant_zone
 
 void Ecosystem::move()
 {
-								int Taille = grid->size();
 								for(auto const& obj:animal_list) {
 																if(obj->isAlive()) {
 																								Cell* oldCell(obj->get_Position());

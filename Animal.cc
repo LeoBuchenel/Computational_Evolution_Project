@@ -64,6 +64,8 @@ std::vector<unsigned int> Animal::move(Grid* grid){
         int X = position->getX();
         int Y = position->getY();
         unsigned int Taille = grid->size();
+        unsigned int X2 = 0;
+        unsigned int Y2 = 0;
 
         for(std::size_t i(0); i<get_nb_moves(); ++i) {
                 int depl_x = (rand()%3)-1;
@@ -79,8 +81,8 @@ std::vector<unsigned int> Animal::move(Grid* grid){
                 if(Y1 >=Taille) Y1 -=Taille;
                 if(Y1 <0) Y1+=Taille;
 
-                unsigned int X2 = abs(X1);
-                unsigned int Y2 = abs(Y1);
+                X2 = abs(X1);
+                Y2 = abs(Y1);
 
                 if(grid->getCell(X2,Y2)->exist_food_on_cell()) {
                         i = get_nb_moves();
