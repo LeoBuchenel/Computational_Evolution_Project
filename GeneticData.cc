@@ -12,6 +12,7 @@ GeneticData::GeneticData(){
         double b = (std::rand() % 100) + 1;
         repr_threshold = b;
 
+
 }
 
 double GeneticData::get_force() const {

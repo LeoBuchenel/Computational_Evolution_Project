@@ -5,7 +5,7 @@ input = 'configuration.in'; % Nom du fichier d'entree
 
 paramstr = '';
 
-nsimul = 1641; % Nombre de simulations a faire
+nsimul = 421; % Nombre de simulations a faire
 
 
 %% Simulations

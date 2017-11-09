@@ -7,6 +7,7 @@ Animal::Animal(Cell* cell_){
         genetic_data = GeneticData();
         energy = (std::rand()%100)+1;
         cell_->addAnimal(this);
+
 }
 
 Animal::Animal(Cell* cell_, GeneticData gd, double health){
