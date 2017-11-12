@@ -48,14 +48,21 @@ void Cell::removeAnimal(Animal* const obj)
 void Cell::food_reproduce(double proba)
 {
 								if(exist_food) {
+																// old code
 																double prob = (std::rand()/(RAND_MAX*1.));
 																if(prob < proba) {
 																								addFood(food_density);
 																}
-
+																//
+																/*test code
+																   int a = rate*nb_food;
+																   std::cout << a << std::endl;
+																   addFood(a);
+																 */
 								}
 
 }
+//std::cout << "Tout va bien " << std::endl;
 
 
 

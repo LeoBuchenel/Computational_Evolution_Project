@@ -1,7 +1,6 @@
 #include "Animal.h"
 #include "Grid.h"
 #include <random>
-#include <iostream>
 
 Animal::Animal(Cell* cell_){
         position = cell_;
@@ -16,10 +15,6 @@ Animal::Animal(Cell* cell_, GeneticData gd, double health){
         genetic_data = gd;
         energy = health;
         position->addAnimal(this);
-}
-
-Animal::~Animal(){
-        position->removeAnimal(this); //removes the cell to animal pointer
 }
 
 bool Animal::isAlive() const {

@@ -17,7 +17,7 @@ GeneticData::GeneticData(){
 
 void GeneticData::mutate(){
         double p1 = std::rand()/(RAND_MAX*1.0);
-        if(p1 < 0.0) {
+        if(p1 < 1.0) {
                 unsigned int characteristic = std::rand() % 4 + 1;
                 int change = std::rand() % 2 - 1;
 
