@@ -37,7 +37,7 @@ unsigned int x;
 unsigned int y;
 std::vector<Animal*> animal_list;
 unsigned int food_density;
-unsigned int nb_food;
+unsigned long long int nb_food;
 bool exist_food;
 
 };
