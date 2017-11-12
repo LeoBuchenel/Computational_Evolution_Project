@@ -1,12 +1,14 @@
 #include "Animal.h"
 #include "Grid.h"
 #include <random>
+#include <iostream>
 
 Animal::Animal(Cell* cell_){
         position = cell_;
         genetic_data = GeneticData();
         energy = (std::rand()%100)+1;
         cell_->addAnimal(this);
+
 }
 
 Animal::Animal(Cell* cell_, GeneticData gd, double health){
@@ -14,6 +16,10 @@ Animal::Animal(Cell* cell_, GeneticData gd, double health){
         genetic_data = gd;
         energy = health;
         position->addAnimal(this);
+}
+
+Animal::~Animal(){
+        position->removeAnimal(this); //removes the cell to animal pointer
 }
 
 bool Animal::isAlive() const {
@@ -46,10 +52,10 @@ std::vector<Animal*> Animal::reproduce(){
         if(energy>Animal::get_rep_threshold()) {
                 double offspringEnergy
                         = 0.5*energy/Animal::get_nb_offspring();
-                ///Animal::get_nb_offspring();
                 for(std::size_t i(0); i<Animal::get_nb_offspring(); ++i) {
-                        //Animal* ptr = new Animal(position, genetic_data, offspringEnergy);
-                        newborns.push_back(new Animal(position, genetic_data, offspringEnergy));
+                        Animal* ptr = new Animal(position, genetic_data, offspringEnergy);
+                        ptr->evolve();
+                        newborns.push_back(ptr);
                 }
                 energy = 0.5*energy;
         }
@@ -60,19 +66,21 @@ void Animal::changeCell(Cell* cell){
         position = cell;
 }
 
-std::vector<int> Animal::move(Grid* grid){
+std::vector<unsigned int> Animal::move(Grid* grid){
 
 
         int X = position->getX();
         int Y = position->getY();
         unsigned int Taille = grid->size();
+        unsigned int X2 = 0;
+        unsigned int Y2 = 0;
 
         for(std::size_t i(0); i<get_nb_moves(); ++i) {
                 int depl_x = (rand()%3)-1;
                 int depl_y = (rand()%3)-1;
                 X+=depl_x;
                 Y+=depl_y;
-                energy-=1.0;
+                energy-=10.0;
 
                 int X1 = X, Y1 = Y;
 
@@ -81,17 +89,17 @@ std::vector<int> Animal::move(Grid* grid){
                 if(Y1 >=Taille) Y1 -=Taille;
                 if(Y1 <0) Y1+=Taille;
 
-                unsigned int X2 = abs(X1);
-                unsigned int Y2 = abs(Y1);
+                X2 = abs(X1);
+                Y2 = abs(Y1);
 
                 if(grid->getCell(X2,Y2)->exist_food_on_cell()) {
                         i = get_nb_moves();
                 }
         }
 
-        std::vector<int> new_pos;
-        new_pos.push_back(X);
-        new_pos.push_back(Y);
+        std::vector<unsigned int> new_pos;
+        new_pos.push_back(X2);
+        new_pos.push_back(Y2);
 
         return new_pos;
 }
@@ -113,4 +121,8 @@ unsigned int Animal::getY() const
 
 Cell* Animal::get_Position() const {
         return position;
+}
+
+void Animal::evolve(){
+        genetic_data.mutate();
 }
