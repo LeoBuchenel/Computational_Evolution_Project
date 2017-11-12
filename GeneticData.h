@@ -13,6 +13,7 @@ unsigned int get_nb_moves() const;
 void mutate();
 
 
+
 protected:
 double force;
 unsigned int nb_offspring;

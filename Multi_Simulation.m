@@ -8,6 +8,7 @@ paramstr = '';
 nsimul = 421; % Nombre de simulations a faire
 
 
+
 %% Simulations
 for i = 1 : nsimul 
     eval(sprintf('!%s%s %s %s', repertoire, executable, input, ['output=test_' num2str(i)]))

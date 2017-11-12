@@ -92,18 +92,21 @@ std::ostream& Ecosystem::write_animalY(std::ostream& os) const
 
 std::ostream &Ecosystem::write_systParam(std::ostream &os) const
 {
-								unsigned int Animals(0);
-								double meanForce(0.), meanEnergy(0.);
+								unsigned long long int Animals(0);
+								double meanForce(0.), meanEnergy(0.), meanNumberofMoves(0.), meanOffsprings(0.), meanReprThreshold(0.);
 								for (auto const org : animal_list) {
 																if (org->isAlive()) {
 																								Animals++;
 																								meanEnergy+= org->get_energy();
 																								meanForce += org->get_force();
+																								meanNumberofMoves+=org->get_nb_moves();
+																								meanOffsprings+=org->get_nb_offspring();
+																								meanReprThreshold+=org->get_rep_threshold();
 																}
 								}
 
 								os << Animals << " " << grid->getNbFood() << " " << meanForce/ (Animals * 1.)
-											<< " " << meanEnergy / (Animals * 1.);
+											<< " " << meanEnergy / (Animals * 1.) << " " << meanNumberofMoves / (Animals * 1.) << " " << meanOffsprings / (Animals * 1.) << " "<< meanReprThreshold/(Animals*1.);
 
 								return os;
 }
@@ -141,10 +144,11 @@ void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& os
 }
 
 void Ecosystem::write(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS){
-								this->write_animalX(osX);
-								osX << std::endl;
-								this->write_animalY(osY);
-								osY << std::endl;
+								//this->write_animalX(osX);
+								//osX << std::endl;
+								//this->write_animalY(osY);
+								//osY << std::endl;
+
 								this->write_Plant(osP);
 								osP << std::endl;
 								this->write_systParam(osS);

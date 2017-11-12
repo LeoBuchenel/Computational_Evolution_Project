@@ -26,7 +26,7 @@ unsigned int getX() const {
 unsigned int getY() const {
 								return y;
 }
-unsigned int getNbFood() const {
+unsigned long long int getNbFood() const {
 								return nb_food;
 }
 
@@ -37,7 +37,7 @@ unsigned int x;
 unsigned int y;
 std::vector<Animal*> animal_list;
 unsigned int food_density;
-unsigned int nb_food;
+unsigned long long int nb_food;
 bool exist_food;
 
 };

@@ -51,6 +51,7 @@ std::vector<Animal*> Animal::reproduce(){
                         Animal* ptr = new Animal(position, genetic_data, offspringEnergy);
                         ptr->evolve();
                         newborns.push_back(ptr);
+
                 }
                 energy = 0.5*energy;
         }
