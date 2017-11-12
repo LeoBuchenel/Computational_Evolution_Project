@@ -36,3 +36,4 @@ void iteration(std::ostream&, std::ostream&, std::ostream&, std::ostream&);
 };
 
 #endif //ECOSYSTEM_H
+

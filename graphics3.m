@@ -86,6 +86,7 @@ xlabel('Number of moves (beginning)');
 ylabel('Number of animals');
 
 figure
+
 histogram(animal_param_begin(:,3));
 xlabel('Number of offsprings (beginning)');
 ylabel('Number of animals');
@@ -96,6 +97,7 @@ xlabel('Reproduction threshold (beginning)');
 ylabel('Number of animals');
 
 figure
+
 histogram(animal_param_end(:,1));
 xlabel('Force (end)');
 ylabel('Number of animals');
@@ -103,6 +105,7 @@ ylabel('Number of animals');
 histogram(animal_param_end(:,2));
 xlabel('Number of moves (end)');
 ylabel('Number of animals');
+
 
 figure
 histogram(animal_param_end(:,3));

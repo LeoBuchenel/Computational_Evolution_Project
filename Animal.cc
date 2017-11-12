@@ -56,6 +56,7 @@ std::vector<Animal*> Animal::reproduce(){
                         Animal* ptr = new Animal(position, genetic_data, offspringEnergy);
                         ptr->evolve();
                         newborns.push_back(ptr);
+
                 }
                 energy = 0.5*energy;
         }
@@ -80,7 +81,8 @@ std::vector<unsigned int> Animal::move(Grid* grid){
                 int depl_y = (rand()%3)-1;
                 X+=depl_x;
                 Y+=depl_y;
-                energy-=10.0;
+
+                energy-=0.8;
 
                 int X1 = X, Y1 = Y;
 

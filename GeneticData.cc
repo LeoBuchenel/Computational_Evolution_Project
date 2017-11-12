@@ -31,6 +31,7 @@ void GeneticData::mutate(){
                 }
         }
 
+
 }
 
 double GeneticData::get_force() const {

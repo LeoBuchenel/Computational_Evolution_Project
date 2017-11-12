@@ -107,3 +107,4 @@ void Cell::set_exist_food(bool new_value){
 bool Cell::exist_food_on_cell() const {
 								return (nb_food!=0);
 }
+

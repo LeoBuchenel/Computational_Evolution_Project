@@ -3,6 +3,7 @@ L = 20
 plants = 0
 animals = 100
 tfin = 10
+
 Animal zone = whole
 Animal zone parameter 1 = 0
 Animal zone parameter 2 = 0
@@ -13,4 +14,5 @@ Plant zone parameter 1 = 25
 Plant zone parameter 2 = 25
 Plant zone parameter 3 = 75
 Plant zone parameter 4 = 75
+
 output = test

@@ -127,14 +127,15 @@ std::ostream& Ecosystem::write_Plant(std::ostream& os) const
 
 void Ecosystem::food_reproduce()
 {
-								reproduce(plant_zone, 0.2, grid->getNbFood());
-}
+							reproduce(plant_zone, 0.2, grid->getNbFood());
+
 
 
 void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS){
 								this->write(osX, osY, osP, osS); //writes the position of every animal, the plant density per cell and the system parameters
 								this->move();
 								this->die();
+
 								this->animal_reproduce();
 								grid->sortAnimals();
 								this->animal_eat();
@@ -146,6 +147,7 @@ void Ecosystem::write(std::ostream& osX, std::ostream& osY, std::ostream& osP, s
 								osX << std::endl;
 								this->write_animalY(osY);
 								osY << std::endl;
+
 								this->write_Plant(osP);
 								osP << std::endl;
 								this->write_systParam(osS);
@@ -190,3 +192,4 @@ void Ecosystem::die(){
 
 
 }
+
