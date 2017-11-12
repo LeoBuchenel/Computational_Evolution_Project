@@ -1,6 +1,7 @@
 #include "Animal.h"
 #include "Grid.h"
 #include <random>
+#include <iostream>
 
 Animal::Animal(Cell* cell_){
         position = cell_;
@@ -80,10 +81,8 @@ std::vector<unsigned int> Animal::move(Grid* grid){
 
                 int X1 = X, Y1 = Y;
 
-                if(X1 >= Taille) X1 -= Taille;
-                if(X1 < 0) X1+=Taille;
-                if(Y1 >=Taille) Y1 -=Taille;
-                if(Y1 <0) Y1+=Taille;
+                if(X1 >= Taille or X1 < 0) X1 = X1 % Taille;
+                if(Y1 >=Taille or Y1 < 0) Y1 = Y1 % Taille;
 
                 X2 = abs(X1);
                 Y2 = abs(Y1);
