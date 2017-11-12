@@ -130,7 +130,8 @@ std::ostream& Ecosystem::write_Plant(std::ostream& os) const
 
 void Ecosystem::food_reproduce()
 {
-								reproduce(plant_zone, 0.05, grid->getNbFood());
+								//changed to have a fixed number of plant
+								reproduce(plant_zone, 0.05, grid->size());
 }
 
 
