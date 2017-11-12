@@ -75,7 +75,7 @@ std::vector<unsigned int> Animal::move(Grid* grid){
                 int depl_y = (rand()%3)-1;
                 X+=depl_x;
                 Y+=depl_y;
-                energy-=10.0;
+                energy-=0.8;
 
                 int X1 = X, Y1 = Y;
 
