@@ -127,13 +127,15 @@ std::ostream& Ecosystem::write_Plant(std::ostream& os) const
 
 void Ecosystem::food_reproduce()
 {
-								reproduce(plant_zone, 0.05, grid->getNbFood());
-}
+							reproduce(plant_zone, 0.2, grid->getNbFood());
+
 
 
 void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS){
 								this->write(osX, osY, osP, osS); //writes the position of every animal, the plant density per cell and the system parameters
 								this->move();
+								this->die();
+
 								this->animal_reproduce();
 								grid->sortAnimals();
 								this->animal_eat();
@@ -141,10 +143,11 @@ void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& os
 }
 
 void Ecosystem::write(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS){
-								//this->write_animalX(osX);
-								//osX << std::endl;
-								//this->write_animalY(osY);
-								//osY << std::endl;
+								this->write_animalX(osX);
+								osX << std::endl;
+								this->write_animalY(osY);
+								osY << std::endl;
+
 								this->write_Plant(osP);
 								osP << std::endl;
 								this->write_systParam(osS);
@@ -159,3 +162,34 @@ void Ecosystem::animal_eat(){
 																}
 								}
 }
+
+void Ecosystem::die(){
+								size_t L = animal_list.size();
+								size_t first_dead = L;
+								for(size_t i(0); i < L; ++i) {
+																if(!(animal_list[i]->isAlive())) {
+																								Animal* nextAlive = animal_list[i];
+																								for(size_t j(i+1); j < L; ++j) {
+																																if(animal_list[j]->isAlive()) {
+																																								nextAlive = animal_list[j];
+																																								animal_list[j] = animal_list[i];
+																																								animal_list[i] = nextAlive;
+																																								j = L;
+																																}
+																								}
+																								//next Alive animal is found
+																								if(nextAlive==animal_list[i]) { // All animals after i are dead
+																																first_dead = i;
+																																i = L;
+																								}
+																}
+								}
+								//loop to delete every dead animal§
+								for(size_t i(L-1); i>=first_dead && !animal_list.empty(); --i) {
+																delete animal_list[i];
+																animal_list.pop_back();
+								}
+
+
+}
+

@@ -17,6 +17,7 @@ Ecosystem(Grid*, Zone const&, Zone const&,unsigned int, unsigned int);
 void move();
 void animal_reproduce();
 void food_reproduce();
+void die(); //kills all dead animals
 
 std::ostream& write_animalX(std::ostream&) const;
 std::ostream& write_animalY(std::ostream&) const;
@@ -35,3 +36,4 @@ void iteration(std::ostream&, std::ostream&, std::ostream&, std::ostream&);
 };
 
 #endif //ECOSYSTEM_H
+

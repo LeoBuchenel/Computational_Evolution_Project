@@ -20,6 +20,9 @@ std::vector<Animal*> reproduce();
 std::vector<unsigned int> move(Grid*);
 void changeCell(Cell*);
 
+void evolve();
+~Animal();
+
 unsigned int getX() const;
 unsigned int getY() const;
 

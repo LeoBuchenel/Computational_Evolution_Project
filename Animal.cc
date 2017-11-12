@@ -1,12 +1,14 @@
 #include "Animal.h"
 #include "Grid.h"
 #include <random>
+#include <iostream>
 
 Animal::Animal(Cell* cell_){
         position = cell_;
         genetic_data = GeneticData();
         energy = (std::rand()%100)+1;
         cell_->addAnimal(this);
+
 }
 
 Animal::Animal(Cell* cell_, GeneticData gd, double health){
@@ -14,6 +16,10 @@ Animal::Animal(Cell* cell_, GeneticData gd, double health){
         genetic_data = gd;
         energy = health;
         position->addAnimal(this);
+}
+
+Animal::~Animal(){
+        position->removeAnimal(this); //removes the cell to animal pointer
 }
 
 bool Animal::isAlive() const {
@@ -47,7 +53,10 @@ std::vector<Animal*> Animal::reproduce(){
                 double offspringEnergy
                         = 0.5*energy/Animal::get_nb_offspring();
                 for(std::size_t i(0); i<Animal::get_nb_offspring(); ++i) {
-                        newborns.push_back(new Animal(position, genetic_data, offspringEnergy));
+                        Animal* ptr = new Animal(position, genetic_data, offspringEnergy);
+                        ptr->evolve();
+                        newborns.push_back(ptr);
+
                 }
                 energy = 0.5*energy;
         }
@@ -72,6 +81,7 @@ std::vector<unsigned int> Animal::move(Grid* grid){
                 int depl_y = (rand()%3)-1;
                 X+=depl_x;
                 Y+=depl_y;
+
                 energy-=0.8;
 
                 int X1 = X, Y1 = Y;
@@ -113,4 +123,8 @@ unsigned int Animal::getY() const
 
 Cell* Animal::get_Position() const {
         return position;
+}
+
+void Animal::evolve(){
+        genetic_data.mutate();
 }
