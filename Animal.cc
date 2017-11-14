@@ -101,7 +101,7 @@ std::vector<unsigned int> Animal::move(Grid* grid){
 
 void Animal::eat() {
         //decreasefood retourne la quantité de food que l'animal mange
-        if(position->decreaseFood()!=0) energy+=100.;
+        if(position->decreaseFood()!=0) energy+=50.;
 }
 
 unsigned int Animal::getX() const

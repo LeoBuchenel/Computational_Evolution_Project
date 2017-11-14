@@ -2,8 +2,6 @@
 close all; 
 clear all;
 
-speed = 10;
-
 ft = fittype( 'a*x-b*x*y', ...
     'independent', {'x', 'y'}, 'dependent', 'z',...,
     'coefficients', {'a','b'} );
@@ -12,10 +10,13 @@ data = load('plant_test.out');
 N = sqrt(size(data,2)); % N = L-1
 tfin = size(data,1);
 
+speed= 50/tfin;
+
 sys_param = load('system_param_test.out');
 animal_param_begin = load('animal_param_begin_test.out');
 animal_param_end = load('animal_param_end_test.out');
 t = [0:tfin-1];
+
 
 N1 = sys_param(:,1);
 N1fit = N1(1:end-1);
@@ -47,8 +48,6 @@ for i = 1 : tfin-1
    N2LV(i+1) = N2dotFit(i)+N2LV(i); 
 end
 
-
-
 %% Derivatives plot
 
 figure
@@ -62,8 +61,7 @@ xlabel('$t$');
 ylabel('$\dot{N_i}(t)$');
 legend({'Animals (simulation)',  'Plants (simulation)','Animals (LV fit)', 'Plants (LV fit)'}, 'location', 'best');
 
-
- %% Animal/plant plot
+%% Animal/plant plot
 figure
 plot(t,N1, 'b');
 hold on;
@@ -73,7 +71,6 @@ plot(t,N2, 'r');
 xlabel('$t$');
 ylabel('Number of specimens');
 legend({'Animals', 'Plants'},'location', 'best');
-
 
 %% Genetic Data evolution
 figure
@@ -102,8 +99,14 @@ xlabel('$t$');
 ylabel('Mean Offsprings');
 xlim([0 tfin-1]);
 
+figure
+plot(sys_param(:,7));
+xlabel('$t$');
+ylabel('Mean Reproduction Threshold');
+xlim([0 tfin-1]);
 
 %% Histogram plot
+
 figure
 histogram(animal_param_begin(:,1), size(animal_param_begin(:,1),1));
 xlabel('force (beginning)');
@@ -145,8 +148,6 @@ histogram(animal_param_end(:,4), size(animal_param_end(:,4),1));
 xlabel('Reproduction threshold (end)');
 ylabel('Number of animals');
 
-
-
 %% Density plotting
 for i = 1 : tfin
     Density(:,:, i) = transpose(reshape(data(i,:), [N,N]));
@@ -165,7 +166,7 @@ set(gca,'YDir', 'Normal');
 ht = title('t=0 s');
 
 hold on;
-h2 = plot(x,y, 'x');
+h2 = plot(x,y, '.', 'markersize', 17);
 
 c = colorbar;
 c.Label.Interpreter = 'latex';
@@ -182,7 +183,7 @@ ylabel('$y$');
 
 for i = 2 : tfin   
 
-pause(1/speed)
+pause(speed)
     if ~ishandle(h1)
         break % Arrete l'animation si la fenetre est fermee
     end
@@ -201,4 +202,3 @@ pause(1/speed)
     set(h2, 'YData', y);
     
 end
-

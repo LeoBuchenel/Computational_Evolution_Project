@@ -69,8 +69,6 @@ std::ostream& Ecosystem::write_animalX(std::ostream& os) const
 								for(auto const& org : animal_list) {
 																if(org->isAlive()) {
 																								os << org->getX();
-																} else {
-																								os << "NaN";
 																}
 																os << " ";
 								}
@@ -81,8 +79,6 @@ std::ostream& Ecosystem::write_animalY(std::ostream& os) const
 								for(auto const& org : animal_list) {
 																if(org->isAlive()) {
 																								os << org->getY();
-																} else {
-																								os << "NaN";
 																}
 																os << " ";
 								}
@@ -130,7 +126,10 @@ std::ostream& Ecosystem::write_Plant(std::ostream& os) const
 
 void Ecosystem::food_reproduce()
 {
-								reproduce(plant_zone, 0.05, grid->getNbFood());
+
+								reproduce(plant_zone, 0.05, grid->getNbFood()); // plants reproduce exponentially
+								//reproduce(plant_zone, 0.05, (grid->size())*(grid->size())); // plants reproduce at constant rate
+
 }
 
 

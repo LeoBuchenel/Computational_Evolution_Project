@@ -1,18 +1,18 @@
 % Parametres physiques :
-L = 40
-plants = 800
-animals = 100
-tfin = 5000
+L = 100
+plants = 1000
+animals = 250
+tfin = 1000
 Animal zone = whole
 Animal zone parameter 1 = 0
 Animal zone parameter 2 = 0
 Animal zone parameter 3 = 20
 Animal zone parameter 4 = 20
 Plant zone = whole
-Plant zone parameter 1 = 40
-Plant zone parameter 2 = 40
-Plant zone parameter 3 = 60
-Plant zone parameter 4 = 60
+Plant zone parameter 1 = 20
+Plant zone parameter 2 = 20
+Plant zone parameter 3 = 40
+Plant zone parameter 4 = 40
 
 output = test
 
