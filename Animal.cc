@@ -9,7 +9,7 @@ Animal::Animal(Cell* cell_){
         energy = (std::rand()%100)+1;
         cell_->addAnimal(this);
 
-        //energy = 50;
+        energy = 50;
 
 }
 

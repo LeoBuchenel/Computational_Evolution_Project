@@ -66,21 +66,24 @@ void Ecosystem::animal_reproduce()
 
 std::ostream& Ecosystem::write_animalX(std::ostream& os) const
 {
+								// to optimize, turn on the grid
 								for(auto const& org : animal_list) {
 																if(org->isAlive()) {
 																								os << org->getX();
+																								os << " ";
 																}
-																os << " ";
+
 								}
 								return os;
 }
 std::ostream& Ecosystem::write_animalY(std::ostream& os) const
 {
+								// to optimize, turn on the grid
 								for(auto const& org : animal_list) {
 																if(org->isAlive()) {
 																								os << org->getY();
+																								os << " ";
 																}
-																os << " ";
 								}
 								return os;
 }

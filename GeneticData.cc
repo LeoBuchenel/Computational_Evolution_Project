@@ -12,12 +12,11 @@ GeneticData::GeneticData(){
         double b = (std::rand() % 100) + 1;
         repr_threshold = b;
 
-        /*
-           force = 50;
-           nb_moves = 3;
-           nb_offspring = 3;
-           repr_threshold = 50;
-         */
+        force = 50;
+        nb_moves = 3;
+        nb_offspring = 3;
+        repr_threshold = 50;
+
 
 }
 
