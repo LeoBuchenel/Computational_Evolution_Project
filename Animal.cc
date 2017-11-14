@@ -9,6 +9,8 @@ Animal::Animal(Cell* cell_){
         energy = (std::rand()%100)+1;
         cell_->addAnimal(this);
 
+        //energy = 50;
+
 }
 
 Animal::Animal(Cell* cell_, GeneticData gd, double health){
@@ -77,7 +79,7 @@ std::vector<unsigned int> Animal::move(Grid* grid){
                 int depl_y = (rand()%3)-1;
                 X+=depl_x;
                 Y+=depl_y;
-                energy-=2.0;
+                energy-=7.0;
 
                 int X1 = X, Y1 = Y;
 
@@ -101,7 +103,9 @@ std::vector<unsigned int> Animal::move(Grid* grid){
 
 void Animal::eat() {
         //decreasefood retourne la quantité de food que l'animal mange
-        if(position->decreaseFood()!=0) energy+=50.;
+        if(position->decreaseFood()!=0) {
+                energy+=70.;
+        }
 }
 
 unsigned int Animal::getX() const

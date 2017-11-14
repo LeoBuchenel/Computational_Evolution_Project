@@ -127,7 +127,7 @@ std::ostream& Ecosystem::write_Plant(std::ostream& os) const
 void Ecosystem::food_reproduce()
 {
 
-								reproduce(plant_zone, 0.05, grid->getNbFood()); // plants reproduce exponentially
+								reproduce(plant_zone, 0.07, grid->getNbFood()); // plants reproduce exponentially
 								//reproduce(plant_zone, 0.05, (grid->size())*(grid->size())); // plants reproduce at constant rate
 
 }

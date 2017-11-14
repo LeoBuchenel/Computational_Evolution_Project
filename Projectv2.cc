@@ -77,6 +77,7 @@ int main(int argc, char *argv[]) {
         for(size_t t(0); t<tfin; ++t) {
                 ecosystem.iteration(write_AnimalX,write_AnimalY, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves,
                                     write_AnimalNbOff, write_AnimalReproThr);
+                cout << "t = " << t << endl;
         }
         ecosystem.write(write_AnimalX, write_AnimalY, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr);
         ecosystem.write_AnimalParam(write_AnimalParamEnd);
