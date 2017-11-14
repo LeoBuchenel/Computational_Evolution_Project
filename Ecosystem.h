@@ -17,23 +17,28 @@ Ecosystem(Grid*, Zone const&, Zone const&,unsigned int, unsigned int);
 void move();
 void animal_reproduce();
 void food_reproduce();
-void die(); //kills all dead animals
 
 std::ostream& write_animalX(std::ostream&) const;
 std::ostream& write_animalY(std::ostream&) const;
+std::ostream& write_animalForce(std::ostream&) const;
+std::ostream& write_animalNbMoves(std::ostream&) const;
+std::ostream& write_animalNbOff(std::ostream&) const;
+std::ostream& write_animalReproThr(std::ostream&) const;
+
 std::ostream& write_systParam(std::ostream&) const;
 std::ostream& write_AnimalParam(std::ostream&) const;
 std::ostream& write_Plant(std::ostream&) const;
 
-void write(std::ostream&, std::ostream&, std::ostream&, std::ostream&);
+void write(std::ostream&, std::ostream&, std::ostream&, std::ostream&,
+			std::ostream&, std::ostream&, std::ostream&, std::ostream&);
 
 
 void animal_eat();
 
 
 
-void iteration(std::ostream&, std::ostream&, std::ostream&, std::ostream&);
+void iteration(std::ostream&, std::ostream&, std::ostream&, std::ostream&,
+				std::ostream&, std::ostream&, std::ostream&, std::ostream&);
 };
 
 #endif //ECOSYSTEM_H
-

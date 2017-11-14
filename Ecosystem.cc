@@ -127,31 +127,38 @@ std::ostream& Ecosystem::write_Plant(std::ostream& os) const
 
 void Ecosystem::food_reproduce()
 {
-							reproduce(plant_zone, 0.2, grid->getNbFood());
+								reproduce(plant_zone, 0.05, grid->getNbFood());
+}
 
 
-
-void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS){
-								this->write(osX, osY, osP, osS); //writes the position of every animal, the plant density per cell and the system parameters
+void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS,
+							std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT){
+								this->write(osX, osY, osP, osS, osF, osNM, osNO, osRT); //writes the position of every animal, the plant density per cell and the system parameters
 								this->move();
-								this->die();
-
 								this->animal_reproduce();
 								grid->sortAnimals();
 								this->animal_eat();
 								this->food_reproduce();
 }
 
-void Ecosystem::write(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS){
-								this->write_animalX(osX);
-								osX << std::endl;
-								this->write_animalY(osY);
-								osY << std::endl;
-
+void Ecosystem::write(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS, std::ostream& osF, 
+						std::ostream& osNM, std::ostream& osNO, std::ostream& osRT){
+								//this->write_animalX(osX);
+								//osX << std::endl;
+								//this->write_animalY(osY);
+								//osY << std::endl;
 								this->write_Plant(osP);
 								osP << std::endl;
 								this->write_systParam(osS);
 								osS << std::endl;
+								this->write_animalForce(osF);
+								osF << std::endl;
+								this->write_animalNbMoves(osNM);
+								osNM << std::endl;
+								this->write_animalNbOff(osNO);
+								osNO << std::endl;
+								this->write_animalReproThr(osRT);
+								osRT << std::endl;
 }
 
 
@@ -163,33 +170,54 @@ void Ecosystem::animal_eat(){
 								}
 }
 
-void Ecosystem::die(){
-								size_t L = animal_list.size();
-								size_t first_dead = L;
-								for(size_t i(0); i < L; ++i) {
-																if(!(animal_list[i]->isAlive())) {
-																								Animal* nextAlive = animal_list[i];
-																								for(size_t j(i+1); j < L; ++j) {
-																																if(animal_list[j]->isAlive()) {
-																																								nextAlive = animal_list[j];
-																																								animal_list[j] = animal_list[i];
-																																								animal_list[i] = nextAlive;
-																																								j = L;
-																																}
-																								}
-																								//next Alive animal is found
-																								if(nextAlive==animal_list[i]) { // All animals after i are dead
-																																first_dead = i;
-																																i = L;
-																								}
-																}
-								}
-								//loop to delete every dead animal§
-								for(size_t i(L-1); i>=first_dead && !animal_list.empty(); --i) {
-																delete animal_list[i];
-																animal_list.pop_back();
-								}
 
 
+std::ostream& Ecosystem::write_animalForce(std::ostream& os) const
+{
+	for(auto const& org : animal_list) {
+		if(org->isAlive()) {
+			os << org->get_force();
+			os << " ";
+		}
+	}
+	return os;
 }
 
+
+
+std::ostream& Ecosystem::write_animalNbMoves(std::ostream& os) const
+{
+	for(auto const& org : animal_list) {
+		if(org->isAlive()) {
+			os << org->get_nb_moves();
+			os << " ";
+		}
+	}
+	return os;
+}
+
+
+
+
+std::ostream& Ecosystem::write_animalNbOff(std::ostream& os) const
+{
+	for(auto const& org : animal_list) {
+		if(org->isAlive()) {
+			os << org->get_nb_offspring();
+			os << " ";
+		}
+	}
+	return os;
+}
+
+
+std::ostream& Ecosystem::write_animalReproThr(std::ostream& os) const
+{
+	for(auto const& org : animal_list) {
+		if(org->isAlive()) {
+			os << org->get_rep_threshold();
+			os << " ";
+		}
+	}
+	return os;
+}
