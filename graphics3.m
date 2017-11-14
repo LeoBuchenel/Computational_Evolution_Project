@@ -1,7 +1,8 @@
+%% Data Loading
 close all; 
 clear all;
 
-%% Data Loading
+speed = 10;
 
 ft = fittype( 'a*x-b*x*y', ...
     'independent', {'x', 'y'}, 'dependent', 'z',...,
@@ -152,10 +153,19 @@ for i = 1 : tfin
 end
 
 figure
-for i = 1 : tfin
-    
-h=imagesc(Density(:,:,i));
+animalX = fopen('animal_x_test.out');
+animalY = fopen('animal_y_test.out');
+
+x = str2num(fgetl(animalX));
+y = str2num(fgetl(animalY));
+
+
+h1=imagesc(Density(:,:,1));
 set(gca,'YDir', 'Normal');
+ht = title('t=0 s');
+
+hold on;
+h2 = plot(x,y, 'x');
 
 c = colorbar;
 c.Label.Interpreter = 'latex';
@@ -169,10 +179,26 @@ ax.GridAlpha = 0.5;
 
 xlabel('$x$');
 ylabel('$y$');
-title(sprintf('$t$=%0.2f s',t(i)));
-pause(.1)
-    if ~ishandle(h)
+
+for i = 2 : tfin   
+
+pause(1/speed)
+    if ~ishandle(h1)
         break % Arrete l'animation si la fenetre est fermee
     end
+    
+    if ~ishandle(h2)
+        break % Arrete l'animation si la fenetre est fermee
+    end
+    
+    x = str2num(fgetl(animalX));
+    y = str2num(fgetl(animalY));
+    
+    set(h1,'CData',Density(:,:,i));
+    set(ht,'String',sprintf('t=%0.2f s',i));
+    
+    set(h2, 'XData', x);
+    set(h2, 'YData', y);
+    
 end
 

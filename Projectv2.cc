@@ -60,20 +60,25 @@ int main(int argc, char *argv[]) {
 
         Ecosystem ecosystem(&grid, animalZone, plantZone, nb_animals, nb_plants);
 
-        ofstream write_AnimalX, write_AnimalY, write_Plant, write_SystemParam, write_AnimalParamBegin, write_AnimalParamEnd;
+        ofstream write_AnimalX, write_AnimalY, write_Plant, write_SystemParam, write_AnimalParamBegin, write_AnimalParamEnd, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr;
         write_AnimalX.open("animal_x_"+extension+".out");
         write_AnimalY.open("animal_y_"+extension+".out");
         write_Plant.open("plant_"+extension+".out");
         write_SystemParam.open("system_param_"+extension+".out");
         write_AnimalParamBegin.open("animal_param_begin_"+extension+".out");
         write_AnimalParamEnd.open("animal_param_end_"+extension+".out");
+        write_AnimalForce.open("animal_force_"+extension+".out");
+        write_AnimalNbMoves.open("animal_nb_moves_"+extension+".out");
+        write_AnimalNbOff.open("animal_nb_offspring_"+extension+".out");
+        write_AnimalReproThr.open("animal_repro_threshold_"+extension+".out");
 
         ecosystem.write_AnimalParam(write_AnimalParamBegin);
 
         for(size_t t(0); t<tfin; ++t) {
-                ecosystem.iteration(write_AnimalX,write_AnimalY, write_Plant, write_SystemParam);
+                ecosystem.iteration(write_AnimalX,write_AnimalY, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves,
+                                    write_AnimalNbOff, write_AnimalReproThr);
         }
-        ecosystem.write(write_AnimalX, write_AnimalY, write_Plant, write_SystemParam);
+        ecosystem.write(write_AnimalX, write_AnimalY, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr);
         ecosystem.write_AnimalParam(write_AnimalParamEnd);
 
         write_AnimalX.close();
@@ -82,6 +87,10 @@ int main(int argc, char *argv[]) {
         write_SystemParam.close();
         write_AnimalParamBegin.close();
         write_AnimalParamEnd.close();
+        write_AnimalForce.close();
+        write_AnimalNbMoves.close();
+        write_AnimalNbOff.close();
+        write_AnimalReproThr.close();
 
 
 

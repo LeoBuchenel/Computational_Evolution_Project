@@ -12,7 +12,6 @@ GeneticData::GeneticData(){
         double b = (std::rand() % 100) + 1;
         repr_threshold = b;
 
-
 }
 
 void GeneticData::mutate(){
