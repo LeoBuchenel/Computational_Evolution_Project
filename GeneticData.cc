@@ -25,19 +25,19 @@ void GeneticData::mutate(){
                 switch (characteristic) {
                 case 1: if(force>1) {
                                 force+=change;
-                                std::cout << "force mutated" << std::endl;
+                                //std::cout << "force mutated" << std::endl;
                 } break;
                 case 2: if(nb_moves>1) {
                                 nb_moves+=change;
-                                std::cout << "Number of moves mutated" << std::endl;
+                                //std::cout << "Number of moves mutated" << std::endl;
                 } break;
                 case 3: if(nb_offspring>1) {
                                 nb_offspring+=change;
-                                std::cout << "Number of offsprings mutated" << std::endl;
+                                //std::cout << "Number of offsprings mutated" << std::endl;
                 } break;
                 case 4: if(repr_threshold>1) {
                                 repr_threshold+=change;
-                                std::cout << "Reproduction threshold mutated" << std::endl;
+                                //std::cout << "Reproduction threshold mutated" << std::endl;
                 } break;
 
                 default: break;
