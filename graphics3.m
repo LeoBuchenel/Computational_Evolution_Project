@@ -73,45 +73,73 @@ ylabel('Number of specimens');
 legend({'Animals', 'Plants'},'location', 'best');
 
 
+%% Genetic Data evolution
+figure
+plot(sys_param(:,3));
+xlabel('$t$');
+ylabel('Mean force');
+xlim([0 tfin-1]);
+
+figure
+plot(sys_param(:,4));
+xlabel('$t$');
+ylabel('Mean energy');
+xlim([0 tfin-1]);
+
+
+figure
+plot(sys_param(:,5));
+xlabel('$t$');
+ylabel('Mean Moves');
+xlim([0 tfin-1]);
+
+
+figure
+plot(sys_param(:,6));
+xlabel('$t$');
+ylabel('Mean Offsprings');
+xlim([0 tfin-1]);
+
+
 %% Histogram plot
 figure
-histogram(animal_param_begin(:,1));
+histogram(animal_param_begin(:,1), size(animal_param_begin(:,1),1));
 xlabel('force (beginning)');
 ylabel('Number of animals');
 
 figure
-histogram(animal_param_begin(:,2));
+histogram(animal_param_begin(:,2), size(animal_param_begin(:,2),1));
 xlabel('Number of moves (beginning)');
 ylabel('Number of animals');
 
 figure
 
-histogram(animal_param_begin(:,3));
+histogram(animal_param_begin(:,3), size(animal_param_begin(:,3),1));
 xlabel('Number of offsprings (beginning)');
 ylabel('Number of animals');
 
 figure
-histogram(animal_param_begin(:,4));
+histogram(animal_param_begin(:,4), size(animal_param_begin(:,4),1));
 xlabel('Reproduction threshold (beginning)');
 ylabel('Number of animals');
 
 figure
 
-histogram(animal_param_end(:,1));
+histogram(animal_param_end(:,1), size(animal_param_end(:,1),1));
 xlabel('Force (end)');
 ylabel('Number of animals');
 
-histogram(animal_param_end(:,2));
+histogram(animal_param_end(:,2), size(animal_param_end(:,2),1));
 xlabel('Number of moves (end)');
 ylabel('Number of animals');
 
 
 figure
-histogram(animal_param_end(:,3));
+histogram(animal_param_end(:,3), size(animal_param_end(:,3),1));
 xlabel('Number of offsprings (end)');
 ylabel('Number of animals');
 
-histogram(animal_param_end(:,4));
+histogram(animal_param_end(:,4), size(animal_param_end(:,4),1));
 xlabel('Reproduction threshold (end)');
 ylabel('Number of animals');
 

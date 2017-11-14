@@ -18,10 +18,6 @@ Animal::Animal(Cell* cell_, GeneticData gd, double health){
         position->addAnimal(this);
 }
 
-Animal::~Animal(){
-        position->removeAnimal(this); //removes the cell to animal pointer
-}
-
 bool Animal::isAlive() const {
         return (energy>0.0);
 }
@@ -81,15 +77,12 @@ std::vector<unsigned int> Animal::move(Grid* grid){
                 int depl_y = (rand()%3)-1;
                 X+=depl_x;
                 Y+=depl_y;
-
                 energy-=0.8;
 
                 int X1 = X, Y1 = Y;
 
-                if(X1 >= Taille) X1 -= Taille;
-                if(X1 < 0) X1+=Taille;
-                if(Y1 >=Taille) Y1 -=Taille;
-                if(Y1 <0) Y1+=Taille;
+                if(X1 >= Taille or X1 < 0) X1 = X1 % Taille;
+                if(Y1 >=Taille or Y1 < 0) Y1 = Y1 % Taille;
 
                 X2 = abs(X1);
                 Y2 = abs(Y1);

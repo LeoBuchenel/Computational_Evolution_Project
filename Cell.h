@@ -26,7 +26,7 @@ unsigned int getX() const {
 unsigned int getY() const {
 								return y;
 }
-unsigned int getNbFood() const {
+unsigned long long int getNbFood() const {
 								return nb_food;
 }
 
@@ -43,4 +43,3 @@ bool exist_food;
 };
 
 #endif //CELL_H
-

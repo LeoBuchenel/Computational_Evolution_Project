@@ -149,4 +149,3 @@ void reproduce(const Zone& zone, double alpha, unsigned int food){
 																zone[pick]->addFood(1);
 								}
 }
-
