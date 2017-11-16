@@ -10,8 +10,6 @@ data = load('plant_test.out');
 N = sqrt(size(data,2)); % N = L-1
 tfin = size(data,1);
 
-speed= 50/tfin;
-
 sys_param = load('system_param_test.out');
 animal_param_begin = load('animal_param_begin_test.out');
 animal_param_end = load('animal_param_end_test.out');
@@ -67,6 +65,9 @@ ylabel('Mean Reproduction Threshold');
 xlim([0 tfin-1]);
 
 %% Density plotting
+
+speed= 10/tfin;
+
 for i = 1 : tfin
     Density(:,:, i) = reshape(data(i,:), [N,N]);
 end
