@@ -107,3 +107,10 @@ void Cell::set_exist_food(bool new_value){
 bool Cell::exist_food_on_cell() const {
 								return (nb_food!=0);
 }
+
+bool Cell::exist_animal_on_cell() const {
+								for(auto const & org : animal_list) {
+																if(org->isAlive()) return true;
+								}
+								return false;
+}

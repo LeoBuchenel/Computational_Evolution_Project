@@ -20,6 +20,9 @@ void food_reproduce();
 
 std::ostream& write_animalX(std::ostream&) const;
 std::ostream& write_animalY(std::ostream&) const;
+
+void write_animal(std::ostream&, std::ostream&) const;
+
 std::ostream& write_systParam(std::ostream&) const;
 std::ostream& write_AnimalParam(std::ostream&) const;
 std::ostream& write_Plant(std::ostream&) const;

@@ -32,6 +32,8 @@ unsigned long long int getNbFood() const {
 
 void set_exist_food(bool);
 
+bool exist_animal_on_cell() const;
+
 private:
 unsigned int x;
 unsigned int y;

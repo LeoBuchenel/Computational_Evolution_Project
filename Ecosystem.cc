@@ -88,6 +88,19 @@ std::ostream& Ecosystem::write_animalY(std::ostream& os) const
 								return os;
 }
 
+void Ecosystem::write_animal(std::ostream& osX, std::ostream& osY) const
+{
+								size_t L = grid->size();
+								for(size_t i(0); i<L; ++i) {
+																for(size_t j(0); j<L; ++j) {
+																								if(grid->getCell(i,j)->exist_animal_on_cell()) {
+																																osX << i << " ";
+																																osY << j << " ";
+																								}
+																}
+								}
+}
+
 
 std::ostream &Ecosystem::write_systParam(std::ostream &os) const
 {
@@ -146,9 +159,12 @@ void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& os
 }
 
 void Ecosystem::write(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT){
-								this->write_animalX(osX);
+								//this->write_animalX(osX);
+								//osX << std::endl;
+								//this->write_animalY(osY);
+								//osY << std::endl;
+								this->write_animal(osX, osY);
 								osX << std::endl;
-								this->write_animalY(osY);
 								osY << std::endl;
 								this->write_Plant(osP);
 								osP << std::endl;
