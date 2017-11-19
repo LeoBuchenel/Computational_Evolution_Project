@@ -229,3 +229,57 @@ std::ostream& Ecosystem::write_animalReproThr(std::ostream& os) const
 	return os;
 }
 
+
+}
+
+
+void Ecosystem::die() 
+{
+	if(!animal_list.empty()){
+		bool stop(false);
+		size_t first_dead(animal_list.size());
+		
+		for(size_t i(0); !stop && i < animal_list.size(); ++i){
+			if(!(animal_list[i] -> isAlive())){
+				unsigned int first_alive(i);
+				size_t j(i+1);
+				while(first_alive == i && j < animal_list.size()){
+					 if(animal_list[j] -> isAlive()){
+						 first_alive = j;
+					 }
+					 ++j;
+				 }
+				 
+				 Animal* tmp(animal_list[first_alive]);
+				 animal_list[first_alive] = animal_list[i];
+				 animal_list[i] = tmp;
+				 
+				 if(first_alive == i){
+					 stop = true;
+					 first_dead = i;
+				 }
+			 }
+		 } 
+		 
+		 for(auto const& org:animal_list){
+			 std::cout << org->isAlive();
+		 }
+		 std::cout << std::endl << first_dead << std::endl;
+		
+		 
+		 size_t nbDead(animal_list.size() - first_dead);
+		 
+		 for(size_t i(0); i < nbDead; ++i){
+			 delete animal_list[animal_list.size() -1];
+			 animal_list[i] = nullptr;
+			 animal_list.pop_back();
+		 }
+		 
+		  for(auto const& org:animal_list){
+			 std::cout << org->isAlive();
+		 }
+		 std::cout << std::endl;
+	}
+	 
+}
+

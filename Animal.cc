@@ -18,6 +18,20 @@ Animal::Animal(Cell* cell_, GeneticData gd, double health){
         position->addAnimal(this);
 }
 
+
+Animal::~Animal() 
+{
+	position->removeAnimal(this);
+	std::cout << "An animal ";
+	if(this->isAlive()){
+		std::cout << "alive";
+	} else {
+		std::cout << "dead";
+	}
+	std::cout << " is removed from the grid." << std::endl;
+}
+
+
 bool Animal::isAlive() const {
         return (energy>0.0);
 }
