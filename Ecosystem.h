@@ -15,8 +15,10 @@ public:
 Ecosystem(Grid*, Zone const&, Zone const&,unsigned int, unsigned int);
 ~Ecosystem();
 void move();
-void animal_reproduce();
+void animal_reproduce(bool);
 void food_reproduce();
+bool died_out() const;
+void die();
 
 std::ostream& write_animalX(std::ostream&) const;
 std::ostream& write_animalY(std::ostream&) const;
@@ -38,7 +40,7 @@ void animal_eat();
 
 
 
-void iteration(std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&);
+void iteration(std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, bool, bool);
 };
 
 #endif //ECOSYSTEM_H

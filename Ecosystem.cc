@@ -49,12 +49,12 @@ void Ecosystem::move()
 								}
 }
 
-void Ecosystem::animal_reproduce()
+void Ecosystem::animal_reproduce(bool Evolution)
 {
 								std::size_t n(animal_list.size()); //loop over the existing animals
 								for(std::size_t i(0); i<n; ++i) {
 																if(animal_list[i]->isAlive()) {
-																								std::vector<Animal*> newborns(animal_list[i]->reproduce());
+																								std::vector<Animal*> newborns(animal_list[i]->reproduce(Evolution));
 																								for(auto const& newborn:newborns) {
 																																animal_list.push_back(newborn);
 																								}
@@ -149,10 +149,13 @@ void Ecosystem::food_reproduce()
 }
 
 
-void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT){
-								this->write(osX, osY, osP, osS, osF, osNM, osNO, osRT); //writes the position of every animal, the plant density per cell and the system parameters
+void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT, bool DataWrite, bool Evolution){
+								if(DataWrite) {
+																this->write(osX, osY, osP, osS, osF, osNM, osNO, osRT);
+								}                                                          //writes the position of every animal, the plant density per cell and the system parameters
 								this->move();
-								this->animal_reproduce();
+								this->die();
+								this->animal_reproduce(Evolution);
 								grid->sortAnimals();
 								this->animal_eat();
 								this->food_reproduce();
@@ -241,4 +244,49 @@ std::ostream& Ecosystem::write_animalReproThr(std::ostream& os) const
 																}
 								}
 								return os;
+}
+
+void Ecosystem::die()
+{
+								if(!animal_list.empty()) {
+																bool stop(false);
+																size_t first_dead(animal_list.size());
+
+																for(size_t i(0); !stop && i < animal_list.size(); ++i) {
+																								if(!(animal_list[i]->isAlive())) {
+																																unsigned int first_alive(i);
+																																size_t j(i+1);
+																																while(first_alive == i && j < animal_list.size()) {
+																																								if(animal_list[j]->isAlive()) {
+																																																first_alive = j;
+																																								}
+																																								++j;
+																																}
+
+																																Animal* tmp(animal_list[first_alive]);
+																																animal_list[first_alive] = animal_list[i];
+																																animal_list[i] = tmp;
+
+																																if(first_alive == i) {
+																																								stop = true;
+																																								first_dead = i;
+																																}
+																								}
+																}
+
+
+																size_t nbDead(animal_list.size() - first_dead);
+
+																for(size_t i(0); i < nbDead; ++i) {
+																								delete animal_list[animal_list.size() -1];
+																								animal_list[animal_list.size()-1] = nullptr;
+																								animal_list.pop_back();
+																}
+
+								}
+
+}
+
+bool Ecosystem::died_out() const {
+								return (animal_list.empty())or (grid->getNbFood()==0);
 }

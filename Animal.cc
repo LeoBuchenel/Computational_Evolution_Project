@@ -43,14 +43,16 @@ double Animal::get_energy() const {
         return energy;
 }
 
-std::vector<Animal*> Animal::reproduce(){
+std::vector<Animal*> Animal::reproduce(bool Evolution){
         std::vector<Animal*> newborns;
         if(energy>Animal::get_rep_threshold()) {
                 double offspringEnergy
                         = 0.5*energy/Animal::get_nb_offspring();
                 for(std::size_t i(0); i<Animal::get_nb_offspring(); ++i) {
                         Animal* ptr = new Animal(position, genetic_data, offspringEnergy);
-                        ptr->evolve();
+                        if(Evolution) {
+                                ptr->evolve();
+                        }
                         newborns.push_back(ptr);
 
                 }
@@ -122,4 +124,10 @@ Cell* Animal::get_Position() const {
 
 void Animal::evolve(){
         genetic_data.mutate();
+}
+
+Animal::~Animal()
+{
+        position->removeAnimal(this);
+
 }

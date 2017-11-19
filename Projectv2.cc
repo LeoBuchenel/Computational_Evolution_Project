@@ -47,6 +47,9 @@ int main(int argc, char *argv[]) {
         unsigned int PlantParam3 = configFile.get<unsigned int>("Plant zone parameter 3");
         unsigned int PlantParam4 = configFile.get<unsigned int>("Plant zone parameter 4");
 
+        bool DataWrite = configFile.get<bool>("write data");
+        bool Evolution = configFile.get<bool>("evolution");
+
         string extension = configFile.get<string>("output");
 
         srand(time(NULL) +clock()); // seeds the random number generator
@@ -76,8 +79,11 @@ int main(int argc, char *argv[]) {
 
         for(size_t t(0); t<tfin; ++t) {
                 ecosystem.iteration(write_AnimalX,write_AnimalY, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves,
-                                    write_AnimalNbOff, write_AnimalReproThr);
-                cout << "t = " << t << endl;
+                                    write_AnimalNbOff, write_AnimalReproThr, DataWrite, Evolution);
+                if(ecosystem.died_out()) {
+                        std::cout << "Ecosystem died out" << std::endl;
+                        return 1;
+                }
         }
         ecosystem.write(write_AnimalX, write_AnimalY, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr);
         ecosystem.write_AnimalParam(write_AnimalParamEnd);

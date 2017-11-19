@@ -15,7 +15,8 @@ public:
 Animal(Cell*);                        // initializes animal with random genetic data
 Animal(Cell*, GeneticData, double);   // constructor with position, genetic_data and energy
 void eat();
-std::vector<Animal*> reproduce();
+std::vector<Animal*> reproduce(bool);
+~Animal();
 //void update_energy();
 std::vector<unsigned int> move(Grid*);
 void changeCell(Cell*);
