@@ -20,9 +20,6 @@ GeneticData::GeneticData(){
             repr_threshold = 50.;
          */
 
-
-
-
 }
 
 void GeneticData::mutate(){

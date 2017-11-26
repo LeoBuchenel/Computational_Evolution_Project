@@ -109,11 +109,13 @@ std::ostream &Ecosystem::write_systParam(std::ostream &os) const
 								for (auto const org : animal_list) {
 																if (org->isAlive()) {
 																								Animals++;
-																								meanEnergy+= (org->get_energy()*1.);
-																								meanForce += (org->get_force()*1.);
-																								meanNumberofMoves+=(org->get_nb_moves()*1.);
-																								meanOffsprings+=(org->get_nb_offspring()*1.);
-																								meanReprThreshold+=(org->get_rep_threshold()*1.);
+																								meanEnergy+= (org->get_energy()*1.0);
+																								meanForce += (org->get_force()*1.0);
+																								meanNumberofMoves+=(org->get_nb_moves()*1.0);
+																								meanOffsprings+=(org->get_nb_offspring()*1.0);
+																								meanReprThreshold+=(org->get_rep_threshold()*1.0);
+																}else{
+																								std::cout << "There is a dead organism in the animals list" << std::endl;
 																}
 								}
 

@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
                 ecosystem.iteration(write_AnimalX,write_AnimalY, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves,
                                     write_AnimalNbOff, write_AnimalReproThr, DataWrite, Evolution, food_reproduce);
                 if(ecosystem.died_out()) {
-                        std::cout << "Ecosystem died out" << std::endl;
+                        std::cout << "Ecosystem died out at t = " << t+1 << std::endl;
                         return 1;
                 }
         }
