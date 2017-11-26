@@ -49,6 +49,7 @@ int main(int argc, char *argv[]) {
 
         bool DataWrite = configFile.get<bool>("write data");
         bool Evolution = configFile.get<bool>("evolution");
+        string food_reproduce = configFile.get<string>("feeding");
 
         string extension = configFile.get<string>("output");
 
@@ -79,7 +80,7 @@ int main(int argc, char *argv[]) {
 
         for(size_t t(0); t<tfin; ++t) {
                 ecosystem.iteration(write_AnimalX,write_AnimalY, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves,
-                                    write_AnimalNbOff, write_AnimalReproThr, DataWrite, Evolution);
+                                    write_AnimalNbOff, write_AnimalReproThr, DataWrite, Evolution, food_reproduce);
                 if(ecosystem.died_out()) {
                         std::cout << "Ecosystem died out" << std::endl;
                         return 1;

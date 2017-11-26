@@ -194,9 +194,9 @@ end
 %% Derivatives plot
 
 figure
-plot(N1dot,'b.', 'MarkerSize', 17);
+plot(N1dot,'b.', 'MarkerSize', 9);
 hold on;
-plot(N2dot,'r.', 'MarkerSize', 17);
+plot(N2dot,'r.', 'MarkerSize', 9);
 plot(t(1:end-1),N1dotFit);
 plot(t(1:end-1), N2dotFit);
 xlim([0, tfin-1]);

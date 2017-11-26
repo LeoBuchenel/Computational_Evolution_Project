@@ -109,11 +109,11 @@ std::ostream &Ecosystem::write_systParam(std::ostream &os) const
 								for (auto const org : animal_list) {
 																if (org->isAlive()) {
 																								Animals++;
-																								meanEnergy+= org->get_energy();
-																								meanForce += org->get_force();
-																								meanNumberofMoves+=org->get_nb_moves();
-																								meanOffsprings+=org->get_nb_offspring();
-																								meanReprThreshold+=org->get_rep_threshold();
+																								meanEnergy+= (org->get_energy()*1.);
+																								meanForce += (org->get_force()*1.);
+																								meanNumberofMoves+=(org->get_nb_moves()*1.);
+																								meanOffsprings+=(org->get_nb_offspring()*1.);
+																								meanReprThreshold+=(org->get_rep_threshold()*1.);
 																}
 								}
 
@@ -140,16 +140,24 @@ std::ostream& Ecosystem::write_Plant(std::ostream& os) const
 }
 
 
-void Ecosystem::food_reproduce()
+void Ecosystem::food_reproduce(std::string feeding)
 {
+								if(feeding == "exponential") {
+																reproduce(plant_zone, 0.07, grid->getNbFood());// plants reproduce exponentially
+								}else{
+																if(feeding == "constant") {
+																								reproduce(plant_zone, 0.01, (grid->size())*(grid->size()));
+																}else{
+																								std::cout << feeding << std::endl;
+																								std::cout << "Please type valid feeding"<<std::endl;
+																}
+								}
 
-								reproduce(plant_zone, 0.07, grid->getNbFood()); // plants reproduce exponentially
-								//reproduce(plant_zone, 0.05, (grid->size())*(grid->size())); // plants reproduce at constant rate
 
 }
 
 
-void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT, bool DataWrite, bool Evolution){
+void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT, bool DataWrite, bool Evolution, std::string feeding){
 								if(DataWrite) {
 																this->write(osX, osY, osP, osS, osF, osNM, osNO, osRT);
 								}                                                          //writes the position of every animal, the plant density per cell and the system parameters
@@ -158,7 +166,7 @@ void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& os
 								this->animal_reproduce(Evolution);
 								grid->sortAnimals();
 								this->animal_eat();
-								this->food_reproduce();
+								this->food_reproduce(feeding);
 }
 
 void Ecosystem::write(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT){
