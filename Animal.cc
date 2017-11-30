@@ -6,8 +6,8 @@
 Animal::Animal(Cell* cell_){
         position = cell_;
         genetic_data = GeneticData();
-        energy = (std::rand()%100)+1;
-        //energy = 50.;
+        //energy = (std::rand()%100)+1;
+        energy = 100.;
         cell_->addAnimal(this);
 
 }
