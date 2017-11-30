@@ -54,9 +54,11 @@ function GUI_OpeningFcn(hObject, eventdata, handles, varargin)
 
 axes(handles.axes1);
 title('Grid');
-colorbar;
+c = colorbar;
 set(gca,'xtick',[]);
 set(gca,'ytick',[]);
+set(c,'YTick',[]);
+
 
 
 
