@@ -2,7 +2,7 @@
 L = 100
 plants = 2000
 animals = 1000
-tfin = 200
+tfin = 100
 write data = true
 evolution = true
 feeding = constant

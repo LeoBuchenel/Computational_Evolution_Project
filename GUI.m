@@ -211,6 +211,7 @@ animals = data(:,1);
 plants = data(:,2);
 
 axes(handles.axes2);
+cla reset;
 tfin = size(animals,1);
 
 t = [0:tfin-1];
@@ -232,9 +233,10 @@ title('Population');
 
 for i = 2 : width
     pause(0.1);
+    
     set(h1, 'xData', t(1:i));
     set(h1, 'yData', animals(1:i));
-    xlim([1 width+5]);
+    
     set(h2, 'xData', t(1:i));
     set(h2, 'yData', plants(1:i));
     
@@ -243,15 +245,19 @@ for i = 2 : width
     
     set(h4, 'xData', t(i:i));
     set(h4, 'yData', plants(i:i));
+       
+    xlim([1 width+5]);
+
 
 end
 
 
 for  i = 2 : tfin-width
     pause(0.1);
+    
     set(h1, 'xData', t(i:i+width));
     set(h1, 'yData', animals(i:i+width));
-    xlim([t(i) t(i+width)+5]);
+
     set(h2, 'xData', t(i:i+width));
     set(h2, 'yData', plants(i:i+width));
     
@@ -260,6 +266,9 @@ for  i = 2 : tfin-width
     
     set(h4, 'xData', t(i+width:i+width));
     set(h4, 'yData', plants(i+width:i+width));
+    
+    xlim([t(i) t(i+width)+5]);
+
 end
 
 
