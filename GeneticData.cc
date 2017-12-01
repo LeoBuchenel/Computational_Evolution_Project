@@ -2,7 +2,7 @@
 #include <iostream>
 
 GeneticData::GeneticData(){
-
+/*
         double x = (std::rand() % 100) + 1;
         force = x;
         unsigned int a = (std::rand() % 5) + 1;
@@ -11,6 +11,12 @@ GeneticData::GeneticData(){
         nb_offspring = y;
         double b = (std::rand() % 100) + 1;
         repr_threshold = b;
+
+ */
+        force =  50.;
+        nb_moves = 2;
+        nb_offspring = 2;
+        repr_threshold = 50.;
 
 }
 

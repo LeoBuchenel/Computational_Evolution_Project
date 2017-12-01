@@ -1,6 +1,7 @@
 #ifndef ECOSYSTEM_H
 #define ECOSYSTEM_H
 #include <iostream>
+#include <string>
 #include "Grid.h"
 #include "Animal.h"
 
@@ -16,7 +17,7 @@ Ecosystem(Grid*, Zone const&, Zone const&,unsigned int, unsigned int);
 ~Ecosystem();
 void move();
 void animal_reproduce(bool);
-void food_reproduce();
+void food_reproduce(std::string);
 bool died_out() const;
 void die();
 
@@ -40,7 +41,7 @@ void animal_eat();
 
 
 
-void iteration(std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, bool, bool);
+void iteration(std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, bool, bool, std::string);
 };
 
 #endif //ECOSYSTEM_H

@@ -1,10 +1,17 @@
 % Parametres physiques :
 L = 100
 plants = 2000
+<<<<<<< HEAD
 animals = 1100
 tfin = 10000
 write data = false
+=======
+animals = 1000
+tfin = 100
+write data = true
+>>>>>>> 5b59cb018ee65d40f6adb2aa30a3f7f56c0a2519
 evolution = true
+feeding = constant
 Animal zone = whole
 Animal zone parameter 1 = 0
 Animal zone parameter 2 = 0

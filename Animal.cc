@@ -6,7 +6,8 @@
 Animal::Animal(Cell* cell_){
         position = cell_;
         genetic_data = GeneticData();
-        energy = (std::rand()%100)+1;
+        //energy = (std::rand()%100)+1;
+        energy = 100.;
         cell_->addAnimal(this);
 
 }
@@ -47,7 +48,7 @@ std::vector<Animal*> Animal::reproduce(bool Evolution){
         std::vector<Animal*> newborns;
         if(energy>Animal::get_rep_threshold()) {
                 double offspringEnergy
-                        = 0.5*energy/Animal::get_nb_offspring();
+                        = 0.5*energy/(Animal::get_nb_offspring()*1.0);
                 for(std::size_t i(0); i<Animal::get_nb_offspring(); ++i) {
                         Animal* ptr = new Animal(position, genetic_data, offspringEnergy);
                         if(Evolution) {

@@ -49,6 +49,7 @@ int main(int argc, char *argv[]) {
 
         bool DataWrite = configFile.get<bool>("write data");
         bool Evolution = configFile.get<bool>("evolution");
+        string food_reproduce = configFile.get<string>("feeding");
 
         string extension = configFile.get<string>("output");
 
@@ -63,7 +64,7 @@ int main(int argc, char *argv[]) {
 
         Ecosystem ecosystem(&grid, animalZone, plantZone, nb_animals, nb_plants);
 
-        ofstream write_AnimalX, write_AnimalY, write_Plant, write_SystemParam, write_AnimalParamBegin, write_AnimalParamEnd, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr;
+        ofstream write_AnimalX, write_AnimalY, write_Plant, write_SystemParam, write_AnimalParamBegin, write_AnimalParamEnd, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr, endTime;
         write_AnimalX.open("animal_x_"+extension+".out");
         write_AnimalY.open("animal_y_"+extension+".out");
         write_Plant.open("plant_"+extension+".out");
@@ -74,17 +75,20 @@ int main(int argc, char *argv[]) {
         write_AnimalNbMoves.open("animal_nb_moves_"+extension+".out");
         write_AnimalNbOff.open("animal_nb_offspring_"+extension+".out");
         write_AnimalReproThr.open("animal_repro_threshold_"+extension+".out");
+        endTime.open("tfin.out");
 
         ecosystem.write_AnimalParam(write_AnimalParamBegin);
 
         for(size_t t(0); t<tfin; ++t) {
                 ecosystem.iteration(write_AnimalX,write_AnimalY, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves,
-                                    write_AnimalNbOff, write_AnimalReproThr, DataWrite, Evolution);
+                                    write_AnimalNbOff, write_AnimalReproThr, DataWrite, Evolution, food_reproduce);
                 if(ecosystem.died_out()) {
-                        std::cout << "Ecosystem died out" << std::endl;
+                        std::cout << "Ecosystem died out at t = " << t+1 << std::endl;
+                        endTime << t+1;
                         return 1;
                 }
         }
+        endTime << tfin;
         ecosystem.write(write_AnimalX, write_AnimalY, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr);
         ecosystem.write_AnimalParam(write_AnimalParamEnd);
 
@@ -98,6 +102,7 @@ int main(int argc, char *argv[]) {
         write_AnimalNbMoves.close();
         write_AnimalNbOff.close();
         write_AnimalReproThr.close();
+        endTime.close();
 
 
 
