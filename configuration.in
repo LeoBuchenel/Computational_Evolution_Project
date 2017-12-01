@@ -1,8 +1,8 @@
 % Parametres physiques :
-L = 20
-plants = 200
-animals = 50
-tfin = 1000
+L = 100
+plants = 2000
+animals = 1100
+tfin = 10000
 write data = false
 evolution = true
 Animal zone = whole
