@@ -22,7 +22,7 @@ function varargout = GUI(varargin)
 
 % Edit the above text to modify the response to help GUI
 
-% Last Modified by GUIDE v2.5 30-Nov-2017 19:01:22
+% Last Modified by GUIDE v2.5 30-Nov-2017 22:33:12
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -51,9 +51,9 @@ function GUI_OpeningFcn(hObject, eventdata, handles, varargin)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to GUI (see VARARGIN)
-
+% Choose default command line output for GUI
 axes(handles.axes1);
-title('Grid');
+t = title('Grid');
 c = colorbar;
 set(gca,'xtick',[]);
 set(gca,'ytick',[]);
@@ -68,14 +68,12 @@ set(gca,'xtick',[]);
 set(gca,'ytick',[]);
 
 
-
-% Choose default command line output for GUI
 handles.output = hObject;
-
-
 
 % Update handles structure
 guidata(hObject, handles);
+
+
 
 % UIWAIT makes GUI wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -209,8 +207,10 @@ function Run_PushButton_Callback(hObject, eventdata, handles)
 data = load('system_param_test.out');
 animals = data(:,1);
 plants = data(:,2);
+guidata(hObject, handles);
 
 axes(handles.axes2);
+
 cla reset;
 tfin = size(animals,1);
 
@@ -224,7 +224,9 @@ h2 = plot(t(1:1), plants(1:1), 'r--');
 h3 = plot(t(1:1), animals(1:1), 'b+');
 h4 = plot(t(1:1), plants(1:1), 'r+');
 xlabel('$t$');
+
 ylabel('Number of specimen');
+
 ylim([0 max(max(animals(:)), max(plants(:)))]);
 set(gca,'xtick',[]);
 xlim([1 width+5]);
@@ -247,6 +249,7 @@ for i = 2 : width
     set(h4, 'yData', plants(i:i));
        
     xlim([1 width+5]);
+    
 
 
 end
@@ -268,6 +271,7 @@ for  i = 2 : tfin-width
     set(h4, 'yData', plants(i+width:i+width));
     
     xlim([t(i) t(i+width)+5]);
+   
 
 end
 
@@ -281,3 +285,10 @@ function uipushtool2_ClickedCallback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 set(gca, 'xlimMode', 'auto');
+
+
+% --- Executes on button press in pause_PushButton.
+function pause_PushButton_Callback(hObject, eventdata, handles)
+% hObject    handle to pause_PushButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
