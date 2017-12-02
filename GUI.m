@@ -22,7 +22,7 @@ function varargout = GUI(varargin)
 
 % Edit the above text to modify the response to help GUI
 
-% Last Modified by GUIDE v2.5 30-Nov-2017 22:33:12
+% Last Modified by GUIDE v2.5 02-Dec-2017 17:20:10
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -70,6 +70,9 @@ set(gca,'ytick',[]);
 
 handles.output = hObject;
 
+% counts where the simulation stopped for pause
+handles.pause_counter = 1; 
+
 % Update handles structure
 guidata(hObject, handles);
 
@@ -95,7 +98,6 @@ function Moves_PushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to Moves_PushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
 % Hint: get(hObject,'Value') returns toggle state of Moves_PushButton
 
 
@@ -104,7 +106,6 @@ function Offspring_PushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to Offspring_PushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
 % Hint: get(hObject,'Value') returns toggle state of Offspring_PushButton
 
 
@@ -133,18 +134,18 @@ function LoadFile_PushButton_Callback(hObject, eventdata, handles)
 
 
 
-function edit1_Callback(hObject, eventdata, handles)
-% hObject    handle to edit1 (see GCBO)
+function Extension_Name_edit_Callback(hObject, eventdata, handles)
+% hObject    handle to Extension_Name_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit1 as text
-%        str2double(get(hObject,'String')) returns contents of edit1 as a double
+% Hints: get(hObject,'String') returns contents of Extension_Name_edit as text
+%        str2double(get(hObject,'String')) returns contents of Extension_Name_edit as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit1 (see GCBO)
+function Extension_Name_edit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Extension_Name_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -161,84 +162,40 @@ function LoadFiles_PushButton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+% when LoadFiles button is pressed, it loads every data the program needs
+extension = get(handles.Extension_Name_edit', 'string');
+data = load(strcat('system_param_',extension,'.out'));
+handles.animalPopulation = data(:,1);
+handles.plantPopulation = data(:,2);
+guidata(hObject, handles);
+
+
+
 
 % --- Executes on button press in Run_PushButton.
 function Run_PushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to Run_PushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-data = load('system_param_test.out');
-animals = data(:,1);
-plants = data(:,2);
-guidata(hObject, handles);
-
-axes(handles.axes2);
-
-cla reset;
-tfin = size(animals,1);
-
-t = [0:tfin-1];
-
-width = 50;
-
-h1 = plot(t(1:1), animals(1:1), 'b--');
-hold on;
-h2 = plot(t(1:1), plants(1:1), 'r--');
-h3 = plot(t(1:1), animals(1:1), 'b+');
-h4 = plot(t(1:1), plants(1:1), 'r+');
-xlabel('$t$');
-
-ylabel('Number of specimen');
-
-ylim([0 max(max(animals(:)), max(plants(:)))]);
-set(gca,'xtick',[]);
-xlim([1 width+5]);
-title('Population');
-
-
-for i = 2 : width
-    pause(0.1);
-    
-    set(h1, 'xData', t(1:i));
-    set(h1, 'yData', animals(1:i));
-    
-    set(h2, 'xData', t(1:i));
-    set(h2, 'yData', plants(1:i));
-    
-    set(h3, 'xData', t(i:i));
-    set(h3, 'yData', animals(i:i));
-    
-    set(h4, 'xData', t(i:i));
-    set(h4, 'yData', plants(i:i));
-       
-    xlim([1 width+5]);
-    
-
-
+if get(hObject, 'value')
+    set(hObject, 'string', 'Run');
+    handles.animalPopulation;
+    for i = handles.pause_counter : 1000
+        if get(hObject, 'value')
+            %draw ecosystem grid on axes 1
+            
+            %draw population plot on axes 2
+            axes(handles.axes2);
+            cla reset;
+            drawPopulation(i, handles.animalPopulation, handles.plantPopulation, 5);
+            pause(0.05);
+        else
+            handles.pause_counter = i;
+            guidata(hObject, handles);
+            break;
+        end
+    end
 end
-
-
-for  i = 2 : tfin-width
-    pause(0.1);
-    
-    set(h1, 'xData', t(i:i+width));
-    set(h1, 'yData', animals(i:i+width));
-
-    set(h2, 'xData', t(i:i+width));
-    set(h2, 'yData', plants(i:i+width));
-    
-    set(h3, 'xData', t(i+width:i+width));
-    set(h3, 'yData', animals(i+width:i+width));
-    
-    set(h4, 'xData', t(i+width:i+width));
-    set(h4, 'yData', plants(i+width:i+width));
-    
-    xlim([t(i) t(i+width)+5]);
-   
-
-end
-
-
 
 
 % --- Executes on button press in pause_PushButton.
@@ -246,3 +203,8 @@ function pause_PushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to pause_PushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if get(hObject, 'value')
+    set(handles.Run_PushButton, 'value', false);
+    set(handles.Run_PushButton, 'String', 'Resume');
+    guidata(hObject, handles);
+end
