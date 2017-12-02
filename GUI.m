@@ -204,76 +204,7 @@ function Run_PushButton_Callback(hObject, eventdata, handles)
 % hObject    handle to Run_PushButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-data = load('system_param_test.out');
-animals = data(:,1);
-plants = data(:,2);
-guidata(hObject, handles);
 
-axes(handles.axes2);
-
-cla reset;
-tfin = size(animals,1);
-
-t = [0:tfin-1];
-
-width = 50;
-
-h1 = plot(t(1:1), animals(1:1), 'b--');
-hold on;
-h2 = plot(t(1:1), plants(1:1), 'r--');
-h3 = plot(t(1:1), animals(1:1), 'b+');
-h4 = plot(t(1:1), plants(1:1), 'r+');
-xlabel('$t$');
-
-ylabel('Number of specimen');
-
-ylim([0 max(max(animals(:)), max(plants(:)))]);
-set(gca,'xtick',[]);
-xlim([1 width+5]);
-title('Population');
-
-
-for i = 2 : width
-    pause(0.1);
-    
-    set(h1, 'xData', t(1:i));
-    set(h1, 'yData', animals(1:i));
-    
-    set(h2, 'xData', t(1:i));
-    set(h2, 'yData', plants(1:i));
-    
-    set(h3, 'xData', t(i:i));
-    set(h3, 'yData', animals(i:i));
-    
-    set(h4, 'xData', t(i:i));
-    set(h4, 'yData', plants(i:i));
-       
-    xlim([1 width+5]);
-    
-
-
-end
-
-
-for  i = 2 : tfin-width
-    pause(0.1);
-    
-    set(h1, 'xData', t(i:i+width));
-    set(h1, 'yData', animals(i:i+width));
-
-    set(h2, 'xData', t(i:i+width));
-    set(h2, 'yData', plants(i:i+width));
-    
-    set(h3, 'xData', t(i+width:i+width));
-    set(h3, 'yData', animals(i+width:i+width));
-    
-    set(h4, 'xData', t(i+width:i+width));
-    set(h4, 'yData', plants(i+width:i+width));
-    
-    xlim([t(i) t(i+width)+5]);
-   
-
-end
 
 
 
