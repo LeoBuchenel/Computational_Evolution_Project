@@ -1,11 +1,11 @@
 % Parametres physiques :
-L = 100
-plants = 2000
-animals = 1000
-tfin = 100
+L = 200
+plants = 8000
+animals = 2400
+tfin = 500
 write data = true
 evolution = true
-feeding = constant
+feeding = exponential
 Animal zone = whole
 Animal zone parameter 1 = 0
 Animal zone parameter 2 = 0

@@ -101,6 +101,16 @@ void Ecosystem::write_animal(std::ostream& osX, std::ostream& osY) const
 								}
 }
 
+std::ostream& Ecosystem::write_animalPos(std::ostream& os) const
+{
+								size_t L(grid->size());
+								for(size_t i(0); i<L; ++i) {
+																for(size_t j(0); j<L; ++j) {
+																								os << grid->getCell(i,j)->exist_animal_on_cell() << " ";
+																}
+								}
+								return os;
+}
 
 std::ostream &Ecosystem::write_systParam(std::ostream &os) const
 {
@@ -148,7 +158,7 @@ void Ecosystem::food_reproduce(std::string feeding)
 																reproduce(plant_zone, 0.07, grid->getNbFood());// plants reproduce exponentially
 								}else{
 																if(feeding == "constant") {
-																								reproduce(plant_zone, 0.01, (grid->size())*(grid->size()));
+																								reproduce(plant_zone, 0.05, (grid->size())*(grid->size()));
 																}else{
 																								std::cout << feeding << std::endl;
 																								std::cout << "Please type valid feeding"<<std::endl;
@@ -159,9 +169,9 @@ void Ecosystem::food_reproduce(std::string feeding)
 }
 
 
-void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT, bool DataWrite, bool Evolution, std::string feeding){
+void Ecosystem::iteration(std::ostream& osXY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT, bool DataWrite, bool Evolution, std::string feeding){
 								if(DataWrite) {
-																this->write(osX, osY, osP, osS, osF, osNM, osNO, osRT);
+																this->write(osXY, osP, osS, osF, osNM, osNO, osRT);
 								}                                                          //writes the position of every animal, the plant density per cell and the system parameters
 								this->move();
 								this->die();
@@ -171,14 +181,16 @@ void Ecosystem::iteration(std::ostream& osX, std::ostream& osY, std::ostream& os
 								this->food_reproduce(feeding);
 }
 
-void Ecosystem::write(std::ostream& osX, std::ostream& osY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT){
+void Ecosystem::write(std::ostream& osXY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT){
 								//this->write_animalX(osX);
 								//osX << std::endl;
 								//this->write_animalY(osY);
 								//osY << std::endl;
-								this->write_animal(osX, osY);
-								osX << std::endl;
-								osY << std::endl;
+								//this->write_animal(osX, osY);
+								//osX << std::endl;
+								//osY << std::endl;
+								this->write_animalPos(osXY);
+								osXY << std::endl;
 								this->write_Plant(osP);
 								osP << std::endl;
 								this->write_systParam(osS);

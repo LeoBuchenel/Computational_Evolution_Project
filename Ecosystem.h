@@ -23,6 +23,7 @@ void die();
 
 std::ostream& write_animalX(std::ostream&) const;
 std::ostream& write_animalY(std::ostream&) const;
+std::ostream& write_animalPos(std::ostream&) const;
 
 void write_animal(std::ostream&, std::ostream&) const;
 
@@ -34,14 +35,14 @@ std::ostream& write_animalNbMoves(std::ostream&) const;
 std::ostream& write_animalNbOff(std::ostream&) const;
 std::ostream& write_animalReproThr(std::ostream&) const;
 
-void write(std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&);
+void write(std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&);
 
 
 void animal_eat();
 
 
 
-void iteration(std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, bool, bool, std::string);
+void iteration(std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, bool, bool, std::string);
 };
 
 #endif //ECOSYSTEM_H

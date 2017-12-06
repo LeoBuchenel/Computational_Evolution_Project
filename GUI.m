@@ -53,13 +53,18 @@ function GUI_OpeningFcn(hObject, eventdata, handles, varargin)
 % varargin   command line arguments to GUI (see VARARGIN)
 % Choose default command line output for GUI
 
+set(handles.axes1, 'visible', 'off');
+set(handles.axes2, 'visible', 'off');
+guidata(hObject, handles);
 
 axes(handles.axes1);
 t = title('Grid');
-c = colorbar;
+c1 = colorbar('westoutside');
+c2 = colorbar('southoutside');
 set(gca,'xtick',[]);
 set(gca,'ytick',[]);
-set(c,'YTick',[]);
+set(c1,'YTick',[]);
+set(c2,'YTick',[]);5
 
 
 
@@ -69,13 +74,15 @@ title('Population');
 set(gca,'xtick',[]);
 set(gca,'ytick',[]);
 
-
 handles.output = hObject;
 
 % counts where the simulation stopped for pause
 handles.pause_counter = 1; 
 handles.width = 50;
-set(handles.
+
+
+set(handles.axes1, 'visible', 'on');
+set(handles.axes2, 'visible', 'on');
 
 % Update handles structure
 guidata(hObject, handles);
@@ -172,8 +179,32 @@ data = load(strcat('system_param_',extension,'.out'));
 handles.animalPopulation = data(:,1);
 handles.plantPopulation = data(:,2);
 handles.tfin = size(data,1);
-set(handles.Width_Slider, 'Min', 0);
-set(handles.Width_Slider, 'Max', handles.tfin);
+handles.width = floor(handles.tfin/5);
+data = load(strcat('animal_pos_', extension, '.out'));
+handles.grid_size = sqrt(size(data,2));
+handles.animal_position = data;
+data = load(strcat('plant_', extension, '.out'));
+handles.plant_density = data;
+
+cla;
+
+axes(handles.axes1);
+drawEcosystem(handles.axes1, 1, handles.animal_position, handles.plant_density, handles.grid_size);
+set(handles.axes1,'YDir', 'Normal');
+c1 = colorbar('westoutside');
+c2 = colorbar('southoutside');
+c1.Label.Interpreter = 'latex';
+c2.Label.Interpreter = 'latex';
+c1.Label.String = 'Number of plants on cell';
+c2.Label.String = 'Genetic data';
+colormap(flipud(hot));
+caxis([0, max(data(:))]);
+
+axes(handles.axes2);
+drawPopulation(handles.axes2, 1, handles.animalPopulation, handles.plantPopulation, handles.width);
+
+handles.pause_counter = 2;
+
 guidata(hObject, handles);
 
 
@@ -189,14 +220,15 @@ if get(hObject, 'value')
     set(hObject, 'string', 'Run');
     for i = handles.pause_counter : handles.tfin 
         if get(hObject, 'value')
+            %clears all axes
+            cla(handles.axes1);
+            cla(handles.axes2);
             %draw ecosystem grid on axes 1
-            
-            
+            drawEcosystem(handles.axes1, i, handles.animal_position, handles.plant_density, handles.grid_size);
             %draw population plot on axes 2
-            axes(handles.axes2);
-            cla reset;
-            drawPopulation(i, handles.animalPopulation, handles.plantPopulation, handles.width);
-            pause(0.05);
+            drawPopulation(handles.axes2, i, handles.animalPopulation, handles.plantPopulation, handles.width);
+            pause(0.02);
+    
         else
             handles.pause_counter = i;
             guidata(hObject, handles);
@@ -217,15 +249,6 @@ if get(hObject, 'value')
     guidata(hObject, handles);
 end
 
-
-% --- Executes on slider movement.
-function Width_Slider_Callback(hObject, eventdata, handles)
-% hObject    handle to Width_Slider (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 
 
 % --- Executes during object creation, after setting all properties.

@@ -22,7 +22,7 @@ function varargout = test2(varargin)
 
 % Edit the above text to modify the response to help test2
 
-% Last Modified by GUIDE v2.5 30-Nov-2017 23:04:14
+% Last Modified by GUIDE v2.5 02-Dec-2017 18:58:51
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -56,6 +56,9 @@ function test2_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 handles.counter = 1;
 % Update handles structure
+set(handles.slider1, 'min', 0);
+set(handles.slider1, 'max', 100);
+set(handles.text2, 'string', num2str(40));
 guidata(hObject, handles);
 
 % UIWAIT makes test2 wait for user response (see UIRESUME)
@@ -98,4 +101,26 @@ function pause_button_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 if get(hObject, 'value')
    set(handles.play_button, 'value', false); 
+end
+
+
+% --- Executes on slider movement.
+function slider1_Callback(hObject, eventdata, handles)
+% hObject    handle to slider1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+set(handles.text2, 'string', num2str(get(hObject, 'Value')));
+
+% --- Executes during object creation, after setting all properties.
+function slider1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
