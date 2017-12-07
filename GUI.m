@@ -116,11 +116,6 @@ function Force_RadioButton_Callback(hObject, eventdata, handles)
 
 % Hint: get(hObject,'Value') returns toggle state of Force_RadioButton
 
-% --- Executes on button press in LoadFile_PushButton.
-function LoadFile_PushButton_Callback(hObject, eventdata, handles)
-% hObject    handle to LoadFile_PushButton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
 
 
@@ -157,15 +152,31 @@ extension = get(handles.Extension_Name_edit', 'string');
 data = load(strcat('system_param_',extension,'.out'));
 handles.animalPopulation = data(:,1);
 handles.plantPopulation = data(:,2);
+handles.meanForce= data(:,3);
+handles.meanEnergy = data(:,4);
+handles.meanNbMoves = data(:,5);
+handles.meanOffsprings = data(:,6);
+handles.meanReprThr = data(:,7);
 handles.tfin = size(data,1);
-handles.width = floor(handles.tfin/5);
+handles.width = handles.tfin;
 data = load(strcat('animal_pos_', extension, '.out'));
 handles.grid_size = sqrt(size(data,2));
 handles.animal_position = data;
 data = load(strcat('plant_', extension, '.out'));
 handles.plant_density = data;
 handles.animal_force = load(strcat('animal_force_', extension, '.out'));
-%handles.animal_
+
+populationdata(1,:) = handles.animalPopulation';
+populationdata(2,:) = handles.plantPopulation';
+
+handles.populationtab = populationdata;
+
+tablecolor(1,:) = [0 0 0];
+tablecolor(2,:) = [0.4 1 0];
+
+handles.currentaxes2data = handles.populationtab;
+handles.currentaxes2tablecolor = tablecolor;
+
 
 cla;
 
@@ -184,7 +195,7 @@ colormap(flipud(hot));
 caxis([0, max(data(:))]);
 
 axes(handles.axes2);
-drawPopulation(handles.axes2, 1, handles.animalPopulation, handles.plantPopulation, handles.width);
+drawdata(handles.axes2, 1, handles.currentaxes2data, handles.currentaxes2tablecolor, handles.width);
 
 handles.pause_counter = 2;
 
@@ -209,7 +220,7 @@ if get(hObject, 'value')
             %draw ecosystem grid on axes 1
             drawEcosystem(handles.axes1, i, handles.animal_position, handles.plant_density, handles.grid_size);
             %draw population plot on axes 2
-            drawPopulation(handles.axes2, i, handles.animalPopulation, handles.plantPopulation, handles.width);
+            drawdata(handles.axes2, i, handles.currentaxes2data,handles.currentaxes2tablecolor,handles.width);
             pause(min([1/handles.tfin 0.02]));
     
         else
@@ -251,6 +262,29 @@ function Characteristic_Menu_Callback(hObject, eventdata, handles)
 % hObject    handle to Characteristic_Menu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+% Determine the selected data set.
+str = get(hObject, 'String');
+val = get(hObject,'Value');
+% Set current data to the selected data set.
+switch str{val};
+    case 'Population' % User selects population.
+        handles.currentaxes2data = handles.populationtab;
+    case 'Mean Force'
+        handles.currentaxes2data = handles.meanForce;
+    case 'Mean Energy'
+        handles.currentaxes2data = handles.meanEnergy;
+    case 'Mean Number of Moves'
+        handles.currentaxes2data = handles.meanNbMoves;     
+    case 'Mean Offspring'
+        handles.currentaxes2data = handles.meanOffspring;    
+    case 'Mean Reproduction Threshold'
+        handles.currentaxes2data = handles.meanReprThr;
+   
+end
+
+
+% Save the handles structure.
+guidata(hObject,handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns Characteristic_Menu contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Characteristic_Menu
@@ -276,6 +310,9 @@ function axes1_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 c1 = colorbar('westoutside');
 c2 = colorbar('southoutside');
+mymap = summer;
+mymap(size(mymap,1),:) = [1 1 1];
+colormap(flipud(mymap));
 set(gca,'xtick',[]);
 set(gca,'ytick',[]);
 set(c1,'YTick',[]);
