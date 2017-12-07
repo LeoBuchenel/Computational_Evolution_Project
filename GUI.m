@@ -152,11 +152,11 @@ extension = get(handles.Extension_Name_edit', 'string');
 data = load(strcat('system_param_',extension,'.out'));
 handles.animalPopulation = data(:,1);
 handles.plantPopulation = data(:,2);
-handles.meanForce= data(:,3);
-handles.meanEnergy = data(:,4);
-handles.meanNbMoves = data(:,5);
-handles.meanOffsprings = data(:,6);
-handles.meanReprThr = data(:,7);
+handles.meanForce= data(:,3)';
+handles.meanEnergy = data(:,4)';
+handles.meanNbMoves = data(:,5)';
+handles.meanOffsprings = data(:,6)';
+handles.meanReprThr = data(:,7)';
 handles.tfin = size(data,1);
 handles.width = handles.tfin;
 data = load(strcat('animal_pos_', extension, '.out'));
@@ -174,8 +174,16 @@ handles.populationtab = populationdata;
 tablecolor(1,:) = [0 0 0];
 tablecolor(2,:) = [0.4 1 0];
 
-handles.currentaxes2data = handles.populationtab;
+handles.axes2data{1} = handles.populationtab;
+handles.axes2data{2} = handles.meanForce;
+handles.axes2data{3} = handles.meanEnergy;
+handles.axes2data{4} = handles.meanNbMoves;
+handles.axes2data{5} = handles.meanOffsprings;
+handles.axes2data{6} = handles.meanReprThr;
+
 handles.currentaxes2tablecolor = tablecolor;
+
+handles.choice = 'Population';
 
 
 cla;
@@ -195,7 +203,7 @@ colormap(flipud(hot));
 caxis([0, max(data(:))]);
 
 axes(handles.axes2);
-drawdata(handles.axes2, 1, handles.currentaxes2data, handles.currentaxes2tablecolor, handles.width);
+drawdata(handles.axes2, 1, handles.populationtab, handles.currentaxes2tablecolor, handles.width);
 
 handles.pause_counter = 2;
 
@@ -215,14 +223,16 @@ if get(hObject, 'value')
     for i = handles.pause_counter : handles.tfin 
         if get(hObject, 'value')
             %clears all axes
+            handles = guidata(hObject);
             cla(handles.axes1);
             cla(handles.axes2);
             %draw ecosystem grid on axes 1
             drawEcosystem(handles.axes1, i, handles.animal_position, handles.plant_density, handles.grid_size);
             %draw population plot on axes 2
-            drawdata(handles.axes2, i, handles.currentaxes2data,handles.currentaxes2tablecolor,handles.width);
+            choice = get(handles.Characteristic_Menu, 'Value');
+            drawdata(handles.axes2, i, handles.axes2data{choice}, handles.currentaxes2tablecolor,handles.width);
             pause(min([1/handles.tfin 0.02]));
-    
+            guidata(hObject, handles);
         else
             handles.pause_counter = i;
             guidata(hObject, handles);
@@ -262,30 +272,6 @@ function Characteristic_Menu_Callback(hObject, eventdata, handles)
 % hObject    handle to Characteristic_Menu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% Determine the selected data set.
-str = get(hObject, 'String');
-val = get(hObject,'Value');
-% Set current data to the selected data set.
-switch str{val};
-    case 'Population' % User selects population.
-        handles.currentaxes2data = handles.populationtab;
-    case 'Mean Force'
-        handles.currentaxes2data = handles.meanForce;
-    case 'Mean Energy'
-        handles.currentaxes2data = handles.meanEnergy;
-    case 'Mean Number of Moves'
-        handles.currentaxes2data = handles.meanNbMoves;     
-    case 'Mean Offspring'
-        handles.currentaxes2data = handles.meanOffspring;    
-    case 'Mean Reproduction Threshold'
-        handles.currentaxes2data = handles.meanReprThr;
-   
-end
-
-
-% Save the handles structure.
-guidata(hObject,handles)
-
 % Hints: contents = cellstr(get(hObject,'String')) returns Characteristic_Menu contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Characteristic_Menu
 
