@@ -64,9 +64,10 @@ int main(int argc, char *argv[]) {
 
         Ecosystem ecosystem(&grid, animalZone, plantZone, nb_animals, nb_plants);
 
-        ofstream write_AnimalX, write_AnimalY, write_Plant, write_SystemParam, write_AnimalParamBegin, write_AnimalParamEnd, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr, endTime;
-        write_AnimalX.open("animal_x_"+extension+".out");
-        write_AnimalY.open("animal_y_"+extension+".out");
+        ofstream write_AnimalPos, write_Plant, write_SystemParam, write_AnimalParamBegin, write_AnimalParamEnd, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr, endTime;
+        //write_AnimalX.open("animal_x_"+extension+".out");
+        //write_AnimalY.open("animal_y_"+extension+".out");
+        write_AnimalPos.open("animal_pos_"+extension+".out");
         write_Plant.open("plant_"+extension+".out");
         write_SystemParam.open("system_param_"+extension+".out");
         write_AnimalParamBegin.open("animal_param_begin_"+extension+".out");
@@ -80,7 +81,7 @@ int main(int argc, char *argv[]) {
         ecosystem.write_AnimalParam(write_AnimalParamBegin);
 
         for(size_t t(0); t<tfin; ++t) {
-                ecosystem.iteration(write_AnimalX,write_AnimalY, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves,
+                ecosystem.iteration(write_AnimalPos, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves,
                                     write_AnimalNbOff, write_AnimalReproThr, DataWrite, Evolution, food_reproduce);
                 if(ecosystem.died_out()) {
                         std::cout << "Ecosystem died out at t = " << t+1 << std::endl;
@@ -89,11 +90,12 @@ int main(int argc, char *argv[]) {
                 }
         }
         endTime << tfin;
-        ecosystem.write(write_AnimalX, write_AnimalY, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr);
+        ecosystem.write(write_AnimalPos, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr);
         ecosystem.write_AnimalParam(write_AnimalParamEnd);
 
-        write_AnimalX.close();
-        write_AnimalY.close();
+        //write_AnimalX.close();
+        //write_AnimalY.close();
+        write_AnimalPos.close();
         write_Plant.close();
         write_SystemParam.close();
         write_AnimalParamBegin.close();

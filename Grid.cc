@@ -129,11 +129,14 @@ void Grid::sortAnimals() const
 
 std::ostream& Grid::write_Plant(std::ostream& os) const
 {
-								for(auto const line:grid) {
-																for(auto const cell:line) {
-																								os << cell->getNbFood() <<" ";
+								for(size_t i(0); i<grid.size(); ++i) {
+																for(size_t j(0); j < grid[i].size(); ++j)
+																{
+																								os << grid[i][j]->getNbFood() << " ";
 																}
+
 								}
+
 
 								return os;
 }
