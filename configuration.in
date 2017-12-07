@@ -1,7 +1,7 @@
 % Parametres physiques :
-L = 200
-plants = 8000
-animals = 2400
+L = 100
+plants = 2000
+animals = 600
 tfin = 500
 write data = true
 evolution = true

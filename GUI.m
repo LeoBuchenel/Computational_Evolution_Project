@@ -22,7 +22,7 @@ function varargout = GUI(varargin)
 
 % Edit the above text to modify the response to help GUI
 
-% Last Modified by GUIDE v2.5 02-Dec-2017 18:32:49
+% Last Modified by GUIDE v2.5 06-Dec-2017 16:03:20
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -52,27 +52,6 @@ function GUI_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to GUI (see VARARGIN)
 % Choose default command line output for GUI
-
-set(handles.axes1, 'visible', 'off');
-set(handles.axes2, 'visible', 'off');
-guidata(hObject, handles);
-
-axes(handles.axes1);
-t = title('Grid');
-c1 = colorbar('westoutside');
-c2 = colorbar('southoutside');
-set(gca,'xtick',[]);
-set(gca,'ytick',[]);
-set(c1,'YTick',[]);
-set(c2,'YTick',[]);5
-
-
-
-
-axes(handles.axes2);
-title('Population');
-set(gca,'xtick',[]);
-set(gca,'ytick',[]);
 
 handles.output = hObject;
 
@@ -185,12 +164,16 @@ handles.grid_size = sqrt(size(data,2));
 handles.animal_position = data;
 data = load(strcat('plant_', extension, '.out'));
 handles.plant_density = data;
+handles.animal_force = load(strcat('animal_force_', extension, '.out'));
+%handles.animal_
 
 cla;
 
 axes(handles.axes1);
 drawEcosystem(handles.axes1, 1, handles.animal_position, handles.plant_density, handles.grid_size);
 set(handles.axes1,'YDir', 'Normal');
+set(handles.axes1, 'Xlim', [0 handles.grid_size]);
+set(handles.axes1, 'Ylim', [0 handles.grid_size]);
 c1 = colorbar('westoutside');
 c2 = colorbar('southoutside');
 c1.Label.Interpreter = 'latex';
@@ -227,7 +210,7 @@ if get(hObject, 'value')
             drawEcosystem(handles.axes1, i, handles.animal_position, handles.plant_density, handles.grid_size);
             %draw population plot on axes 2
             drawPopulation(handles.axes2, i, handles.animalPopulation, handles.plantPopulation, handles.width);
-            pause(0.02);
+            pause(min([1/handles.tfin 0.02]));
     
         else
             handles.pause_counter = i;
@@ -261,3 +244,51 @@ function Width_Slider_CreateFcn(hObject, eventdata, handles)
 if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
+
+
+% --- Executes on selection change in Characteristic_Menu.
+function Characteristic_Menu_Callback(hObject, eventdata, handles)
+% hObject    handle to Characteristic_Menu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns Characteristic_Menu contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from Characteristic_Menu
+
+
+% --- Executes during object creation, after setting all properties.
+function Characteristic_Menu_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Characteristic_Menu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function axes1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to axes1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+c1 = colorbar('westoutside');
+c2 = colorbar('southoutside');
+set(gca,'xtick',[]);
+set(gca,'ytick',[]);
+set(c1,'YTick',[]);
+set(c2,'YTick',[]);
+
+% Hint: place code in OpeningFcn to populate axes1
+
+
+% --- Executes during object creation, after setting all properties.
+function axes2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to axes2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+set(gca,'xtick',[]);
+set(gca,'ytick',[]);
+% Hint: place code in OpeningFcn to populate axes2

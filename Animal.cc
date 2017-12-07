@@ -51,6 +51,9 @@ std::vector<Animal*> Animal::reproduce(bool Evolution){
                         = 0.5*energy/(Animal::get_nb_offspring()*1.0);
                 for(std::size_t i(0); i<Animal::get_nb_offspring(); ++i) {
                         Animal* ptr = new Animal(position, genetic_data, offspringEnergy);
+                        if(!this->isAlive()) {
+                                std::cout << "A dead animal is reproducing" << std::endl;
+                        }
                         if(Evolution) {
                                 ptr->evolve();
                         }
