@@ -1,5 +1,5 @@
 function buttonsCallback(hObject, eventdata,extension)
-global time
+global time animalNb force nbMoves nbOffspring reproThreshold charac maxCharac
 
 if strcmp(get(hObject, 'tag'), 'load')
     
@@ -8,19 +8,45 @@ if strcmp(get(hObject, 'tag'), 'load')
         h = waitbar(0,'Loading');
         userdata = load(strcat('system_param_',ext,'.out'));
         data = load(['plant_', ext, '.out']);
-        waitbar(0.5);
+        waitbar(0.15);
         data2 = load(['animal_pos_', ext, '.out']);
+        waitbar(0.3);
+        data3 = load(['animal_force_', ext, '.out']);
+        waitbar(0.45);
+        data4 = load(['animal_nb_moves_', ext, '.out']);
+        waitbar(0.6);
+        data5 = load(['animal_nb_offspring_', ext, '.out']);
+        waitbar(0.75);
+        data6 = load(['animal_repro_threshold_', ext, '.out']);
+        waitbar(0.9);
         N = sqrt(size(data,2));
         tfin = size(data,1);
         
         for i = 1 : tfin
             Density(:,:, i) = reshape(data(i,:), [N,N]);
             animalPos(:,:,i) = reshape(data2(i,:),[N,N]);
+            force(:,:,i) = reshape(data3(i,:),[N,N]);
+            nbMoves(:,:,i) = reshape(data4(i,:),[N,N]);
+            nbOffspring(:,:,i) = reshape(data5(i,:),[N,N]);
+            reproThreshold(:,:,i) = reshape(data6(i,:),[N,N]);
         end
         
+        animalNb = animalPos;
+        charac  = animalNb;
+        maxCharac = max(charac(:));
         runData = get(findobj('tag', 'run'), 'Userdata');
         runData.animalPopulation = userdata(:,1);
         runData.plantPopulation = userdata(:,2);
+        %         runData.Energy = load(['animal_force_', ext, '.out']);
+%         waitbar(0.3);
+%         runData.Force = load(['animal_pos_', ext, '.out']);
+%         waitbar(0.45);
+%         runData.NbMoves = load(['animal_nb_moves_', ext, '.out']);
+%         waitbar(0.6);
+%         runData.NbOffspring = load(['animal_nb_offspring_', ext, '.out']); 
+%         waitbar(0.75);
+%         runData.ReproThr = load(['animal_repro_threshold_', ext, '.out']);
+%         waitbar(0.9);
         runData.meanEnergy = userdata(:,3);
         runData.meanForce = userdata(:,4);
         runData.meanNbMoves = userdata(:,5);
@@ -28,6 +54,7 @@ if strcmp(get(hObject, 'tag'), 'load')
         runData.meanReproThr = userdata(:,7);
         runData.animalPosition = animalPos;
         runData.plantDensity = Density;
+        
         
         timeSlider = findobj('tag', 'timeSlider');
         set(timeSlider, 'max', tfin);

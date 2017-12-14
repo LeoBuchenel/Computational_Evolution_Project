@@ -19,6 +19,13 @@ void addFood(unsigned int food = 1);
 unsigned int decreaseFood(unsigned int = 1);
 //Return number of food eaten by the animal(energy depend on nbEaten)
 void sortAnimals();
+std::size_t nBAnimals_on_cell(){
+								return animal_list.size();
+}
+
+Animal* getAnimal_on_cell(std::size_t n){
+								return animal_list[n];
+}
 
 unsigned int getX() const {
 								return x;
@@ -31,6 +38,8 @@ unsigned long long int getNbFood() const {
 }
 
 void set_exist_food(bool);
+
+bool exist_animal_on_cell() const;
 
 private:
 unsigned int x;

@@ -6,7 +6,8 @@
 Animal::Animal(Cell* cell_){
         position = cell_;
         genetic_data = GeneticData();
-        energy = (std::rand()%100)+1;
+        //energy = (std::rand()%100)+1;
+        energy = 100.;
         cell_->addAnimal(this);
 
 }
@@ -17,20 +18,6 @@ Animal::Animal(Cell* cell_, GeneticData gd, double health){
         energy = health;
         position->addAnimal(this);
 }
-
-
-Animal::~Animal() 
-{
-	position->removeAnimal(this);
-	std::cout << "An animal ";
-	if(this->isAlive()){
-		std::cout << "alive";
-	} else {
-		std::cout << "dead";
-	}
-	std::cout << " is removed from the grid." << std::endl;
-}
-
 
 bool Animal::isAlive() const {
         return (energy>0.0);
@@ -57,14 +44,19 @@ double Animal::get_energy() const {
         return energy;
 }
 
-std::vector<Animal*> Animal::reproduce(){
+std::vector<Animal*> Animal::reproduce(bool Evolution){
         std::vector<Animal*> newborns;
         if(energy>Animal::get_rep_threshold()) {
                 double offspringEnergy
-                        = 0.5*energy/Animal::get_nb_offspring();
+                        = 0.5*energy/(Animal::get_nb_offspring()*1.0);
                 for(std::size_t i(0); i<Animal::get_nb_offspring(); ++i) {
                         Animal* ptr = new Animal(position, genetic_data, offspringEnergy);
-                        ptr->evolve();
+                        if(!this->isAlive()) {
+                                std::cout << "A dead animal is reproducing" << std::endl;
+                        }
+                        if(Evolution) {
+                                ptr->evolve();
+                        }
                         newborns.push_back(ptr);
 
                 }
@@ -91,7 +83,7 @@ std::vector<unsigned int> Animal::move(Grid* grid){
                 int depl_y = (rand()%3)-1;
                 X+=depl_x;
                 Y+=depl_y;
-                energy-=0.8;
+                energy-=7.0;
 
                 int X1 = X, Y1 = Y;
 
@@ -115,7 +107,9 @@ std::vector<unsigned int> Animal::move(Grid* grid){
 
 void Animal::eat() {
         //decreasefood retourne la quantité de food que l'animal mange
-        if(position->decreaseFood()!=0) energy+=20.;
+        if(position->decreaseFood()!=0) {
+                energy+=70.;
+        }
 }
 
 unsigned int Animal::getX() const
@@ -134,4 +128,10 @@ Cell* Animal::get_Position() const {
 
 void Animal::evolve(){
         genetic_data.mutate();
+}
+
+Animal::~Animal()
+{
+        position->removeAnimal(this);
+
 }

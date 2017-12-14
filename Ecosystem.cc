@@ -103,13 +103,13 @@ void Ecosystem::write_animal(std::ostream& osX, std::ostream& osY) const
 
 std::ostream& Ecosystem::write_animalPos(std::ostream& os) const
 {
-	size_t L(grid->size());
-	for(size_t i(0); i<L; ++i){
-		for(size_t j(0); j<L; ++j){
-			os << grid->getCell(i,j) -> exist_animal_on_cell() << " ";
-		}
-	}
-	return os;
+								size_t L(grid->size());
+								for(size_t i(0); i<L; ++i) {
+																for(size_t j(0); j<L; ++j) {
+																								os << grid->getCell(i,j)->nBAnimals_on_cell() << " ";
+																}
+								}
+								return os;
 }
 
 std::ostream &Ecosystem::write_systParam(std::ostream &os) const
@@ -217,10 +217,17 @@ void Ecosystem::animal_eat(){
 
 std::ostream& Ecosystem::write_animalForce(std::ostream& os) const
 {
-								for(auto const& org : animal_list) {
-																if(org->isAlive()) {
-																								os << org->get_force();
-																								os << " ";
+								for(size_t i(0); i < (*grid).size(); ++i) {
+																for(size_t j(0); j < (*grid).size(); ++j) { //works because grid is square
+																								double meanForce = 0.;
+																								size_t nbAnimals = grid->getCell(i,j)->nBAnimals_on_cell();
+																								for(size_t k(0); k < nbAnimals; k++)
+																								{
+																																Animal* currentAnimal = grid->getCell(i,j)->getAnimal_on_cell(k);
+																																meanForce+=1./nbAnimals*currentAnimal->get_force();
+																								}
+
+																								os << meanForce << " ";
 																}
 								}
 								return os;
@@ -231,10 +238,17 @@ std::ostream& Ecosystem::write_animalForce(std::ostream& os) const
 
 std::ostream& Ecosystem::write_animalNbMoves(std::ostream& os) const
 {
-								for(auto const& org : animal_list) {
-																if(org->isAlive()) {
-																								os << org->get_nb_moves();
-																								os << " ";
+								for(size_t i(0); i < (*grid).size(); ++i) {
+																for(size_t j(0); j < (*grid).size(); ++j) { //works because grid is square
+																								double meanNbMoves = 0.;
+																								size_t nbAnimals = grid->getCell(i,j)->nBAnimals_on_cell();
+																								for(size_t k(0); k < nbAnimals; k++)
+																								{
+																																Animal* currentAnimal = grid->getCell(i,j)->getAnimal_on_cell(k);
+																																meanNbMoves+=1./nbAnimals*currentAnimal->get_nb_moves();
+																								}
+
+																								os << meanNbMoves << " ";
 																}
 								}
 								return os;
@@ -245,10 +259,17 @@ std::ostream& Ecosystem::write_animalNbMoves(std::ostream& os) const
 
 std::ostream& Ecosystem::write_animalNbOff(std::ostream& os) const
 {
-								for(auto const& org : animal_list) {
-																if(org->isAlive()) {
-																								os << org->get_nb_offspring();
-																								os << " ";
+								for(size_t i(0); i < (*grid).size(); ++i) {
+																for(size_t j(0); j < (*grid).size(); ++j) { //works because grid is square
+																								double meanNbOff = 0.;
+																								size_t nbAnimals = grid->getCell(i,j)->nBAnimals_on_cell();
+																								for(size_t k(0); k < nbAnimals; k++)
+																								{
+																																Animal* currentAnimal = grid->getCell(i,j)->getAnimal_on_cell(k);
+																																meanNbOff+=1./nbAnimals*currentAnimal->get_nb_offspring();
+																								}
+
+																								os << meanNbOff << " ";
 																}
 								}
 								return os;
@@ -257,12 +278,17 @@ std::ostream& Ecosystem::write_animalNbOff(std::ostream& os) const
 
 std::ostream& Ecosystem::write_animalReproThr(std::ostream& os) const
 {
-								//Write repro_thresh
-								//let's push
-								for(auto const& org : animal_list) {
-																if(org->isAlive()) {
-																								os << org->get_rep_threshold();
-																								os << " ";
+								for(size_t i(0); i < (*grid).size(); ++i) {
+																for(size_t j(0); j < (*grid).size(); ++j) { //works because grid is square
+																								double meanThr = 0.;
+																								size_t nbAnimals = grid->getCell(i,j)->nBAnimals_on_cell();
+																								for(size_t k(0); k < nbAnimals; k++)
+																								{
+																																Animal* currentAnimal = grid->getCell(i,j)->getAnimal_on_cell(k);
+																																meanThr+=1./nbAnimals*currentAnimal->get_rep_threshold();
+																								}
+
+																								os << meanThr << " ";
 																}
 								}
 								return os;

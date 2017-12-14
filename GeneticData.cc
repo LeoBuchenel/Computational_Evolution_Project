@@ -2,7 +2,7 @@
 #include <iostream>
 
 GeneticData::GeneticData(){
-
+/*
         double x = (std::rand() % 100) + 1;
         force = x;
         unsigned int a = (std::rand() % 5) + 1;
@@ -12,12 +12,16 @@ GeneticData::GeneticData(){
         double b = (std::rand() % 100) + 1;
         repr_threshold = b;
 
+ */
+        force =  50.;
+        nb_moves = 2;
+        nb_offspring = 2;
+        repr_threshold = 50.;
 
 }
 
 void GeneticData::mutate(){
         double p1 = std::rand()/(RAND_MAX*1.0);
-
         if(p1 < 0.1) {
                 unsigned int characteristic = std::rand() % 4 + 1;
                 int change = std::rand() % 2 - 1;
