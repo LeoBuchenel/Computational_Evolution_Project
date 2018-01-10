@@ -22,7 +22,7 @@ function varargout = GUI(varargin)
 
 % Edit the above text to modify the response to help GUI
 
-% Last Modified by GUIDE v2.5 06-Dec-2017 16:03:20
+% Last Modified by GUIDE v2.5 09-Dec-2017 17:33:15
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -148,8 +148,11 @@ function LoadFiles_PushButton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % when LoadFiles button is pressed, it loads every data the program needs
+dname = uigetdir('/Users/leobuchenelepfl/Google Drive/3eme_annee/Imperial College London/Courses/Project/Code');
+h = waitbar(0, 'Loading files');
 extension = get(handles.Extension_Name_edit', 'string');
-data = load(strcat('system_param_',extension,'.out'));
+data = load(strcat(dname,'/system_param_',extension,'.out'));
+waitbar(0.2);
 handles.animalPopulation = data(:,1);
 handles.plantPopulation = data(:,2);
 handles.meanForce= data(:,3)';
@@ -159,12 +162,31 @@ handles.meanOffsprings = data(:,6)';
 handles.meanReprThr = data(:,7)';
 handles.tfin = size(data,1);
 handles.width = handles.tfin;
-data = load(strcat('animal_pos_', extension, '.out'));
+data = load(strcat(dname,'/animal_pos_', extension, '.out'));
+waitbar(0.4);
 handles.grid_size = sqrt(size(data,2));
 handles.animal_position = data;
-data = load(strcat('plant_', extension, '.out'));
+data = load(strcat(dname,'/plant_', extension, '.out'));
+waitbar(0.6);
 handles.plant_density = data;
-handles.animal_force = load(strcat('animal_force_', extension, '.out'));
+waitbar(0.8);
+
+handles.animal_force = load(strcat(dname,'/animal_force_', extension, '.out'));
+handles.min_animal_force = min(handles.animal_force(:));
+handles.max_animal_force = max(handles.animal_force(:));
+
+handles.NumberofMoves = load(strcat(dname,'/animal_nb_moves_', extension, '.out'));
+handles.min_NumberofMoves = min(handles.NumberofMoves(:));
+handles.max_NumberofMoves = max(handles.NumberofMoves(:));
+
+handles.ReprThr = load(strcat(dname,'/animal_repro_threshold_', extension, '.out'));
+handles.min_ReprThr = min(handles.ReprThr(:));
+handles.max_ReprThr = max(handles.ReprThr(:));
+
+handles.NumberofOff = load(strcat(dname,'/animal_nb_offspring_', extension, '.out'));
+handles.min_NumberofOff = min(handles.NumberofOff(:));
+handles.max_NumberofOff = max(handles.NumberofOff(:));
+
 
 populationdata(1,:) = handles.animalPopulation';
 populationdata(2,:) = handles.plantPopulation';
@@ -183,13 +205,11 @@ handles.axes2data{6} = handles.meanReprThr;
 
 handles.currentaxes2tablecolor = tablecolor;
 
-handles.choice = 'Population';
-
-
 cla;
 
 axes(handles.axes1);
-drawEcosystem(handles.axes1, 1, handles.animal_position, handles.plant_density, handles.grid_size);
+drawEcosystem(handles.axes1, 1, handles.animal_position, handles.plant_density,...
+handles.animal_force, handles.max_animal_force, handles.min_animal_force,handles.grid_size);
 set(handles.axes1,'YDir', 'Normal');
 set(handles.axes1, 'Xlim', [0 handles.grid_size]);
 set(handles.axes1, 'Ylim', [0 handles.grid_size]);
@@ -202,11 +222,16 @@ c2.Label.String = 'Genetic data';
 colormap(flipud(hot));
 caxis([0, max(data(:))]);
 
+handles.currenttime = 2;
+
 axes(handles.axes2);
 drawdata(handles.axes2, 1, handles.populationtab, handles.currentaxes2tablecolor, handles.width);
 
 handles.pause_counter = 2;
-
+set(handles.t_slider, 'Max', handles.tfin);
+set(handles.t_slider, 'Min', 0);
+waitbar(1);
+close(h);
 guidata(hObject, handles);
 
 
@@ -220,14 +245,33 @@ function Run_PushButton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 if get(hObject, 'value')
     set(hObject, 'string', 'Run');
-    for i = handles.pause_counter : handles.tfin 
+    for i = handles.pause_counter : handles.tfin
         if get(hObject, 'value')
             %clears all axes
             handles = guidata(hObject);
             cla(handles.axes1);
             cla(handles.axes2);
             %draw ecosystem grid on axes 1
-            drawEcosystem(handles.axes1, i, handles.animal_position, handles.plant_density, handles.grid_size);
+            u = get(get(handles.Charac_displayed,'SelectedObject'), 'Tag');
+            switch u
+                case 'ForceRB', 
+                    drawEcosystem(handles.axes1, i, handles.animal_position,...
+                    handles.plant_density, handles.animal_force, handles.max_animal_force,...
+                    handles.min_animal_force, handles.grid_size);
+                case 'NBMovesRB',
+                    drawEcosystem(handles.axes1, i, handles.animal_position,...
+                    handles.plant_density, handles.NumberofMoves, handles.max_NumberofMoves,...
+                    handles.min_NumberofMoves, handles.grid_size);
+                case 'ReprThrRB',
+                    drawEcosystem(handles.axes1, i, handles.animal_position,...
+                    handles.plant_density, handles.ReprThr, handles.max_ReprThr,...
+                    handles.min_ReprThr, handles.grid_size);
+                case 'NBOffRB'
+                    drawEcosystem(handles.axes1, i, handles.animal_position,...
+                    handles.plant_density, handles.NumberofOff, handles.max_NumberofOff,...
+                    handles.min_NumberofOff, handles.grid_size);
+                otherwise
+            end
             %draw population plot on axes 2
             choice = get(handles.Characteristic_Menu, 'Value');
             drawdata(handles.axes2, i, handles.axes2data{choice}, handles.currentaxes2tablecolor,handles.width);
@@ -315,3 +359,32 @@ function axes2_CreateFcn(hObject, eventdata, handles)
 set(gca,'xtick',[]);
 set(gca,'ytick',[]);
 % Hint: place code in OpeningFcn to populate axes2
+
+
+% --- Executes when selected object is changed in Charac_displayed.
+function Charac_displayed_SelectionChangedFcn(hObject, eventdata, handles)
+% hObject    handle to the selected object in Charac_displayed 
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on slider movement.
+function t_slider_Callback(hObject, eventdata, handles)
+% hObject    handle to t_slider (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function t_slider_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to t_slider (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end

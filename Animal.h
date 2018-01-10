@@ -34,6 +34,7 @@ double get_force() const;
 double get_rep_threshold() const;
 unsigned int get_nb_moves() const;
 unsigned int get_nb_offspring() const;
+unsigned int get_mouth_size() const;
 double get_energy() const;
 
 protected:
