@@ -1,20 +1,9 @@
 % Parametres physiques :
 L = 100
 plants = 2000
-<<<<<<< HEAD
-<<<<<<< HEAD
-animals = 1100
-tfin = 10000
-write data = false
-=======
-animals = 1000
-tfin = 100
-=======
 animals = 600
 tfin = 500
->>>>>>> 6b3389449abd7956050119bb23ca1c5f2fce7258
 write data = true
->>>>>>> 5b59cb018ee65d40f6adb2aa30a3f7f56c0a2519
 evolution = true
 feeding = exponential
 Animal zone = whole
