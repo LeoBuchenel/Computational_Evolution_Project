@@ -5,6 +5,9 @@
 #include "Grid.h"
 #include "Animal.h"
 
+
+enum Impact{HalveRate, DoubleRate}; 
+
 class Ecosystem
 {
 private:
@@ -12,8 +15,10 @@ Zone plant_zone;
 Zone animal_zone;
 Grid* grid;
 std::vector<Animal*> animal_list;
+double FeedRate;
+
 public:
-Ecosystem(Grid*, Zone const&, Zone const&,unsigned int, unsigned int);
+Ecosystem(Grid*, Zone const&, Zone const&,unsigned int, unsigned int, double);
 ~Ecosystem();
 void move();
 void animal_reproduce(bool);
@@ -40,8 +45,7 @@ void write(std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostr
 
 
 void animal_eat();
-
-
+void envImpact(Impact impact);
 
 void iteration(std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, bool, bool, std::string);
 };

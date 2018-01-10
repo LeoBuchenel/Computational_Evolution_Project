@@ -11,7 +11,6 @@ GeneticData::GeneticData(){
         nb_offspring = y;
         double b = (std::rand() % 100) + 1;
         repr_threshold = b;
-
  */
         force =  50.;
         nb_moves = 2;

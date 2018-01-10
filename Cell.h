@@ -19,11 +19,11 @@ void addFood(unsigned int food = 1);
 unsigned int decreaseFood(unsigned int = 1);
 //Return number of food eaten by the animal(energy depend on nbEaten)
 void sortAnimals();
-size_t nBAnimals_on_cell(){
+std::size_t nBAnimals_on_cell(){
 								return animal_list.size();
 }
 
-Animal* getAnimal_on_cell(size_t n){
+Animal* getAnimal_on_cell(std::size_t n){
 								return animal_list[n];
 }
 
