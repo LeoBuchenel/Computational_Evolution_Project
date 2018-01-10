@@ -40,6 +40,10 @@ unsigned int Animal::get_nb_offspring() const {
         return genetic_data.GeneticData::get_nb_offspring();
 }
 
+unsigned int Animal::get_mouth_size() const {
+        return genetic_data.GeneticData::get_mouth_size();
+}
+
 double Animal::get_energy() const {
         return energy;
 }
@@ -107,8 +111,12 @@ std::vector<unsigned int> Animal::move(Grid* grid){
 
 void Animal::eat() {
         //decreasefood retourne la quantité de food que l'animal mange
-        if(position->decreaseFood()!=0) {
-                energy+=70.;
+
+        // the animal eats all the food he can on the cell
+        for(size_t i(0); i < this->genetic_data.get_mouth_size(); ++i) {
+                if(position->decreaseFood()!=0) {
+                        energy+=70.;
+                }
         }
 }
 

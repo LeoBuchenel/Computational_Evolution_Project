@@ -2,22 +2,22 @@ function buttonsCallback(hObject, eventdata,extension)
 global time animalNb force nbMoves nbOffspring reproThreshold charac maxCharac
 
 if strcmp(get(hObject, 'tag'), 'load')
-    
+    dname = uigetdir('C:\Users\Su Yeon Chang\Documents\Imperial\Term1\Project\Projet171207');
     ext = get(extension, 'string');
     if exist(strcat('system_param_',ext,'.out'), 'file')
         h = waitbar(0,'Loading');
-        userdata = load(strcat('system_param_',ext,'.out'));
-        data = load(['plant_', ext, '.out']);
+        userdata = load(strcat(dname, '\system_param_',ext,'.out'));
+        data = load([dname, '\plant_', ext, '.out']);
         waitbar(0.15);
-        data2 = load(['animal_pos_', ext, '.out']);
+        data2 = load([dname,'\animal_pos_', ext, '.out']);
         waitbar(0.3);
-        data3 = load(['animal_force_', ext, '.out']);
+        data3 = load([dname,'\animal_force_', ext, '.out']);
         waitbar(0.45);
-        data4 = load(['animal_nb_moves_', ext, '.out']);
+        data4 = load([dname,'\animal_nb_moves_', ext, '.out']);
         waitbar(0.6);
-        data5 = load(['animal_nb_offspring_', ext, '.out']);
+        data5 = load([dname,'\animal_nb_offspring_', ext, '.out']);
         waitbar(0.75);
-        data6 = load(['animal_repro_threshold_', ext, '.out']);
+        data6 = load([dname,'\animal_repro_threshold_', ext, '.out']);
         waitbar(0.9);
         N = sqrt(size(data,2));
         tfin = size(data,1);

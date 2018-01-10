@@ -1,5 +1,6 @@
 #include "Ecosystem.h"
 
+//enum Impact{HalveRate, DoubleRate}; 
 
 Ecosystem::~Ecosystem(){
 								for(size_t i(0); i<animal_list.size(); ++i)
@@ -10,8 +11,9 @@ Ecosystem::~Ecosystem(){
 
 
 Ecosystem::Ecosystem(Grid* grid, Zone const& animal_zone, Zone const& plant_zone,
-																					unsigned int animals, unsigned int plants)
-								: plant_zone(plant_zone), animal_zone(animal_zone), grid(grid)
+																					unsigned int animals, unsigned int plants,
+																					double rate)
+								: plant_zone(plant_zone), animal_zone(animal_zone), grid(grid), FeedRate(rate)
 {
 								unsigned int animal_zone_size(animal_zone.size());
 								unsigned int plant_zone_size(plant_zone.size());
@@ -111,11 +113,10 @@ std::ostream& Ecosystem::write_animalPos(std::ostream& os) const
 								}
 								return os;
 }
-
 std::ostream &Ecosystem::write_systParam(std::ostream &os) const
 {
 								unsigned long long int Animals(0);
-								double meanForce(0.), meanEnergy(0.), meanNumberofMoves(0.), meanOffsprings(0.), meanReprThreshold(0.);
+								double meanForce(0.), meanEnergy(0.), meanNumberofMoves(0.), meanOffsprings(0.), meanReprThreshold(0.), meanMouthSize(0.);
 								for (auto const org : animal_list) {
 																if (org->isAlive()) {
 																								Animals++;
@@ -124,6 +125,7 @@ std::ostream &Ecosystem::write_systParam(std::ostream &os) const
 																								meanNumberofMoves+=(org->get_nb_moves()*1.0);
 																								meanOffsprings+=(org->get_nb_offspring()*1.0);
 																								meanReprThreshold+=(org->get_rep_threshold()*1.0);
+																								meanMouthSize+=(org->get_mouth_size()*1.0);
 																}else{
 																								std::cout << "There is a dead organism in the animals list" << std::endl;
 																}
@@ -155,23 +157,22 @@ std::ostream& Ecosystem::write_Plant(std::ostream& os) const
 void Ecosystem::food_reproduce(std::string feeding)
 {
 								if(feeding == "exponential") {
-																reproduce(plant_zone, 0.07, grid->getNbFood());// plants reproduce exponentially
+									reproduce(plant_zone, FeedRate, grid->getNbFood());// plants reproduce exponentially
 								}else{
-																if(feeding == "constant") {
-																								reproduce(plant_zone, 0.05, (grid->size())*(grid->size()));
-																}else{
-																								std::cout << feeding << std::endl;
-																								std::cout << "Please type valid feeding"<<std::endl;
-																}
+									if(feeding == "constant") {
+										reproduce(plant_zone, FeedRate, (grid->size())*(grid->size()));
+									}else{
+										std::cout << feeding << std::endl;
+										std::cout << "Please type valid feeding"<<std::endl;
+									}
 								}
 
 
 }
 
-
-void Ecosystem::iteration(std::ostream& osXY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT, bool DataWrite, bool Evolution, std::string feeding){
+void Ecosystem::iteration(std::ostream& osXY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT, std::ostream& osMS, bool DataWrite, bool Evolution, std::string feeding){
 								if(DataWrite) {
-																this->write(osXY, osP, osS, osF, osNM, osNO, osRT);
+																this->write(osXY, osP, osS, osF, osNM, osNO, osRT, osMS);
 								}                                                          //writes the position of every animal, the plant density per cell and the system parameters
 								this->move();
 								this->die();
@@ -181,7 +182,7 @@ void Ecosystem::iteration(std::ostream& osXY, std::ostream& osP, std::ostream& o
 								this->food_reproduce(feeding);
 }
 
-void Ecosystem::write(std::ostream& osXY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT){
+void Ecosystem::write(std::ostream& osXY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT, std::ostream& osMS){
 								//this->write_animalX(osX);
 								//osX << std::endl;
 								//this->write_animalY(osY);
@@ -203,9 +204,10 @@ void Ecosystem::write(std::ostream& osXY, std::ostream& osP, std::ostream& osS, 
 								osNO << std::endl;
 								this->write_animalReproThr(osRT);
 								osRT << std::endl;
+								this->write_animalMouthSize(osMS);
+								osMS << std::endl;
 
 }
-
 
 void Ecosystem::animal_eat(){
 								for(size_t i(0); i<animal_list.size(); ++i) {
@@ -294,6 +296,25 @@ std::ostream& Ecosystem::write_animalReproThr(std::ostream& os) const
 								return os;
 }
 
+std::ostream& Ecosystem::write_animalMouthSize(std::ostream&  os) const {
+								for(size_t i(0); i < (*grid).size(); ++i) {
+																for(size_t j(0); j < (*grid).size(); ++j) { //works because grid is square
+																								double meanMS = 0.;
+																								size_t nbAnimals = grid->getCell(i,j)->nBAnimals_on_cell();
+																								for(size_t k(0); k < nbAnimals; k++)
+																								{
+																																Animal* currentAnimal = grid->getCell(i,j)->getAnimal_on_cell(k);
+																																meanMS+=1./nbAnimals*currentAnimal->get_mouth_size();
+																								}
+
+																								os << meanMS << " ";
+																}
+								}
+								return os;
+}
+
+
+
 void Ecosystem::die()
 {
 								if(!animal_list.empty()) {
@@ -337,4 +358,23 @@ void Ecosystem::die()
 
 bool Ecosystem::died_out() const {
 								return (animal_list.empty())or (grid->getNbFood()==0);
+}
+
+
+void Ecosystem::envImpact(Impact impact)
+{
+	
+	std::cout << "Environmental Impact : ";
+	if(impact == HalveRate){
+		std::cout << "Halve Feeding rate";
+		FeedRate /= 10.0;
+	} else if(impact == DoubleRate){
+		FeedRate *= 2.0;
+		std::cout << "Double Feeding rate";
+	}
+	
+	std::cout << std::endl;
+	
+	
+	
 }
