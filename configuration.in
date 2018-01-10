@@ -2,7 +2,7 @@
 L = 100
 plants = 2000
 animals = 600
-tfin = 500
+tfin = 100
 write data = true
 evolution = true
 feeding = exponential

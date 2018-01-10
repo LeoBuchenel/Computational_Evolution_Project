@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
         string food_reproduce = configFile.get<string>("feeding");
 
         string extension = configFile.get<string>("output");
-
+        string path = "Results/";
         srand(time(NULL) +clock()); // seeds the random number generator
         //(added clock() in the case of multiple simulations at the same second)
 
@@ -67,17 +67,17 @@ int main(int argc, char *argv[]) {
         ofstream write_AnimalPos, write_Plant, write_SystemParam, write_AnimalParamBegin, write_AnimalParamEnd, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr, write_AnimalMouthSize, endTime;
         //write_AnimalX.open("animal_x_"+extension+".out");
         //write_AnimalY.open("animal_y_"+extension+".out");
-        write_AnimalPos.open("animal_pos_"+extension+".out");
-        write_Plant.open("plant_"+extension+".out");
-        write_SystemParam.open("system_param_"+extension+".out");
-        write_AnimalParamBegin.open("animal_param_begin_"+extension+".out");
-        write_AnimalParamEnd.open("animal_param_end_"+extension+".out");
-        write_AnimalForce.open("animal_force_"+extension+".out");
-        write_AnimalNbMoves.open("animal_nb_moves_"+extension+".out");
-        write_AnimalNbOff.open("animal_nb_offspring_"+extension+".out");
-        write_AnimalReproThr.open("animal_repro_threshold_"+extension+".out");
-        write_AnimalMouthSize.open("animal_mouth_size_"+extension+".out");
-        endTime.open("tfin.out");
+        write_AnimalPos.open(path+"animal_pos_"+extension+".out");
+        write_Plant.open(path+"plant_"+extension+".out");
+        write_SystemParam.open(path+"system_param_"+extension+".out");
+        write_AnimalParamBegin.open(path+"animal_param_begin_"+extension+".out");
+        write_AnimalParamEnd.open(path+"animal_param_end_"+extension+".out");
+        write_AnimalForce.open(path+"animal_force_"+extension+".out");
+        write_AnimalNbMoves.open(path+"animal_nb_moves_"+extension+".out");
+        write_AnimalNbOff.open(path+"animal_nb_offspring_"+extension+".out");
+        write_AnimalReproThr.open(path+"animal_repro_threshold_"+extension+".out");
+        write_AnimalMouthSize.open(path+"animal_mouth_size_"+extension+".out");
+        endTime.open(path+"tfin.out");
 
         ecosystem.write_AnimalParam(write_AnimalParamBegin);
 
