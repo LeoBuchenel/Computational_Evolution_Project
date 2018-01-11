@@ -6,7 +6,7 @@ tfin = 1000
 write data = true
 evolution = true
 feeding = constant
-Feeding Rate = 0.2
+feeding rate = 2.0
 
 Animal zone = whole
 Animal zone parameter 1 = 0
@@ -19,6 +19,6 @@ Plant zone parameter 2 = 0
 Plant zone parameter 3 = 100
 Plant zone parameter 4 = 100
 
-output = test_true4
+output = test
 
 % good values L = 100, plants = 200, animals = 50

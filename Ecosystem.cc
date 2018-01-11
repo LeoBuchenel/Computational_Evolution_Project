@@ -1,6 +1,6 @@
 #include "Ecosystem.h"
 
-//enum Impact{HalveRate, DoubleRate}; 
+//enum Impact{HalveRate, DoubleRate};
 
 Ecosystem::~Ecosystem(){
 								for(size_t i(0); i<animal_list.size(); ++i)
@@ -157,16 +157,15 @@ std::ostream& Ecosystem::write_Plant(std::ostream& os) const
 void Ecosystem::food_reproduce(std::string feeding)
 {
 								if(feeding == "exponential") {
-									reproduce(plant_zone, FeedRate, grid->getNbFood());// plants reproduce exponentially
+																reproduce(plant_zone, FeedRate, grid->getNbFood());// plants reproduce exponentially
 								}else{
-									if(feeding == "constant") {
-										reproduce(plant_zone, FeedRate, (grid->size())*(grid->size()));
-									}else{
-										std::cout << feeding << std::endl;
-										std::cout << "Please type valid feeding"<<std::endl;
-									}
+																if(feeding == "constant") {
+																								reproduce(plant_zone, FeedRate, (grid->size())*(grid->size()));
+																}else{
+																								std::cout << feeding << std::endl;
+																								std::cout << "Please type valid feeding"<<std::endl;
+																}
 								}
-
 
 }
 
@@ -363,18 +362,18 @@ bool Ecosystem::died_out() const {
 
 void Ecosystem::envImpact(Impact impact)
 {
-	
-	std::cout << "Environmental Impact : ";
-	if(impact == HalveRate){
-		std::cout << "Halve Feeding rate";
-		FeedRate /= 10.0;
-	} else if(impact == DoubleRate){
-		FeedRate *= 2.0;
-		std::cout << "Double Feeding rate";
-	}
-	
-	std::cout << std::endl;
-	
-	
-	
+
+								std::cout << "Environmental Impact : ";
+								if(impact == HalveRate) {
+																std::cout << "Halve Feeding rate";
+																FeedRate /= 2.0;
+								} else if(impact == DoubleRate) {
+																FeedRate *= 2.0;
+																std::cout << "Double Feeding rate";
+								}
+
+								std::cout << std::endl;
+
+
+
 }

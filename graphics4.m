@@ -2,18 +2,20 @@
 close all; 
 clear all;
 
+path = 'Results/';
+
 ft = fittype( 'a*x-b*x*y', ...
     'independent', {'x', 'y'}, 'dependent', 'z',...,
     'coefficients', {'a','b'} );
 
-data = load('plant_test.out');
+data = load(strcat(path,'plant_test.out'));
 N = sqrt(size(data,2)); % N = L-1
 tfin = size(data,1);
 
-sys_param = load('system_param_test.out');
-animal_param_begin = load('animal_param_begin_test.out');
-animal_param_end = load('animal_param_end_test.out');
-data2 = load('animal_pos_test.out');
+sys_param = load(strcat(path,'system_param_test.out'));
+animal_param_begin = load(strcat(path,'animal_param_begin_test.out'));
+animal_param_end = load(strcat(path,'animal_param_end_test.out'));
+data2 = load(strcat(path,'animal_pos_test.out'));
 
 t = [0:tfin-1];
 
