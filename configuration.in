@@ -3,10 +3,14 @@ L = 100
 plants = 2000
 animals = 600
 tfin = 1000
+
 write data = true
 evolution = true
 feeding = constant
-feeding rate = 2.0
+feeding rate = 0.02
+
+shock at t = 500
+shock parameter = 0.2  %for now it's by what we multiply the feeding rate at shock
 
 Animal zone = whole
 Animal zone parameter 1 = 0

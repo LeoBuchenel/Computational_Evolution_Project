@@ -12,8 +12,8 @@ Ecosystem::~Ecosystem(){
 
 Ecosystem::Ecosystem(Grid* grid, Zone const& animal_zone, Zone const& plant_zone,
 																					unsigned int animals, unsigned int plants,
-																					double rate)
-								: plant_zone(plant_zone), animal_zone(animal_zone), grid(grid), FeedRate(rate)
+																					double rate, double shock)
+								: plant_zone(plant_zone), animal_zone(animal_zone), grid(grid), FeedRate(rate), shock_parameter(shock)
 {
 								unsigned int animal_zone_size(animal_zone.size());
 								unsigned int plant_zone_size(plant_zone.size());
@@ -364,13 +364,31 @@ void Ecosystem::envImpact(Impact impact)
 {
 
 								std::cout << "Environmental Impact : ";
-								if(impact == HalveRate) {
-																std::cout << "Halve Feeding rate";
+								switch(impact) {
+								case HalveRate:
+																std::cout << "Halve feeding rate";
 																FeedRate /= 2.0;
-								} else if(impact == DoubleRate) {
+																break;
+								case DoubleRate:
+																std::cout << "Double feeding rate";
 																FeedRate *= 2.0;
-																std::cout << "Double Feeding rate";
+																break;
+								case MultiplyRate:
+																std::cout << "Multiply feeding rate by " << shock_parameter;
+																FeedRate *= shock_parameter;
+																break;
+								default: break;
 								}
+
+/*
+        if(impact == HalveRate) {
+                std::cout << "Halve Feeding rate";
+                FeedRate /= 2.0;
+        } else if(impact == DoubleRate) {
+                FeedRate *= 2.0;
+                std::cout << "Double Feeding rate";
+        }
+ */
 
 								std::cout << std::endl;
 

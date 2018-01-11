@@ -35,6 +35,8 @@ int main(int argc, char *argv[]) {
         unsigned int nb_animals = configFile.get<unsigned int>("animals");
         unsigned int tfin = configFile.get<unsigned int>("tfin");
         double FeedRate = configFile.get<double>("feeding rate");
+        double shock_parameter = configFile.get<double>("shock parameter");
+        unsigned int shock_time = configFile.get<unsigned int>("shock at t");
 
         string animalForm = configFile.get<string>("Animal zone");
         unsigned int AnimalParam1 = configFile.get<unsigned int>("Animal zone parameter 1");
@@ -64,7 +66,7 @@ int main(int argc, char *argv[]) {
         Zone plantZone = grid.getZone(plantForm, PlantParam1, PlantParam2, PlantParam3, PlantParam4);
 
 
-        Ecosystem ecosystem(&grid, animalZone, plantZone, nb_animals, nb_plants, FeedRate);
+        Ecosystem ecosystem(&grid, animalZone, plantZone, nb_animals, nb_plants, FeedRate, shock_parameter);
 
         ofstream write_AnimalPos, write_Plant, write_SystemParam, write_AnimalParamBegin, write_AnimalParamEnd, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr, write_AnimalMouthSize, endTime;
         write_AnimalPos.open(path+"animal_pos_"+extension+".out");
@@ -83,8 +85,8 @@ int main(int argc, char *argv[]) {
 
         for(size_t t(0); t<tfin; ++t) {
 
-                if(t == 500) {
-                        ecosystem.envImpact(HalveRate); // What is HalveRate?
+                if(t == shock_time) {
+                        ecosystem.envImpact(MultiplyRate);
                 }
 
                 // if(t == 600){

@@ -6,7 +6,7 @@
 #include "Animal.h"
 
 
-enum Impact{HalveRate, DoubleRate}; 
+enum Impact {HalveRate, DoubleRate,MultiplyRate};
 
 class Ecosystem
 {
@@ -16,9 +16,10 @@ Zone animal_zone;
 Grid* grid;
 std::vector<Animal*> animal_list;
 double FeedRate;
+double shock_parameter;
 
 public:
-Ecosystem(Grid*, Zone const&, Zone const&,unsigned int, unsigned int, double);
+Ecosystem(Grid*, Zone const&, Zone const&,unsigned int, unsigned int, double, double);
 ~Ecosystem();
 void move();
 void animal_reproduce(bool);
