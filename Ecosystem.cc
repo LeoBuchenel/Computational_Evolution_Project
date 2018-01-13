@@ -3,52 +3,49 @@
 //enum Impact{HalveRate, DoubleRate}; 
 
 Ecosystem::~Ecosystem(){
-								for(size_t i(0); i<animal_list.size(); ++i)
-								{
-																delete animal_list[i];
-								}
+	for(size_t i(0); i<animal_list.size(); ++i)
+		{
+			delete animal_list[i];
+		}
 }
 
 
 Ecosystem::Ecosystem(Grid* grid, Zone const& animal_zone, Zone const& plant_zone,
-																					unsigned int animals, unsigned int plants,
-																					double rate)
-								: plant_zone(plant_zone), animal_zone(animal_zone), grid(grid), FeedRate(rate)
+						unsigned int animals, unsigned int plants, double feedingRate, double mutationRate)
+: plant_zone(plant_zone), animal_zone(animal_zone), grid(grid), FeedRate(feedingRate)
 {
-								unsigned int animal_zone_size(animal_zone.size());
-								unsigned int plant_zone_size(plant_zone.size());
-								for (size_t i(0); i < animals; ++i) {
-																unsigned int n(std::rand() % animal_zone_size);
-																Animal* ptr(new Animal(animal_zone[n]));
-																animal_list.push_back(ptr);
-								}
+	unsigned int animal_zone_size(animal_zone.size());
+	unsigned int plant_zone_size(plant_zone.size());
+	for (size_t i(0); i < animals; ++i) {
+		unsigned int n(std::rand() % animal_zone_size);
+		Animal* ptr(new Animal(animal_zone[n], mutationRate));
+		animal_list.push_back(ptr);
+	}
 
-								for(size_t i(0); i < plants; ++i) {
-																unsigned int n(std::rand() % plant_zone_size);
-																plant_zone[n]->addFood();
-								}
+	for(size_t i(0); i < plants; ++i) {
+		unsigned int n(std::rand() % plant_zone_size);
+		plant_zone[n]->addFood();
+	}
 
-								for(size_t i(0); i < plant_zone.size(); ++i) {
-																plant_zone[i]->set_exist_food(true);
-																// gives the cell the right to reproduce food
-																// (cell is marked as "food can exist here")
-								}
-
-
+	for(size_t i(0); i < plant_zone.size(); ++i) {
+		plant_zone[i]->set_exist_food(true);
+		// gives the cell the right to reproduce food
+		// (cell is marked as "food can exist here")
+	}
 }
 
 void Ecosystem::move()
 {
-								for(auto const& obj:animal_list) {
-																if(obj->isAlive()) {
-																								Cell* oldCell(obj->get_Position());
-																								oldCell->removeAnimal(obj);
-																								std::vector<unsigned int> newPosition(obj->move(grid));
-																								Cell* newCell(grid->getCell(newPosition[0], newPosition[1]));
-																								newCell->addAnimal(obj);
-																								obj->changeCell(newCell);
-																}
-								}
+	for(auto const& obj:animal_list) {
+		if(obj->isAlive()) {
+			Cell* oldCell(obj->get_Position());
+			oldCell->removeAnimal(obj);
+			std::vector<unsigned int> newPosition(obj->move(grid));
+			Cell* newCell(grid->getCell(newPosition[0], newPosition[1]));
+			newCell->addAnimal(obj);
+			obj->changeCell(newCell);
+		}
+	}
 }
 
 void Ecosystem::animal_reproduce(bool Evolution)
@@ -357,7 +354,7 @@ void Ecosystem::die()
 }
 
 bool Ecosystem::died_out() const {
-								return (animal_list.empty())or (grid->getNbFood()==0);
+	return (animal_list.empty())or (grid->getNbFood()==0);
 }
 
 

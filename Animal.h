@@ -12,7 +12,7 @@ class Grid;
 class Animal {
 public:
 
-Animal(Cell*);                        // initializes animal with random genetic data
+Animal(Cell*, double);                // initializes animal with random genetic data and given mutation rate
 Animal(Cell*, GeneticData, double);   // constructor with position, genetic_data and energy
 void eat();
 std::vector<Animal*> reproduce(bool);

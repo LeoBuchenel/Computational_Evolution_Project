@@ -18,7 +18,7 @@ std::vector<Animal*> animal_list;
 double FeedRate;
 
 public:
-Ecosystem(Grid*, Zone const&, Zone const&,unsigned int, unsigned int, double);
+Ecosystem(Grid*, Zone const&, Zone const&,unsigned int, unsigned int, double, double);
 ~Ecosystem();
 void move();
 void animal_reproduce(bool);

@@ -34,7 +34,8 @@ int main(int argc, char *argv[]) {
         unsigned int nb_plants = configFile.get<unsigned int>("plants");
         unsigned int nb_animals = configFile.get<unsigned int>("animals");
         unsigned int tfin = configFile.get<unsigned int>("tfin");
-        //double FeedRate = configFile.get<double>("Feeding rate");
+        double FeedRate = configFile.get<double>("Feeding rate");
+        double MutationRate = configFile.get<double>("Mutation rate");
 
         string animalForm = configFile.get<string>("Animal zone");
         unsigned int AnimalParam1 = configFile.get<unsigned int>("Animal zone parameter 1");
@@ -63,7 +64,7 @@ int main(int argc, char *argv[]) {
         Zone plantZone = grid.getZone(plantForm, PlantParam1, PlantParam2, PlantParam3, PlantParam4);
 
 
-        Ecosystem ecosystem(&grid, animalZone, plantZone, nb_animals, nb_plants, 2.0);
+        Ecosystem ecosystem(&grid, animalZone, plantZone, nb_animals, nb_plants, FeedRate, MutationRate);
 
        ofstream write_AnimalPos, write_Plant, write_SystemParam, write_AnimalParamBegin, write_AnimalParamEnd, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr, write_AnimalMouthSize, endTime;
         write_AnimalPos.open("animal_pos_"+extension+".out");

@@ -1,7 +1,9 @@
 #include "GeneticData.h"
 #include <iostream>
 
-GeneticData::GeneticData(){
+GeneticData::GeneticData(double rate)
+:mutation_rate(rate)
+{
 /*
         double x = (std::rand() % 100) + 1;
         force = x;
@@ -13,8 +15,8 @@ GeneticData::GeneticData(){
         repr_threshold = b;
  */
         force =  50.;
-        nb_moves = 2;
-        nb_offspring = 2;
+        nb_moves = 3;
+        nb_offspring = 3;
         repr_threshold = 50.;
         mouth_size = 1;
 
@@ -22,7 +24,7 @@ GeneticData::GeneticData(){
 
 void GeneticData::mutate(){
         double p1 = std::rand()/(RAND_MAX*1.0);
-        if(p1 < 0.1) {
+        if(p1 < mutation_rate) {
                 unsigned int characteristic = std::rand() % 5 + 1;
                 int change = std::rand() % 2;
                 if(change==0) {
@@ -79,4 +81,9 @@ unsigned int GeneticData::get_nb_moves() const {
 
 unsigned int GeneticData::get_mouth_size() const {
         return mouth_size;
+}
+
+
+double GeneticData::get_mutation_rate() const{
+	return mutation_rate;
 }

@@ -3,19 +3,23 @@
 #include <random>
 #include <iostream>
 
-Animal::Animal(Cell* cell_){
-        position = cell_;
-        genetic_data = GeneticData();
+Animal::Animal(Cell* cell_, double mutation_rate)
+: position(cell_), genetic_data(GeneticData(mutation_rate)), energy(100)
+{
+        //position = cell_;
+        //genetic_data = GeneticData(mutation_rate);
         //energy = (std::rand()%100)+1;
-        energy = 100.;
+        //energy = 100.;
         cell_->addAnimal(this);
 
 }
 
-Animal::Animal(Cell* cell_, GeneticData gd, double health){
-        position = cell_;
-        genetic_data = gd;
-        energy = health;
+Animal::Animal(Cell* cell_, GeneticData gd, double health)
+:position(cell_), genetic_data(gd), energy(health)
+{
+        //position = cell_;
+        //genetic_data = gd;
+        //energy = health;
         position->addAnimal(this);
 }
 
@@ -51,8 +55,11 @@ double Animal::get_energy() const {
 std::vector<Animal*> Animal::reproduce(bool Evolution){
         std::vector<Animal*> newborns;
         if(energy>Animal::get_rep_threshold()) {
+                //double offspringEnergy
+                   //     = 0.5*energy/(Animal::get_nb_offspring()*1.0);
+                        
                 double offspringEnergy
-                        = 0.5*energy/(Animal::get_nb_offspring()*1.0);
+                        = energy/(Animal::get_nb_offspring()*1.0 + 1.0);
                 for(std::size_t i(0); i<Animal::get_nb_offspring(); ++i) {
                         Animal* ptr = new Animal(position, genetic_data, offspringEnergy);
                         if(!this->isAlive()) {
@@ -64,7 +71,8 @@ std::vector<Animal*> Animal::reproduce(bool Evolution){
                         newborns.push_back(ptr);
 
                 }
-                energy = 0.5*energy;
+                 //  energy = 0.5*energy;
+                energy = offspringEnergy;
         }
         return newborns;
 }

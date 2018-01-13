@@ -5,17 +5,19 @@
 
 class GeneticData {
 public:
-GeneticData();   //constructs genetic data randomly
+GeneticData(double);   //constructs genetic data randomly
 double get_force() const;
 double get_rep_threshold() const;
 unsigned int get_nb_offspring() const;
 unsigned int get_nb_moves() const;
 unsigned int get_mouth_size() const;
+double get_mutation_rate() const;
 void mutate();
 
 
 
 protected:
+double mutation_rate;
 double force;
 unsigned int nb_offspring;
 double repr_threshold;
