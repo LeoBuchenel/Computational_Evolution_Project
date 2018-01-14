@@ -2,6 +2,7 @@
 #define PROJ_GENETICDATA_H
 
 
+#include <iostream>
 
 class GeneticData {
 public:
@@ -12,6 +13,9 @@ unsigned int get_nb_offspring() const;
 unsigned int get_nb_moves() const;
 unsigned int get_mouth_size() const;
 void mutate();
+
+//writes the genetic data on an external file
+std::ostream& write_genetic_data(std::ostream &) const;
 
 
 

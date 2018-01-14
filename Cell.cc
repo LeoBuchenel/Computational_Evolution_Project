@@ -45,17 +45,20 @@ void Cell::removeAnimal(Animal* const obj)
 								}
 }
 
-void Cell::food_reproduce(double proba)
-{
-								if(exist_food) {
-																double prob = (std::rand()/(RAND_MAX*1.));
-																if(prob < proba) {
-																								addFood(food_density);
-																}
 
-								}
+/*
+   void Cell::food_reproduce(double proba)
+   {
+        if(exist_food) {
+                double prob = (std::rand()/(RAND_MAX*1.));
+                if(prob < proba) {
+                        addFood(food_density);
+                }
 
-}
+        }
+
+   }
+ */
 
 
 
@@ -113,4 +116,18 @@ bool Cell::exist_animal_on_cell() const {
 																if(org->isAlive()) return true;
 								}
 								return false;
+}
+
+std::ostream & Cell::write_cell_data(std::ostream & os) const
+{
+								for(size_t i(0); i< animal_list.size(); ++i) {
+																animal_list[i]->write_animal_data(os);
+																os << ";";
+								}
+
+								os << "P " << food_density <<";";
+								os << " " << nb_food << ";";
+								os << " " << exist_food;
+
+								return os;
 }

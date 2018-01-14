@@ -9,14 +9,28 @@ Ecosystem::~Ecosystem(){
 								}
 }
 
+Ecosystem::Ecosystem(Grid* grid, Zone const& animal_zone, Zone const& plant_zone,
+																					double rate, double shock)
+								: plant_zone(plant_zone), animal_zone(animal_zone), grid(grid), FeedRate(rate), shock_parameter(shock)
+{
+
+								for(size_t i(0); i < plant_zone.size(); ++i) {
+																plant_zone[i]->set_exist_food(true);
+																// gives the cell the right to reproduce food
+																// (cell is marked as "food can exist here")
+								}
+
+}
 
 Ecosystem::Ecosystem(Grid* grid, Zone const& animal_zone, Zone const& plant_zone,
 																					unsigned int animals, unsigned int plants,
 																					double rate, double shock)
 								: plant_zone(plant_zone), animal_zone(animal_zone), grid(grid), FeedRate(rate), shock_parameter(shock)
 {
+
 								unsigned int animal_zone_size(animal_zone.size());
 								unsigned int plant_zone_size(plant_zone.size());
+
 								for (size_t i(0); i < animals; ++i) {
 																unsigned int n(std::rand() % animal_zone_size);
 																Animal* ptr(new Animal(animal_zone[n]));
@@ -34,7 +48,23 @@ Ecosystem::Ecosystem(Grid* grid, Zone const& animal_zone, Zone const& plant_zone
 																// (cell is marked as "food can exist here")
 								}
 
+}
 
+void Ecosystem::add_random(unsigned int animals, unsigned int plants)
+{
+								unsigned int animal_zone_size(animal_zone.size());
+								unsigned int plant_zone_size(plant_zone.size());
+
+								for (size_t i(0); i < animals; ++i) {
+																unsigned int n(std::rand() % animal_zone_size);
+																Animal* ptr(new Animal(animal_zone[n]));
+																animal_list.push_back(ptr);
+								}
+
+								for(size_t i(0); i < plants; ++i) {
+																unsigned int n(std::rand() % plant_zone_size);
+																plant_zone[n]->addFood();
+								}
 }
 
 void Ecosystem::move()
@@ -393,5 +423,69 @@ void Ecosystem::envImpact(Impact impact)
 								std::cout << std::endl;
 
 
+
+}
+
+
+
+std::ostream& Ecosystem::write_ecosystem_data(std::ostream & os) const
+{
+								size_t L = grid->size();
+								for(size_t x(0); x < L; ++x) {
+																for(size_t y(0); y < L; ++y) {
+																								grid->getCell(x,y)->write_cell_data(os);
+																								os << std::endl;
+																}
+								}
+								return os;
+}
+
+std::ostream& Ecosystem::save_ecosystem(std::vector<std::string> strings,std::vector<unsigned int> numbers,std::ostream & os, unsigned int t) const {
+								//strings : 0 : animalform, 1 : plantForm
+								//numbers : 0 1 2 3 : AnimalParam 1 2 3 4, 4 5 6 7 : PlantParam 1 2 3 4, 8 : grid size
+								os << '%'
+											<< " Savefile of the following system at time t = "
+											<< t
+											<<" automatically generated on ";
+								std::time_t end_time =std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+								os << std::ctime(&end_time);
+								os << strings[0] << " " << strings[1] << " " << std::endl;
+								for(size_t i(0); i < numbers.size(); ++i)
+								{
+																os << numbers[i] << " ";
+								}
+								os << std::endl;
+								os << '%' << " Cells information ======== " << std::endl;
+								write_ecosystem_data(os);
+
+
+								return os;
+}
+
+std::ifstream& Ecosystem::add_from_file(std::ifstream& loadfile)
+{
+								//IMPORTANT : THIS ASSUMES WE START RIGHT AT THE GOOD LINE
+								std::string test;
+								size_t L = grid->size();
+								for(size_t x(0); x < L; ++x) {
+																for(size_t y(0); y < L; ++y)
+																{
+																								//add animals first
+																								getline(loadfile, test, 'P');
+																								std::cout << "Animal scan result : " << test << std::endl;
+																								test.clear();
+
+																								//add plant's characteristics second
+																								getline(loadfile, test);
+																								std::cout << "Plant scan result : " << test << std::endl;
+																								test.clear();
+
+																}
+								}
+
+
+
+
+								return loadfile;
 
 }

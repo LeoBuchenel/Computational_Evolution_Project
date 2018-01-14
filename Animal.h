@@ -6,6 +6,7 @@
 #include "GeneticData.h"
 #include "Cell.h"
 #include <vector>
+#include <iostream>
 
 class Grid;
 
@@ -36,6 +37,8 @@ unsigned int get_nb_moves() const;
 unsigned int get_nb_offspring() const;
 unsigned int get_mouth_size() const;
 double get_energy() const;
+
+std::ostream& write_animal_data(std::ostream&) const; //writes animal's genetic data and energy
 
 protected:
 Cell* position;

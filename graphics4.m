@@ -2,6 +2,8 @@
 close all; 
 clear all;
 
+%path = '/Users/leobuchenelepfl/Google Drive/3eme_annee/ICL/Courses/Project/Code/Simulations presented to Dave/11 Jan/2 to 0.02 feeding rate/Results/';
+%path = '/Users/leobuchenelepfl/Google Drive/3eme_annee/ICL/Courses/Project/Code/Simulations presented to Dave/11 Jan/2 to 1 feeding rate/';
 path = 'Results/';
 
 ft = fittype( 'a*x-b*x*y', ...

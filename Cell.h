@@ -2,6 +2,7 @@
 #define CELL_H
 
 #include <vector>
+#include <iostream>
 
 class Animal;
 
@@ -14,7 +15,7 @@ void initialiseFood(unsigned int, unsigned int);
 void addAnimal(std::vector<Animal*> const&);
 void addAnimal(Animal* const&); //places the Animal on said cell
 void removeAnimal(Animal* const);
-void food_reproduce(double);
+//void food_reproduce(double);
 void addFood(unsigned int food = 1);
 unsigned int decreaseFood(unsigned int = 1);
 //Return number of food eaten by the animal(energy depend on nbEaten)
@@ -38,6 +39,8 @@ unsigned long long int getNbFood() const {
 }
 
 void set_exist_food(bool);
+std::ostream& write_cell_data(std::ostream& ) const;
+
 
 bool exist_animal_on_cell() const;
 
@@ -47,7 +50,7 @@ unsigned int y;
 std::vector<Animal*> animal_list;
 unsigned int food_density;
 unsigned long long int nb_food;
-bool exist_food;
+bool exist_food; //
 
 };
 

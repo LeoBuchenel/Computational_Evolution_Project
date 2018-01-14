@@ -143,3 +143,12 @@ Animal::~Animal()
         position->removeAnimal(this);
 
 }
+
+std::ostream& Animal::write_animal_data(std::ostream& os) const
+{
+        genetic_data.write_genetic_data(os);
+        os << " " << energy;
+
+        return os;
+
+}

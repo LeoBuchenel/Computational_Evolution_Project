@@ -80,3 +80,15 @@ unsigned int GeneticData::get_nb_moves() const {
 unsigned int GeneticData::get_mouth_size() const {
         return mouth_size;
 }
+
+std::ostream& GeneticData::write_genetic_data(std::ostream & os) const
+{
+        os << force << " ";
+        os << nb_offspring << " ";
+        os << repr_threshold << " ";
+        os << nb_moves << " ";
+        os << mouth_size;
+
+        return os;
+
+}
