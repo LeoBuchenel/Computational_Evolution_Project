@@ -2,12 +2,15 @@
 #define ECOSYSTEM_H
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <chrono>
+#include <ctime>
 #include <string>
 #include "Grid.h"
 #include "Animal.h"
 
 
-enum Impact{HalveRate, DoubleRate}; 
+enum Impact {HalveRate, DoubleRate,MultiplyRate};
 
 class Ecosystem
 {
@@ -17,11 +20,24 @@ Zone animal_zone;
 Grid* grid;
 std::vector<Animal*> animal_list;
 double FeedRate;
+double shock_parameter;
 
 public:
-Ecosystem(Grid*, Zone const&, Zone const&,unsigned int, unsigned int, double, double);
+
+//last two doubles in the constructors stand for rate and shock
+
+//old version, if we want to inialize plants and animals randomly directly, better use next one and add_random function
+Ecosystem(Grid*, Zone const&, Zone const&,unsigned int, unsigned int, double, double,double);
+Ecosystem(Grid*, Zone const&, Zone const&,double, double);
 ~Ecosystem();
 void move();
+
+//adds randomly a given number of plants and animals to the grid
+void add_random(unsigned int, unsigned int, double);
+
+//adds animals and plants as given in a external file
+std::ifstream& add_from_file(std::ifstream&);
+
 void animal_reproduce(bool);
 void food_reproduce(std::string);
 bool died_out() const;
@@ -48,8 +64,14 @@ std::ostream& write_cellNbOff(std::ostream&) const;
 std::ostream& write_cellReproThr(std::ostream&) const;
 std::ostream& write_cellMouthSize(std::ostream&) const;
 
-void write(std::vector<std::ofstream*>, std::string);
 
+//writes the distribution of plants and animals on the grid with their genetic data
+std::ostream& write_ecosystem_data(std::ostream & ) const;
+
+//saves the ecosystem so it can be reloaded later
+std::ostream& save_ecosystem(std::vector<std::string>, std::vector<unsigned int>, std::ostream &, unsigned int) const;
+
+void write(std::vector<std::ofstream*>, std::string);
 
 void animal_eat();
 void envImpact(Impact impact);

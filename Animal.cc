@@ -55,9 +55,6 @@ double Animal::get_energy() const {
 std::vector<Animal*> Animal::reproduce(bool Evolution){
         std::vector<Animal*> newborns;
         if(energy>Animal::get_rep_threshold()) {
-                //double offspringEnergy
-                   //     = 0.5*energy/(Animal::get_nb_offspring()*1.0);
-                        
                 double offspringEnergy
                         = energy/(Animal::get_nb_offspring()*1.0 + 1.0);
                 for(std::size_t i(0); i<Animal::get_nb_offspring(); ++i) {
@@ -71,7 +68,6 @@ std::vector<Animal*> Animal::reproduce(bool Evolution){
                         newborns.push_back(ptr);
 
                 }
-                 //  energy = 0.5*energy;
                 energy = offspringEnergy;
         }
         return newborns;
@@ -149,5 +145,14 @@ void Animal::evolve(){
 Animal::~Animal()
 {
         position->removeAnimal(this);
+
+}
+
+std::ostream& Animal::write_animal_data(std::ostream& os) const
+{
+        genetic_data.write_genetic_data(os);
+        os << " " << energy;
+
+        return os;
 
 }

@@ -1,10 +1,10 @@
 #include "GeneticData.h"
 #include <iostream>
 
+
 GeneticData::GeneticData(double rate)
 :mutation_rate(rate)
-{
-/*
+{/*
         double x = (std::rand() % 100) + 1;
         force = x;
         unsigned int a = (std::rand() % 5) + 1;
@@ -22,17 +22,24 @@ GeneticData::GeneticData(double rate)
 
 }
 
+GeneticData::GeneticData(double force_, unsigned int nb_offspring_, double repr_threshold_,
+						unsigned int nb_moves_, unsigned int mouth_size_, double rate)
+: mutation_rate(rate), force(force_), nb_offspring(nb_offspring_),
+ repr_threshold(repr_threshold_), nb_moves(nb_moves_), mouth_size(mouth_size_)
+{}
+
+
 void GeneticData::mutate(){
         double p1 = std::rand()/(RAND_MAX*1.0);
         if(p1 < mutation_rate) {
-                unsigned int characteristic = std::rand() % 2 + 1;
+                unsigned int characteristic = std::rand() % 5 + 1;
                 int change = std::rand() % 2;
                 if(change==0) {
                         change =-1;
                 }
 
                 switch (characteristic) {
-                /*case 1: if(force>1 || change > -1) {
+                case 1: if(force>1 || change > -1) {
                                 force+=5*change;
                                 //std::cout << "force mutated" << std::endl;
                 }
@@ -41,20 +48,20 @@ void GeneticData::mutate(){
                                 //std::cout << "Moves mutated from " << nb_moves;
                                 nb_moves+=change;
                                 //std::cout << "Number of moves mutated" << std::endl;
-                } break;*/
-                case 1: if(nb_offspring>1 || change > -1) {
+                } break;
+                case 3: if(nb_offspring>1 || change > -1) {
                                 nb_offspring+=change;
                                 //std::cout << "Number of offsprings mutated" << std::endl;
                 } break;
-                case 2: if(repr_threshold>1 || change > -1) {
+                case 4: if(repr_threshold>1 || change > -1) {
                                 repr_threshold+=5*change;
                                 //std::cout << "Reproduction threshold mutated" << std::endl;
                 } break;
-				/*
+
                 case 5: if(mouth_size > 1 || change > -1) {
                                 mouth_size += change;
                 } break;
-				*/
+
 
                 default: break;
                 }
@@ -83,7 +90,21 @@ unsigned int GeneticData::get_mouth_size() const {
         return mouth_size;
 }
 
-
 double GeneticData::get_mutation_rate() const{
 	return mutation_rate;
+}
+
+
+std::ostream& GeneticData::write_genetic_data(std::ostream & os) const
+{
+        os << force << " ";
+        os << nb_offspring << " ";
+        os << repr_threshold << " ";
+        os << nb_moves << " ";
+        os << mouth_size <<  " ";
+        os << mutation_rate;
+        
+
+        return os;
+
 }

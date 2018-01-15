@@ -1,26 +1,37 @@
 % Parametres physiques :
-L = 200
-plants = 10000
-animals = 3000
+L = 10
+plants = 100
+animals = 100
 tfin = 1000
+
+load = false
+file to load = Saves/ecosystemSaveTest.out
+
+save = true
+save at t = 0
+
 write data = true
 evolution = true
 feeding = constant
-Feeding rate = 0.1
+feeding rate = 0.2
 Mutation rate = 0.1
 write characteristics = nnaan
+
+shock at t = 500
+shock parameter = 0.1  %for now it's by what we multiply the feeding rate at shock
 
 Animal zone = whole
 Animal zone parameter 1 = 0
 Animal zone parameter 2 = 0
 Animal zone parameter 3 = 0
 Animal zone parameter 4 = 50
+
 Plant zone = whole
 Plant zone parameter 1 = 0
 Plant zone parameter 2 = 0
 Plant zone parameter 3 = 100
 Plant zone parameter 4 = 100
 
-output = test2
+output = test
 
 % good values L = 100, plants = 200, animals = 50

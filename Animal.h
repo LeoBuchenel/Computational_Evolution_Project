@@ -6,13 +6,14 @@
 #include "GeneticData.h"
 #include "Cell.h"
 #include <vector>
+#include <iostream>
 
 class Grid;
 
 class Animal {
 public:
 
-Animal(Cell*, double);                // initializes animal with random genetic data and given mutation rate
+Animal(Cell*, double);                        // initializes animal with random genetic data
 Animal(Cell*, GeneticData, double);   // constructor with position, genetic_data and energy
 void eat();
 std::vector<Animal*> reproduce(bool);
@@ -36,6 +37,8 @@ unsigned int get_nb_moves() const;
 unsigned int get_nb_offspring() const;
 unsigned int get_mouth_size() const;
 double get_energy() const;
+
+std::ostream& write_animal_data(std::ostream&) const; //writes animal's genetic data and energy
 
 protected:
 Cell* position;

@@ -1,51 +1,83 @@
 #include "Ecosystem.h"
 
-//enum Impact{HalveRate, DoubleRate}; 
+//enum Impact{HalveRate, DoubleRate};
 
 Ecosystem::~Ecosystem(){
-	for(size_t i(0); i<animal_list.size(); ++i)
-		{
-			delete animal_list[i];
-		}
+								for(size_t i(0); i<animal_list.size(); ++i)
+								{
+																delete animal_list[i];
+								}
 }
 
+Ecosystem::Ecosystem(Grid* grid, Zone const& animal_zone, Zone const& plant_zone,
+																					double rate, double shock)
+								: plant_zone(plant_zone), animal_zone(animal_zone), grid(grid), FeedRate(rate), shock_parameter(shock)
+{
+
+								for(size_t i(0); i < plant_zone.size(); ++i) {
+																plant_zone[i]->set_exist_food(true);
+																// gives the cell the right to reproduce food
+																// (cell is marked as "food can exist here")
+								}
+
+}
 
 Ecosystem::Ecosystem(Grid* grid, Zone const& animal_zone, Zone const& plant_zone,
-						unsigned int animals, unsigned int plants, double feedingRate, double mutationRate)
-: plant_zone(plant_zone), animal_zone(animal_zone), grid(grid), FeedRate(feedingRate)
+					unsigned int animals, unsigned int plants, double rate, double shock, double mutation_rate)
+: plant_zone(plant_zone), animal_zone(animal_zone), grid(grid), FeedRate(rate), shock_parameter(shock)
 {
-	unsigned int animal_zone_size(animal_zone.size());
-	unsigned int plant_zone_size(plant_zone.size());
-	for (size_t i(0); i < animals; ++i) {
-		unsigned int n(std::rand() % animal_zone_size);
-		Animal* ptr(new Animal(animal_zone[n], mutationRate));
-		animal_list.push_back(ptr);
-	}
 
-	for(size_t i(0); i < plants; ++i) {
-		unsigned int n(std::rand() % plant_zone_size);
-		plant_zone[n]->addFood();
-	}
+								unsigned int animal_zone_size(animal_zone.size());
+								unsigned int plant_zone_size(plant_zone.size());
 
-	for(size_t i(0); i < plant_zone.size(); ++i) {
-		plant_zone[i]->set_exist_food(true);
-		// gives the cell the right to reproduce food
-		// (cell is marked as "food can exist here")
-	}
+								for (size_t i(0); i < animals; ++i) {
+																unsigned int n(std::rand() % animal_zone_size);
+																Animal* ptr(new Animal(animal_zone[n], mutation_rate));
+																animal_list.push_back(ptr);
+								}
+
+								for(size_t i(0); i < plants; ++i) {
+																unsigned int n(std::rand() % plant_zone_size);
+																plant_zone[n]->addFood();
+								}
+
+								for(size_t i(0); i < plant_zone.size(); ++i) {
+																plant_zone[i]->set_exist_food(true);
+																// gives the cell the right to reproduce food
+																// (cell is marked as "food can exist here")
+								}
+
+}
+
+void Ecosystem::add_random(unsigned int animals, unsigned int plants, double mutationRate)
+{
+								unsigned int animal_zone_size(animal_zone.size());
+								unsigned int plant_zone_size(plant_zone.size());
+
+								for (size_t i(0); i < animals; ++i) {
+																unsigned int n(std::rand() % animal_zone_size);
+																Animal* ptr(new Animal(animal_zone[n], mutationRate));
+																animal_list.push_back(ptr);
+								}
+
+								for(size_t i(0); i < plants; ++i) {
+																unsigned int n(std::rand() % plant_zone_size);
+																plant_zone[n]->addFood();
+								}
 }
 
 void Ecosystem::move()
 {
-	for(auto const& obj:animal_list) {
-		if(obj->isAlive()) {
-			Cell* oldCell(obj->get_Position());
-			oldCell->removeAnimal(obj);
-			std::vector<unsigned int> newPosition(obj->move(grid));
-			Cell* newCell(grid->getCell(newPosition[0], newPosition[1]));
-			newCell->addAnimal(obj);
-			obj->changeCell(newCell);
-		}
-	}
+								for(auto const& obj:animal_list) {
+																if(obj->isAlive()) {
+																								Cell* oldCell(obj->get_Position());
+																								oldCell->removeAnimal(obj);
+																								std::vector<unsigned int> newPosition(obj->move(grid));
+																								Cell* newCell(grid->getCell(newPosition[0], newPosition[1]));
+																								newCell->addAnimal(obj);
+																								obj->changeCell(newCell);
+																}
+								}
 }
 
 void Ecosystem::animal_reproduce(bool Evolution)
@@ -154,16 +186,15 @@ std::ostream& Ecosystem::write_Plant(std::ostream& os) const
 void Ecosystem::food_reproduce(std::string feeding)
 {
 								if(feeding == "exponential") {
-									reproduce(plant_zone, FeedRate, grid->getNbFood());// plants reproduce exponentially
+																reproduce(plant_zone, FeedRate, grid->getNbFood());// plants reproduce exponentially
 								}else{
-									if(feeding == "constant") {
-										reproduce(plant_zone, FeedRate, (grid->size())*(grid->size()));
-									}else{
-										std::cout << feeding << std::endl;
-										std::cout << "Please type valid feeding"<<std::endl;
-									}
+																if(feeding == "constant") {
+																								reproduce(plant_zone, FeedRate, (grid->size())*(grid->size()));
+																}else{
+																								std::cout << feeding << std::endl;
+																								std::cout << "Please type valid feeding"<<std::endl;
+																}
 								}
-
 
 }
 
@@ -426,24 +457,132 @@ void Ecosystem::die()
 }
 
 bool Ecosystem::died_out() const {
-	return (animal_list.empty())or (grid->getNbFood()==0);
+								return (animal_list.empty())or (grid->getNbFood()==0);
 }
 
 
 void Ecosystem::envImpact(Impact impact)
 {
-	
-	std::cout << "Environmental Impact : ";
-	if(impact == HalveRate){
-		std::cout << "Halve Feeding rate";
-		FeedRate /= 10.0;
-	} else if(impact == DoubleRate){
-		FeedRate *= 2.0;
-		std::cout << "Double Feeding rate";
-	}
-	
-	std::cout << std::endl;
-	
-	
-	
+
+								std::cout << "Environmental Impact : ";
+								switch(impact) {
+								case HalveRate:
+																std::cout << "Halve feeding rate";
+																FeedRate /= 2.0;
+																break;
+								case DoubleRate:
+																std::cout << "Double feeding rate";
+																FeedRate *= 2.0;
+																break;
+								case MultiplyRate:
+																std::cout << "Multiply feeding rate by " << shock_parameter;
+																FeedRate *= shock_parameter;
+																break;
+								default: break;
+								}
+
+/*
+        if(impact == HalveRate) {
+                std::cout << "Halve Feeding rate";
+                FeedRate /= 2.0;
+        } else if(impact == DoubleRate) {
+                FeedRate *= 2.0;
+                std::cout << "Double Feeding rate";
+        }
+ */
+
+								std::cout << std::endl;
+
+
+
+}
+
+
+
+std::ostream& Ecosystem::write_ecosystem_data(std::ostream & os) const
+{
+								size_t L = grid->size();
+								for(size_t x(0); x < L; ++x) {
+																for(size_t y(0); y < L; ++y) {
+																								grid->getCell(x,y)->write_cell_data(os);
+																								os << std::endl;
+																}
+								}
+								return os;
+}
+
+std::ostream& Ecosystem::save_ecosystem(std::vector<std::string> strings,std::vector<unsigned int> numbers,std::ostream & os, unsigned int t) const {
+								//strings : 0 : animalform, 1 : plantForm
+								//numbers : 0 1 2 3 : AnimalParam 1 2 3 4, 4 5 6 7 : PlantParam 1 2 3 4, 8 : grid size
+								os << '%'
+											<< " Savefile of the following system at time t = "
+											<< t
+											<<" automatically generated on ";
+								std::time_t end_time =std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+								os << std::ctime(&end_time);
+								os << strings[0] << " " << strings[1] << " " << std::endl;
+								for(size_t i(0); i < numbers.size(); ++i)
+								{
+																os << numbers[i] << " ";
+								}
+								os << std::endl;
+								os << '%' << " Cells information ======== " << std::endl;
+								write_ecosystem_data(os);
+
+
+								return os;
+}
+
+std::ifstream& Ecosystem::add_from_file(std::ifstream& loadfile)
+{
+							//IMPORTANT : THIS ASSUMES WE START RIGHT AT THE GOOD LINE
+								std::string test;
+								size_t L = grid->size();
+								for(size_t x(0); x < L; ++x) {
+																for(size_t y(0); y < L; ++y)
+																{
+																								Cell* currentCell = grid->getCell(x,y);
+																								std::string test,a;
+
+																								unsigned int a_food_density, a_nb_food;
+																								bool a_exist_food;
+
+																								//add plant's characteristics first
+																								loadfile >> a_food_density >> a_nb_food >> a_exist_food;
+																								currentCell->set_food_density(a_food_density);
+																								currentCell->set_food(a_nb_food);
+																								currentCell->set_exist_food(a_exist_food);
+
+
+																								//get the rest of the stream
+																								getline(loadfile, test, 'E');
+																								std::stringstream listanimalstream(test);
+
+																								//list each animal
+																								while(!(test.empty())) {
+																																getline(listanimalstream, test, ';');
+																																if(!(test.empty())) {
+																																								unsigned int nb_offspring, nb_moves, mouth_size;
+																																								double force, repr_threshold, energy;
+																																								double mutation_rate;
+																																								std::stringstream(test)
+																																								>> force >> nb_offspring
+																																								>> repr_threshold >> nb_moves
+																																								>> mouth_size >> energy >> mutation_rate;
+
+																																								Animal* ptr(new Animal(currentCell, GeneticData(force, nb_offspring, repr_threshold, nb_moves, mouth_size, mutation_rate), energy));
+																																								animal_list.push_back(ptr);
+
+																																}
+																								}
+																								test.clear();
+																}
+
+								}
+
+
+
+
+								return loadfile;
+
 }

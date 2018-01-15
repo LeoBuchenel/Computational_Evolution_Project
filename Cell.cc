@@ -45,21 +45,24 @@ void Cell::removeAnimal(Animal* const obj)
 								}
 }
 
-void Cell::food_reproduce(double proba)
-{
-								if(exist_food) {
-																double prob = (std::rand()/(RAND_MAX*1.));
-																if(prob < proba) {
-																								addFood(food_density);
-																}
 
-								}
+/*
+   void Cell::food_reproduce(double proba)
+   {
+        if(exist_food) {
+                double prob = (std::rand()/(RAND_MAX*1.));
+                if(prob < proba) {
+                        addFood(food_density);
+                }
 
-}
+        }
+
+   }
+ */
 
 
 
-void Cell::addFood(unsigned int food)
+void Cell::addFood(unsigned long long int food)
 {
 								nb_food +=food;
 }
@@ -113,4 +116,31 @@ bool Cell::exist_animal_on_cell() const {
 																if(org->isAlive()) return true;
 								}
 								return false;
+}
+
+std::ostream & Cell::write_cell_data(std::ostream & os) const
+{
+								os << food_density
+											<< " " << nb_food
+											<< " " << exist_food;
+
+								for(size_t i(0); i< animal_list.size(); ++i) {
+																os << " ";
+																animal_list[i]->write_animal_data(os);
+																os << ";";
+								}
+
+								os << "E"; //indicates end of cell
+
+
+
+								return os;
+}
+
+void Cell::set_food(unsigned long long int totalamount){
+								nb_food = totalamount;
+}
+
+void Cell::set_food_density(unsigned int fd){
+								food_density = fd;
 }
