@@ -7,6 +7,7 @@
 class GeneticData {
 public:
 GeneticData();   //constructs genetic data randomly
+GeneticData(double, unsigned int, double, unsigned int, unsigned int);
 double get_force() const;
 double get_rep_threshold() const;
 unsigned int get_nb_offspring() const;

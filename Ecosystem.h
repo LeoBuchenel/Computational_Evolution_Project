@@ -2,6 +2,7 @@
 #define ECOSYSTEM_H
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <chrono>
 #include <ctime>
 #include <string>

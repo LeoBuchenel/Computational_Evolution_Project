@@ -470,17 +470,43 @@ std::ifstream& Ecosystem::add_from_file(std::ifstream& loadfile)
 								for(size_t x(0); x < L; ++x) {
 																for(size_t y(0); y < L; ++y)
 																{
-																								//add animals first
-																								getline(loadfile, test, 'P');
-																								std::cout << "Animal scan result : " << test << std::endl;
-																								test.clear();
+																								Cell* currentCell = grid->getCell(x,y);
+																								std::string test,a;
 
-																								//add plant's characteristics second
-																								getline(loadfile, test);
-																								std::cout << "Plant scan result : " << test << std::endl;
-																								test.clear();
+																								unsigned int a_food_density, a_nb_food;
+																								bool a_exist_food;
 
+																								//add plant's characteristics first
+																								loadfile >> a_food_density >> a_nb_food >> a_exist_food;
+																								currentCell->set_food_density(a_food_density);
+																								currentCell->set_food(a_nb_food);
+																								currentCell->set_exist_food(a_exist_food);
+
+
+																								//get the rest of the stream
+																								getline(loadfile, test, 'E');
+																								std::stringstream listanimalstream = std::stringstream(test);
+
+																								//list each animal
+																								while(!(test.empty())) {
+																																getline(listanimalstream, test, ';');
+																																if(!(test.empty())) {
+																																								unsigned int nb_offspring, nb_moves, mouth_size;
+																																								double force, repr_threshold, energy;
+
+																																								std::stringstream(test)
+																																								>> force >> nb_offspring
+																																								>> repr_threshold >> nb_moves
+																																								>> mouth_size >> energy;
+
+																																								Animal* ptr(new Animal(currentCell, GeneticData(force, nb_offspring, repr_threshold, nb_moves, mouth_size), energy));
+																																								animal_list.push_back(ptr);
+
+																																}
+																								}
+																								test.clear();
 																}
+
 								}
 
 

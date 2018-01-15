@@ -62,7 +62,7 @@ void Cell::removeAnimal(Animal* const obj)
 
 
 
-void Cell::addFood(unsigned int food)
+void Cell::addFood(unsigned long long int food)
 {
 								nb_food +=food;
 }
@@ -120,14 +120,27 @@ bool Cell::exist_animal_on_cell() const {
 
 std::ostream & Cell::write_cell_data(std::ostream & os) const
 {
+								os << food_density
+											<< " " << nb_food
+											<< " " << exist_food;
+
 								for(size_t i(0); i< animal_list.size(); ++i) {
+																os << " ";
 																animal_list[i]->write_animal_data(os);
 																os << ";";
 								}
 
-								os << "P " << food_density <<";";
-								os << " " << nb_food << ";";
-								os << " " << exist_food;
+								os << "E"; //indicates end of cell
+
+
 
 								return os;
+}
+
+void Cell::set_food(unsigned long long int totalamount){
+								nb_food = totalamount;
+}
+
+void Cell::set_food_density(unsigned int fd){
+								food_density = fd;
 }

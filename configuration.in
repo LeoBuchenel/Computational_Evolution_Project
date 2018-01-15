@@ -7,6 +7,9 @@ tfin = 200
 load = true
 file to load = Saves/ecosystemSaveTest.out
 
+save = true
+save at t = 0
+
 write data = true
 evolution = true
 feeding = constant

@@ -31,6 +31,8 @@ int main(int argc, char *argv[]) {
                 configFile.process(argv[i]);
 
         bool load = configFile.get<bool>("load");
+        bool save = configFile.get<bool>("save");
+        unsigned int save_time = configFile.get<unsigned int>("save at t");
         double FeedRate = configFile.get<double>("feeding rate");
         double shock_parameter = configFile.get<double>("shock parameter");
         unsigned int shock_time = configFile.get<unsigned int>("shock at t");
@@ -133,22 +135,13 @@ int main(int argc, char *argv[]) {
         write_Ecosystem.open(path+"ecosystem_data_"+extension+".out");
         endTime.open(path+"tfin.out");
 
-        savefile.open(savepath+"ecosystemSave.out");
-
+        savefile.open(savepath+"ecosystemSave_t="+to_string(save_time)+ ".out");
 
         ecosystem.write_AnimalParam(write_AnimalParamBegin);
 
         for(size_t t(0); t<tfin; ++t) {
 
-                if(t == shock_time) {
-                        ecosystem.envImpact(MultiplyRate);
-                }
-
-                // if(t == 600){
-                //ecosystem.envImpact(DoubleRate);
-                //}
-
-                if(t == 100) {
+                if(t == save_time && save) {
                         vector<string> strings = {animalForm, plantForm};
 
                         vector<unsigned int> numbers={AnimalParam1, AnimalParam2,
@@ -158,7 +151,13 @@ int main(int argc, char *argv[]) {
                         ecosystem.save_ecosystem(strings, numbers, savefile, t);
                 }
 
+                if(t == shock_time) {
+                        ecosystem.envImpact(MultiplyRate);
+                }
 
+                // if(t == 600){
+                //ecosystem.envImpact(DoubleRate);
+                //}
 
                 ecosystem.iteration(write_AnimalPos, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves,
                                     write_AnimalNbOff, write_AnimalReproThr, write_AnimalMouthSize, DataWrite, Evolution, food_reproduce);

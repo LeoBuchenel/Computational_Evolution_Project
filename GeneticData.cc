@@ -20,6 +20,12 @@ GeneticData::GeneticData(){
 
 }
 
+GeneticData::GeneticData(double force_, unsigned int nb_offspring_, double repr_threshold_, unsigned int nb_moves_, unsigned int mouth_size_)
+        : force(force_), nb_offspring(nb_offspring_), repr_threshold(repr_threshold_), nb_moves(nb_moves_), mouth_size(mouth_size_)
+{
+}
+
+
 void GeneticData::mutate(){
         double p1 = std::rand()/(RAND_MAX*1.0);
         if(p1 < 0.1) {
