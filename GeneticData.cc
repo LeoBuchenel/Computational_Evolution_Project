@@ -25,14 +25,14 @@ GeneticData::GeneticData(double rate)
 void GeneticData::mutate(){
         double p1 = std::rand()/(RAND_MAX*1.0);
         if(p1 < mutation_rate) {
-                unsigned int characteristic = std::rand() % 5 + 1;
+                unsigned int characteristic = std::rand() % 2 + 1;
                 int change = std::rand() % 2;
                 if(change==0) {
                         change =-1;
                 }
 
                 switch (characteristic) {
-                case 1: if(force>1 || change > -1) {
+                /*case 1: if(force>1 || change > -1) {
                                 force+=5*change;
                                 //std::cout << "force mutated" << std::endl;
                 }
@@ -41,20 +41,20 @@ void GeneticData::mutate(){
                                 //std::cout << "Moves mutated from " << nb_moves;
                                 nb_moves+=change;
                                 //std::cout << "Number of moves mutated" << std::endl;
-                } break;
-                case 3: if(nb_offspring>1 || change > -1) {
+                } break;*/
+                case 1: if(nb_offspring>1 || change > -1) {
                                 nb_offspring+=change;
                                 //std::cout << "Number of offsprings mutated" << std::endl;
                 } break;
-                case 4: if(repr_threshold>1 || change > -1) {
+                case 2: if(repr_threshold>1 || change > -1) {
                                 repr_threshold+=5*change;
                                 //std::cout << "Reproduction threshold mutated" << std::endl;
                 } break;
-
+				/*
                 case 5: if(mouth_size > 1 || change > -1) {
                                 mouth_size += change;
                 } break;
-
+				*/
 
                 default: break;
                 }

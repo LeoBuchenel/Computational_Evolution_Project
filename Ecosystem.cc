@@ -167,9 +167,10 @@ void Ecosystem::food_reproduce(std::string feeding)
 
 }
 
-void Ecosystem::iteration(std::ostream& osXY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT, std::ostream& osMS, bool DataWrite, bool Evolution, std::string feeding){
+void Ecosystem::iteration(std::vector<std::ofstream*> os_tab, bool DataWrite, bool Evolution,
+							std::string feeding, std::string writeCharac){
 								if(DataWrite) {
-																this->write(osXY, osP, osS, osF, osNM, osNO, osRT, osMS);
+																this->write(os_tab, writeCharac);
 								}                                                          //writes the position of every animal, the plant density per cell and the system parameters
 								this->move();
 								this->die();
@@ -179,7 +180,7 @@ void Ecosystem::iteration(std::ostream& osXY, std::ostream& osP, std::ostream& o
 								this->food_reproduce(feeding);
 }
 
-void Ecosystem::write(std::ostream& osXY, std::ostream& osP, std::ostream& osS, std::ostream& osF, std::ostream& osNM, std::ostream& osNO, std::ostream& osRT, std::ostream& osMS){
+void Ecosystem::write(std::vector<std::ofstream*> os_tab, std::string writeCharac){
 								//this->write_animalX(osX);
 								//osX << std::endl;
 								//this->write_animalY(osY);
@@ -187,23 +188,53 @@ void Ecosystem::write(std::ostream& osXY, std::ostream& osP, std::ostream& osS, 
 								//this->write_animal(osX, osY);
 								//osX << std::endl;
 								//osY << std::endl;
-								this->write_animalPos(osXY);
-								osXY << std::endl;
-								this->write_Plant(osP);
-								osP << std::endl;
-								this->write_systParam(osS);
-								osS << std::endl;
-								this->write_animalForce(osF);
-								osF << std::endl;
-								this->write_animalNbMoves(osNM);
-								osNM << std::endl;
-								this->write_animalNbOff(osNO);
-								osNO << std::endl;
-								this->write_animalReproThr(osRT);
-								osRT << std::endl;
-								this->write_animalMouthSize(osMS);
-								osMS << std::endl;
-
+															
+								this->write_animalPos(*(os_tab[0]));
+								*(os_tab[0]) << std::endl;
+								this->write_Plant(*os_tab[1]);
+								*os_tab[1] << std::endl;
+								this->write_systParam(*os_tab[2]);
+								*os_tab[2] << std::endl;
+								
+								switch(writeCharac[0]){
+									case 'a' : this->write_animalForce(*os_tab[3]); *os_tab[3] << std::endl; break;
+									case 'c' : this->write_cellForce(*os_tab[8]); *os_tab[8] << std::endl;break; 
+									case 'b' : {this->write_animalForce(*os_tab[3]); *os_tab[3] << std::endl;
+												this->write_cellForce(*os_tab[8]);   *os_tab[8] << std::endl; break; }
+									default : break;
+								} 
+								
+								switch(writeCharac[1]){
+									case 'a' : this->write_animalNbMoves(*os_tab[4]); *os_tab[4] << std::endl; break;
+									case 'c' : this->write_cellNbMoves(*os_tab[9]); *os_tab[9] << std::endl;break; 
+									case 'b' : {this->write_animalNbMoves(*os_tab[4]); *os_tab[4] << std::endl;
+												this->write_cellNbMoves(*os_tab[9]);   *os_tab[9] << std::endl; break; }
+									default : break;
+								} 
+								
+								switch(writeCharac[2]){
+									case 'a' : this->write_animalNbOff(*os_tab[5]); *os_tab[5] << std::endl; break;
+									case 'c' : this->write_cellNbOff(*os_tab[10]); *os_tab[10] << std::endl;break; 
+									case 'b' : {this->write_animalNbOff(*os_tab[5]); *os_tab[5] << std::endl;
+												this->write_cellNbOff(*os_tab[10]);   *os_tab[10] << std::endl; break; }
+									default : break;
+								} 
+								
+								switch(writeCharac[3]){
+									case 'a' : this->write_animalReproThr(*os_tab[6]); *os_tab[6] << std::endl; break;
+									case 'c' : this->write_cellReproThr(*os_tab[11]); *os_tab[11] << std::endl;break; 
+									case 'b' : {this->write_animalReproThr(*os_tab[6]); *os_tab[6] << std::endl;
+												this->write_cellReproThr(*os_tab[11]);   *os_tab[11] << std::endl; break; }
+									default : break;
+								} 
+								
+								switch(writeCharac[4]){
+									case 'a' : this->write_animalMouthSize(*os_tab[7]); *os_tab[7] << std::endl; break;
+									case 'c' : this->write_cellMouthSize(*os_tab[12]); *os_tab[12] << std::endl;break; 
+									case 'b' : {this->write_animalMouthSize(*os_tab[7]); *os_tab[7] << std::endl;
+												this->write_cellMouthSize(*os_tab[12]);   *os_tab[12] << std::endl; break; }
+									default : break;
+								} 
 }
 
 void Ecosystem::animal_eat(){
@@ -214,7 +245,7 @@ void Ecosystem::animal_eat(){
 								}
 }
 
-std::ostream& Ecosystem::write_animalForce(std::ostream& os) const
+std::ostream& Ecosystem::write_cellForce(std::ostream& os) const
 {
 								for(size_t i(0); i < (*grid).size(); ++i) {
 																for(size_t j(0); j < (*grid).size(); ++j) { //works because grid is square
@@ -235,7 +266,7 @@ std::ostream& Ecosystem::write_animalForce(std::ostream& os) const
 
 
 
-std::ostream& Ecosystem::write_animalNbMoves(std::ostream& os) const
+std::ostream& Ecosystem::write_cellNbMoves(std::ostream& os) const
 {
 								for(size_t i(0); i < (*grid).size(); ++i) {
 																for(size_t j(0); j < (*grid).size(); ++j) { //works because grid is square
@@ -256,7 +287,7 @@ std::ostream& Ecosystem::write_animalNbMoves(std::ostream& os) const
 
 
 
-std::ostream& Ecosystem::write_animalNbOff(std::ostream& os) const
+std::ostream& Ecosystem::write_cellNbOff(std::ostream& os) const
 {
 								for(size_t i(0); i < (*grid).size(); ++i) {
 																for(size_t j(0); j < (*grid).size(); ++j) { //works because grid is square
@@ -275,7 +306,7 @@ std::ostream& Ecosystem::write_animalNbOff(std::ostream& os) const
 }
 
 
-std::ostream& Ecosystem::write_animalReproThr(std::ostream& os) const
+std::ostream& Ecosystem::write_cellReproThr(std::ostream& os) const
 {
 								for(size_t i(0); i < (*grid).size(); ++i) {
 																for(size_t j(0); j < (*grid).size(); ++j) { //works because grid is square
@@ -293,7 +324,7 @@ std::ostream& Ecosystem::write_animalReproThr(std::ostream& os) const
 								return os;
 }
 
-std::ostream& Ecosystem::write_animalMouthSize(std::ostream&  os) const {
+std::ostream& Ecosystem::write_cellMouthSize(std::ostream&  os) const {
 								for(size_t i(0); i < (*grid).size(); ++i) {
 																for(size_t j(0); j < (*grid).size(); ++j) { //works because grid is square
 																								double meanMS = 0.;
@@ -310,6 +341,47 @@ std::ostream& Ecosystem::write_animalMouthSize(std::ostream&  os) const {
 								return os;
 }
 
+
+
+std::ostream& Ecosystem::write_animalForce(std::ostream&  os) const {
+	for(auto const& animal : animal_list){
+		os << animal -> get_force() << " " ; 
+	}
+	
+	return os;
+}
+
+std::ostream& Ecosystem::write_animalNbMoves(std::ostream&  os) const {
+	for(auto const& animal : animal_list){
+		os << animal -> get_nb_moves() << " "; 
+	}
+	
+	return os;
+}
+
+std::ostream& Ecosystem::write_animalNbOff(std::ostream&  os) const {
+	for(auto const& animal : animal_list){
+		os << animal -> get_nb_offspring() << " "; 
+	}
+	
+	return os;
+}
+
+std::ostream& Ecosystem::write_animalReproThr(std::ostream&  os) const {
+	for(auto const& animal : animal_list){
+		os << animal -> get_rep_threshold() << " "; 
+	}
+	
+	return os;
+}
+
+std::ostream& Ecosystem::write_animalMouthSize(std::ostream&  os) const {
+	for(auto const& animal : animal_list){
+		os << animal -> get_mouth_size() << " "; 
+	}
+	
+	return os;
+}
 
 
 void Ecosystem::die()

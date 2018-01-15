@@ -1,6 +1,7 @@
 #ifndef ECOSYSTEM_H
 #define ECOSYSTEM_H
 #include <iostream>
+#include <fstream>
 #include <string>
 #include "Grid.h"
 #include "Animal.h"
@@ -41,13 +42,19 @@ std::ostream& write_animalNbOff(std::ostream&) const;
 std::ostream& write_animalReproThr(std::ostream&) const;
 std::ostream& write_animalMouthSize(std::ostream&) const;
 
-void write(std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&);
+std::ostream& write_cellForce(std::ostream&) const;
+std::ostream& write_cellNbMoves(std::ostream&) const;
+std::ostream& write_cellNbOff(std::ostream&) const;
+std::ostream& write_cellReproThr(std::ostream&) const;
+std::ostream& write_cellMouthSize(std::ostream&) const;
+
+void write(std::vector<std::ofstream*>, std::string);
 
 
 void animal_eat();
 void envImpact(Impact impact);
 
-void iteration(std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, std::ostream&, bool, bool, std::string);
+void iteration(std::vector<std::ofstream*>, bool, bool, std::string, std::string);
 };
 
 #endif //ECOSYSTEM_H

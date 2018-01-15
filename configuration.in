@@ -1,13 +1,14 @@
 % Parametres physiques :
-L = 100
-plants = 2000
-animals = 600
-tfin = 700
+L = 200
+plants = 10000
+animals = 3000
+tfin = 1000
 write data = true
 evolution = true
 feeding = constant
-Feeding rate = 0.05
-Mutation rate = 0
+Feeding rate = 0.1
+Mutation rate = 0.1
+write characteristics = nnaan
 
 Animal zone = whole
 Animal zone parameter 1 = 0
@@ -20,6 +21,6 @@ Plant zone parameter 2 = 0
 Plant zone parameter 3 = 100
 Plant zone parameter 4 = 100
 
-output = test_false_1
+output = test2
 
 % good values L = 100, plants = 200, animals = 50
