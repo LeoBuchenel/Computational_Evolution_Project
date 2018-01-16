@@ -7,12 +7,11 @@ using namespace std;
 
 int main(){
 
-        //probability with evolution 54.0 % without 53.5%
         ofstream ProbaFile;
         ProbaFile.open("Results/SurvivalTime.out");
 
-        size_t Nprob = 2;
-        unsigned int Mnumber = 10;
+        size_t Nprob = 200;
+        unsigned int Mnumber = 100;
 
         vector<double> mutrate (Mnumber, 0.);
 
@@ -27,7 +26,7 @@ int main(){
         for(size_t i(0); i < p.size(); ++i) {
                 string mutation = to_string(mutrate[i]);
                 for(size_t k(0); k < Nprob; ++k) {
-                        string cmd = "./Projectv2 configuration.in Mutation_rate="+mutation;
+                        string cmd = "./Projectv2 configuration.in mutation_rate="+mutation;
                         int a = system(cmd.c_str());
                         ifstream fichier;
                         string nom_fichier("Results/tfin.out");

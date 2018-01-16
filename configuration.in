@@ -1,24 +1,28 @@
 % Parametres physiques :
-L = 100
+L = 40
 plants = 2000
 animals = 600
-tfin = 100
+tfin = 1000
 
-load = true
+shock = false
+shock at t = 1100
+shock parameter = 1.
+%for now it's by what we multiply the feeding rate at shock
+
+load = false
 file to load = Saves/ecosystemSaveTest.out
 
 save = true
-save at t = 0     % regarder pour la convention du temps
+save at t = 0
+% regarder pour la convention du temps
 
 write data = false
 evolution = true
 feeding = constant
 feeding_rate = 0.02
 mutation_rate = 0.1
-write characteristics = bnnnn  % c (cell), a (animal), b (both), n (not)
-
-shock at t = 700
-shock parameter = 1.  %for now it's by what we multiply the feeding rate at shock
+write characteristics = nnnnn
+% c (cell), a (animal), b (both), n (not)
 
 Animal zone = whole
 Animal zone parameter 1 = 0

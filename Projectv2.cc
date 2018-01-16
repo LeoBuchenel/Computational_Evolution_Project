@@ -47,6 +47,8 @@ int main(int argc, char *argv[]) {
         unsigned int nb_animals = configFile.get<unsigned int>("animals");
         bool DataWrite = configFile.get<bool>("write data");
         bool Evolution = configFile.get<bool>("evolution");
+        bool shock = configFile.get<bool>("shock");
+
         string food_reproduce = configFile.get<string>("feeding");
         string loadfile = configFile.get<string>("file to load");
         string extension = configFile.get<string>("output");
@@ -163,7 +165,7 @@ int main(int argc, char *argv[]) {
 
                 }
 
-                if(t == shock_time) {
+                if(t == shock_time && shock) {
                         ecosystem.envImpact(MultiplyRate);
                 }
 
@@ -190,6 +192,7 @@ int main(int argc, char *argv[]) {
 
         return 0;
 }
+
 
 void open_ostreams(vector<ofstream*> os_tab, string extension, string writeCharac, string path)
 {
