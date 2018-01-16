@@ -1,7 +1,7 @@
 #include "GeneticData.h"
 #include <iostream>
 
-GeneticData::GeneticData(){
+GeneticData::GeneticData(double m){
 /*
         double x = (std::rand() % 100) + 1;
         force = x;
@@ -12,6 +12,7 @@ GeneticData::GeneticData(){
         double b = (std::rand() % 100) + 1;
         repr_threshold = b;
  */
+        mutation_rate = m;
         force =  50.;
         nb_moves = 2;
         nb_offspring = 2;
@@ -20,15 +21,15 @@ GeneticData::GeneticData(){
 
 }
 
-GeneticData::GeneticData(double force_, unsigned int nb_offspring_, double repr_threshold_, unsigned int nb_moves_, unsigned int mouth_size_)
-        : force(force_), nb_offspring(nb_offspring_), repr_threshold(repr_threshold_), nb_moves(nb_moves_), mouth_size(mouth_size_)
+GeneticData::GeneticData(double mutation_rate_, double force_, unsigned int nb_offspring_, double repr_threshold_, unsigned int nb_moves_, unsigned int mouth_size_)
+        : mutation_rate(mutation_rate_), force(force_), nb_offspring(nb_offspring_), repr_threshold(repr_threshold_), nb_moves(nb_moves_), mouth_size(mouth_size_)
 {
 }
 
 
 void GeneticData::mutate(){
         double p1 = std::rand()/(RAND_MAX*1.0);
-        if(p1 < 0.1) {
+        if(p1 < mutation_rate) {
                 unsigned int characteristic = std::rand() % 5 + 1;
                 int change = std::rand() % 2;
                 if(change==0) {
@@ -89,6 +90,7 @@ unsigned int GeneticData::get_mouth_size() const {
 
 std::ostream& GeneticData::write_genetic_data(std::ostream & os) const
 {
+        os << mutation_rate << " ";
         os << force << " ";
         os << nb_offspring << " ";
         os << repr_threshold << " ";

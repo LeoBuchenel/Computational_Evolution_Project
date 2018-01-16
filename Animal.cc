@@ -3,9 +3,9 @@
 #include <random>
 #include <iostream>
 
-Animal::Animal(Cell* cell_){
+Animal::Animal(Cell* cell_, double mutation_rate){
         position = cell_;
-        genetic_data = GeneticData();
+        genetic_data = GeneticData(mutation_rate);
         //energy = (std::rand()%100)+1;
         energy = 100.;
         cell_->addAnimal(this);

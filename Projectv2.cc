@@ -16,6 +16,9 @@
 
 using namespace std;
 
+void open_ostreams(vector<ofstream*>, string, string, string);
+void close_ostreams(vector<ofstream*>, string);
+
 int main(int argc, char *argv[]) {
 
         string inputPath("configuration.in"); // Fichier d'input par defaut
@@ -33,9 +36,12 @@ int main(int argc, char *argv[]) {
         bool load = configFile.get<bool>("load");
         bool save = configFile.get<bool>("save");
         unsigned int save_time = configFile.get<unsigned int>("save at t");
-        double FeedRate = configFile.get<double>("feeding rate");
+        double FeedRate = configFile.get<double>("feeding_rate");
         double shock_parameter = configFile.get<double>("shock parameter");
         unsigned int shock_time = configFile.get<unsigned int>("shock at t");
+        double mutation_rate = configFile.get<double>("mutation_rate");
+        string writeCharac = configFile.get<string>("write characteristics");
+
         unsigned int tfin = configFile.get<unsigned int>("tfin");
         unsigned int nb_plants = configFile.get<unsigned int>("plants");
         unsigned int nb_animals = configFile.get<unsigned int>("animals");
@@ -113,87 +119,163 @@ int main(int argc, char *argv[]) {
 
                 ecosystem.add_from_file(eco_to_load);
         }else{
-                ecosystem.add_random(nb_animals, nb_plants);
+                ecosystem.add_random(nb_animals, nb_plants, mutation_rate);
         }
 
 
         ofstream write_AnimalPos, write_Plant, write_SystemParam,
                  write_AnimalParamBegin, write_AnimalParamEnd, write_AnimalForce,
                  write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr,
-                 write_AnimalMouthSize, write_Ecosystem, endTime, savefile;
+                 write_AnimalMouthSize,
+
+                 write_CellForce, write_CellNbMoves,
+                 write_CellNbOff, write_CellReproThr, write_CellMouthSize,
+
+                 endTime, savefile;
+
+        vector<ofstream*> os_tab {&write_AnimalPos, &write_Plant, &write_SystemParam,
+                                  &write_AnimalForce, &write_AnimalNbMoves,
+                                  &write_AnimalNbOff, &write_AnimalReproThr, &write_AnimalMouthSize,
+                                  &write_CellForce, &write_CellNbMoves,
+                                  &write_CellNbOff, &write_CellReproThr, &write_CellMouthSize};
 
         write_AnimalPos.open(path+"animal_pos_"+extension+".out");
         write_Plant.open(path+"plant_"+extension+".out");
         write_SystemParam.open(path+"system_param_"+extension+".out");
-        write_AnimalParamBegin.open(path+"animal_param_begin_"+extension+".out");
-        write_AnimalParamEnd.open(path+"animal_param_end_"+extension+".out");
-        write_AnimalForce.open(path+"animal_force_"+extension+".out");
-        write_AnimalNbMoves.open(path+"animal_nb_moves_"+extension+".out");
-        write_AnimalNbOff.open(path+"animal_nb_offspring_"+extension+".out");
-        write_AnimalReproThr.open(path+"animal_repro_threshold_"+extension+".out");
-        write_AnimalMouthSize.open(path+"animal_mouth_size_"+extension+".out");
-        write_Ecosystem.open(path+"ecosystem_data_"+extension+".out");
         endTime.open(path+"tfin.out");
 
-        savefile.open(savepath+"ecosystemSave_t="+to_string(save_time)+ ".out");
-
-        ecosystem.write_AnimalParam(write_AnimalParamBegin);
+        open_ostreams(os_tab, extension, writeCharac, path);
 
         for(size_t t(0); t<tfin; ++t) {
 
+                //saves ecosystem
                 if(t == save_time && save) {
-                        vector<string> strings = {animalForm, plantForm};
 
+                        savefile.open(savepath+"ecosystemSave_t="+to_string(save_time)+ ".out");
+                        vector<string> strings = {animalForm, plantForm};
                         vector<unsigned int> numbers={AnimalParam1, AnimalParam2,
                                                       AnimalParam3, AnimalParam4,
                                                       PlantParam1, PlantParam2,
                                                       PlantParam3, PlantParam4, L};
+
                         ecosystem.save_ecosystem(strings, numbers, savefile, t);
+                        savefile.close();
+
                 }
 
                 if(t == shock_time) {
                         ecosystem.envImpact(MultiplyRate);
                 }
 
-                // if(t == 600){
-                //ecosystem.envImpact(DoubleRate);
-                //}
+                ecosystem.iteration(os_tab, DataWrite, Evolution, food_reproduce, writeCharac);
 
-                ecosystem.iteration(write_AnimalPos, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves,
-                                    write_AnimalNbOff, write_AnimalReproThr, write_AnimalMouthSize, DataWrite, Evolution, food_reproduce);
                 if(ecosystem.died_out()) {
                         std::cout << "Ecosystem died out at t = " << t+1 << std::endl;
                         endTime << t+1;
                         return 1;
                 }
-                ecosystem.write_ecosystem_data(write_Ecosystem);
         }
         endTime << tfin;
-        ecosystem.write(write_AnimalPos, write_Plant, write_SystemParam, write_AnimalForce, write_AnimalNbMoves, write_AnimalNbOff, write_AnimalReproThr, write_AnimalMouthSize);
-        ecosystem.write_AnimalParam(write_AnimalParamEnd);
 
-        //write_AnimalX.close();
-        //write_AnimalY.close();
+        ecosystem.write(os_tab, writeCharac);
+
         write_AnimalPos.close();
         write_Plant.close();
         write_SystemParam.close();
-        write_AnimalParamBegin.close();
-        write_AnimalParamEnd.close();
-        write_AnimalForce.close();
-        write_AnimalNbMoves.close();
-        write_AnimalNbOff.close();
-        write_AnimalReproThr.close();
-        write_AnimalMouthSize.close();
-        write_Ecosystem.close();
 
-        savefile.close();
+        close_ostreams(os_tab, writeCharac);
+
         eco_to_load.close();
         endTime.close();
 
-
-
-
-
-
         return 0;
+}
+
+void open_ostreams(vector<ofstream*> os_tab, string extension, string writeCharac, string path)
+{
+        switch(writeCharac[0]) {
+        case 'a': os_tab[3]->open(path+"animal_force_"+extension+".out"); break;
+        case 'c': os_tab[8]->open(path+"cell_force_"+extension+".out"); break;
+        case 'b': os_tab[3]->open(path+"animal_force_"+extension+".out");
+                os_tab[8]->open(path+"cell_force_"+extension+".out"); break;
+        default: break;
+        }
+
+        switch(writeCharac[1]) {
+        case 'a': os_tab[4]->open(path+"animal_nb_moves_"+extension+".out"); break;
+        case 'c': os_tab[9]->open(path+"cell_nb_moves_"+extension+".out"); break;
+        case 'b': os_tab[4]->open(path+"animal_nb_moves_"+extension+".out");
+                os_tab[9]->open(path+"cell_nb_moves_"+extension+".out"); break;
+        default: break;
+        }
+
+        switch(writeCharac[2]) {
+        case 'a': os_tab[5]->open(path+"animal_nb_offspring_"+extension+".out"); break;
+        case 'c': os_tab[10]->open(path+"cell_nb_offspring_"+extension+".out"); break;
+        case 'b': os_tab[5]->open(path+"animal_nb_offspring_"+extension+".out");
+                os_tab[10]->open(path+"cell_nb_offspring_"+extension+".out"); break;
+        default: break;
+        }
+
+        switch(writeCharac[3]) {
+        case 'a': os_tab[6]->open(path+"animal_repro_threshold_"+extension+".out"); break;
+        case 'c': os_tab[11]->open(path+"cell_repro_threshold_"+extension+".out"); break;
+        case 'b': os_tab[6]->open(path+"animal_repro_threshold_"+extension+".out");
+                os_tab[11]->open(path+"cell_repro_threshold_"+extension+".out"); break;
+        default: break;
+        }
+
+        switch(writeCharac[4]) {
+        case 'a': os_tab[7]->open(path+"animal_mouth_size_"+extension+".out"); break;
+        case 'c': os_tab[12]->open(path+"cell_mouth_size_"+extension+".out"); break;
+        case 'b': os_tab[7]->open(path+"animal_mouth_size_"+extension+".out");
+                os_tab[12]->open(path+"cell_mouth_size_"+extension+".out"); break;
+        default: break;
+        }
+
+}
+
+
+void close_ostreams(vector<ofstream*> os_tab, string writeCharac)
+{
+        switch(writeCharac[0]) {
+        case 'a': os_tab[3]->close(); break;
+        case 'c': os_tab[8]->close(); break;
+        case 'b': os_tab[3]->close();
+                os_tab[8]->close(); break;
+        default: break;
+        }
+
+        switch(writeCharac[1]) {
+        case 'a': os_tab[4]->close(); break;
+        case 'c': os_tab[9]->close(); break;
+        case 'b': os_tab[4]->close();
+                os_tab[9]->close(); break;
+        default: break;
+        }
+
+
+        switch(writeCharac[2]) {
+        case 'a': os_tab[5]->close(); break;
+        case 'c': os_tab[10]->close(); break;
+        case 'b': os_tab[5]->close();
+                os_tab[10]->close(); break;
+        default: break;
+        }
+
+        switch(writeCharac[3]) {
+        case 'a': os_tab[6]->close(); break;
+        case 'c': os_tab[11]->close(); break;
+        case 'b': os_tab[6]->close();
+                os_tab[11]->close(); break;
+        default: break;
+        }
+
+        switch(writeCharac[4]) {
+        case 'a': os_tab[7]->close(); break;
+        case 'c': os_tab[12]->close(); break;
+        case 'b': os_tab[7]->close();
+                os_tab[12]->close(); break;
+        default: break;
+        }
 }
