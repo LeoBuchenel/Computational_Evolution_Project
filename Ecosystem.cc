@@ -2,6 +2,9 @@
 
 //enum Impact{HalveRate, DoubleRate};
 
+unsigned int numberReproduced(0);
+unsigned int numberDied(0);
+ 
 Ecosystem::~Ecosystem(){
 								for(size_t i(0); i<animal_list.size(); ++i)
 								{
@@ -78,7 +81,7 @@ void Ecosystem::move()
 																								obj->changeCell(newCell);
 																}
 								}
-}
+}	
 
 void Ecosystem::animal_reproduce(bool Evolution)
 {
@@ -86,6 +89,7 @@ void Ecosystem::animal_reproduce(bool Evolution)
 								for(std::size_t i(0); i<n; ++i) {
 																if(animal_list[i]->isAlive()) {
 																								std::vector<Animal*> newborns(animal_list[i]->reproduce(Evolution));
+																								numberReproduced += newborns.size();
 																								for(auto const& newborn:newborns) {
 																																animal_list.push_back(newborn);
 																								}
@@ -160,8 +164,10 @@ std::ostream &Ecosystem::write_systParam(std::ostream &os) const
 																}
 								}
 
-								os << Animals << " " << grid->getNbFood() << " " << meanForce/ (Animals * 1.)
-											<< " " << meanEnergy / (Animals * 1.) << " " << meanNumberofMoves / (Animals * 1.) << " " << meanOffsprings / (Animals * 1.) << " "<< meanReprThreshold/(Animals*1.);
+								os << Animals << " " << grid->getNbFood() << " " << meanEnergy/ (Animals * 1.)
+											<< " " << meanForce / (Animals * 1.) << " " << meanNumberofMoves / (Animals * 1.) 
+											<< " " << meanOffsprings / (Animals * 1.) << " "<< meanReprThreshold/(Animals*1.) << " " 
+											<< numberReproduced << " " << numberDied;
 
 								return os;
 }
@@ -204,7 +210,9 @@ void Ecosystem::iteration(std::vector<std::ofstream*> os_tab, bool DataWrite, bo
 																this->write(os_tab, writeCharac);
 								}                                                          //writes the position of every animal, the plant density per cell and the system parameters
 								this->move();
+								numberDied = 0;
 								this->die();
+								numberReproduced = 0;
 								this->animal_reproduce(Evolution);
 								grid->sortAnimals();
 								this->animal_eat();
@@ -445,7 +453,7 @@ void Ecosystem::die()
 
 
 																size_t nbDead(animal_list.size() - first_dead);
-
+																numberDied = nbDead;
 																for(size_t i(0); i < nbDead; ++i) {
 																								delete animal_list[animal_list.size() -1];
 																								animal_list[animal_list.size()-1] = nullptr;
